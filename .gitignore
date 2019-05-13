@@ -1,0 +1,11 @@
+.idea
+logs
+Debug
+*.log
+Temp
+Packages
+*Cache*
+linux
+.vs
+.meta
+Library
