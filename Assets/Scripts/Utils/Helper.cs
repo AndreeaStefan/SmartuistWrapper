@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class Helper
 {
@@ -75,5 +76,12 @@ public class Helper
         list.Add(0);
         list.AddRange(Enumerable.Range(7, 6)); 
         return list;
+    }
+    
+    public static Quaternion getYAxisRotation(Quaternion q)
+    {
+        var theta = Mathf.Atan2(q.y, q.w);
+        // quaternion representing rotation about the y axis
+        return new Quaternion(0, Mathf.Sin(theta), 0, Mathf.Cos(theta));
     }
 }
