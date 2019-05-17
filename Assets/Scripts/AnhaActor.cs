@@ -34,6 +34,8 @@ public class AnhaActor : MonoBehaviour
     public float scaleBody = 1;
 
 
+    public TargetSpawner SpawnTargets;
+
     private List<GameObject> _bones;
     private Quaternion[] _poseOffsets;
     private Pose _pose;

@@ -26,6 +26,16 @@ namespace Effectors
         private void OnTriggerEnter(Collider other)
         {
             Debug.Log( $"{name} triggered on Enter at: {DateTime.Now}");
+            if (other.transform.gameObject.name == "Target")
+            {
+                Debug.Log($"{name} hit target");
+                if (actor.SpawnTargets != null)
+                {
+                    var newPos = actor.SpawnTargets.GetNewPosition();
+                    other.transform.position = newPos;
+                }
+                    
+            }
         }
         
         

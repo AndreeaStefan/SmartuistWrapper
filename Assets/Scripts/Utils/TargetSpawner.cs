@@ -23,15 +23,6 @@ public class TargetSpawner : MonoBehaviour
         return position;
     }
 
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            var pos = GetNewPosition();
-            this.transform.position = pos;
-        }
-    }
-
     void Awake()
     {
         _areaBounds = Floor.GetComponent<Collider>().bounds;
