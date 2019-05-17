@@ -6,14 +6,13 @@ namespace Assessment
 {
     public class Assessor
     {
-        private Dictionary<string, EndEffector> _effectors;
+        private readonly Dictionary<EndEffector, Result> _effectors = new Dictionary<EndEffector, Result>();
         
-        
-        public void RegisterEffector(EndEffector endEffector)
+        public void AddEffector(EndEffector effector)
         {
-            _effectors[endEffector.name] = endEffector;
+            _effectors[effector] = new Result();
+            effector.Initialise(this);
         }
-
     }
     
 }

@@ -65,6 +65,7 @@
     <Compile Include="Assets\Rokoko\Smartsuit\Scripts\SmartsuitSyncWithHMD.cs" />
     <Compile Include="Assets\Scripts\AnhaActor.cs" />
     <Compile Include="Assets\Scripts\Assessment\Assessor.cs" />
+    <Compile Include="Assets\Scripts\Assessment\Result.cs" />
     <Compile Include="Assets\Scripts\Bone.cs" />
     <Compile Include="Assets\Scripts\CameraManager.cs" />
     <Compile Include="Assets\Scripts\CameraPosition.cs" />

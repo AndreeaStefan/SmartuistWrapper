@@ -5,6 +5,7 @@ using System.Linq;
 using Assessment;
 using Assets.Scripts.Mapping;
 using Assets.Scripts.Utils;
+using Effectors;
 using Mapping;
 using Rokoko.Smartsuit;
 using UnityEditor;
@@ -46,7 +47,7 @@ public class AnhaActor : MonoBehaviour
     
     private void Start()
     {
-        assessor = new Assessor();
+        if(assessor == null) assessor = new Assessor();
         _bones = bonesType.Bones();
         _initialRot = new Dictionary<GameObject, Quaternion>();
         InitialisePose();
@@ -168,6 +169,12 @@ public class AnhaActor : MonoBehaviour
         if (angle > 360F)
             angle -= 360F;
         return Mathf.Clamp(angle, min, max);
+    }
+
+    public void AddEffector(EndEffector endEffector)
+    {
+        if(assessor == null) assessor = new Assessor();
+        assessor.AddEffector(endEffector);
     }
 
 }
