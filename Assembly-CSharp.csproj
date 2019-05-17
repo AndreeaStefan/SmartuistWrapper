@@ -79,7 +79,6 @@
     <Compile Include="Assets\Scripts\Utils\Bones.cs" />
     <Compile Include="Assets\Scripts\Utils\Helper.cs" />
     <Compile Include="Assets\Scripts\Utils\PoseOffsets.cs" />
-    <Compile Include="Assets\Scripts\Utils\RokokoOutputs.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/huber/OneDrive/Dokumenty/thesis-hubert/unity/SmartuistWrapper/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

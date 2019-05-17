@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Utils
 {
+    /***
+     *** Deprecated 
+     ***/
     public class PoseOffsets
     {
         private static readonly List<Quaternion> offsets = new List<Quaternion>
