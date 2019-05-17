@@ -64,10 +64,12 @@
     <Compile Include="Assets\Rokoko\Smartsuit\Scripts\SmartsuitStatus.cs" />
     <Compile Include="Assets\Rokoko\Smartsuit\Scripts\SmartsuitSyncWithHMD.cs" />
     <Compile Include="Assets\Scripts\AnhaActor.cs" />
+    <Compile Include="Assets\Scripts\Assessment\Assessor.cs" />
     <Compile Include="Assets\Scripts\Bone.cs" />
     <Compile Include="Assets\Scripts\CameraManager.cs" />
     <Compile Include="Assets\Scripts\CameraPosition.cs" />
     <Compile Include="Assets\Scripts\CreateAvatar\AvatarCreator.cs" />
+    <Compile Include="Assets\Scripts\Effectors\EndEffector.cs" />
     <Compile Include="Assets\Scripts\FollowCamera.cs" />
     <Compile Include="Assets\Scripts\Mapping\BasicBoneMapping.cs" />
     <Compile Include="Assets\Scripts\Mapping\HumanBonesMapping.cs" />

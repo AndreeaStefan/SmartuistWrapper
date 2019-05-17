@@ -2,12 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assessment;
 using Assets.Scripts.Mapping;
 using Assets.Scripts.Utils;
 using Mapping;
 using Rokoko.Smartsuit;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class AnhaActor : MonoBehaviour
 {
@@ -39,9 +41,12 @@ public class AnhaActor : MonoBehaviour
     private float[] _limits;
 
     private Dictionary<GameObject, Quaternion> _initialRot;
-    private int count = 0;
+    private int count;
+    [FormerlySerializedAs("_assessor")] public Assessor assessor;
+    
     private void Start()
     {
+        assessor = new Assessor();
         _bones = bonesType.Bones();
         _initialRot = new Dictionary<GameObject, Quaternion>();
         InitialisePose();
