@@ -67,17 +67,13 @@
     <Compile Include="Assets\Scripts\Assessment\Assessor.cs" />
     <Compile Include="Assets\Scripts\Assessment\Result.cs" />
     <Compile Include="Assets\Scripts\Bone.cs" />
-    <Compile Include="Assets\Scripts\CameraManager.cs" />
-    <Compile Include="Assets\Scripts\CameraPosition.cs" />
     <Compile Include="Assets\Scripts\CreateAvatar\AvatarCreator.cs" />
     <Compile Include="Assets\Scripts\Effectors\EndEffector.cs" />
     <Compile Include="Assets\Scripts\FollowCamera.cs" />
     <Compile Include="Assets\Scripts\Mapping\BasicBoneMapping.cs" />
     <Compile Include="Assets\Scripts\Mapping\HumanBonesMapping.cs" />
     <Compile Include="Assets\Scripts\Mapping\IBonesMapping.cs" />
-    <Compile Include="Assets\Scripts\PlayerControl.cs" />
     <Compile Include="Assets\Scripts\Pose.cs" />
-    <Compile Include="Assets\Scripts\SmartsuitDataHandler.cs" />
     <Compile Include="Assets\Scripts\TrackerPositionHandler.cs" />
     <Compile Include="Assets\Scripts\Utils\Bones.cs" />
     <Compile Include="Assets\Scripts\Utils\Helper.cs" />
