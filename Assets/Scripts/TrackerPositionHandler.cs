@@ -1,18 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class TrackerPositionHandler : MonoBehaviour
 {
-    public GameObject target;
+    [FormerlySerializedAs("target")] public GameObject PlayerContainer;
 
 
     // Update is called once per frame
     void Update()
     {
         var newPosition = transform.position;
-        newPosition.y = target.transform.position.y;
-        target.transform.position = newPosition;
+        newPosition.y = PlayerContainer.transform.position.y;
+        PlayerContainer.transform.position = newPosition;
 
     }
 }
