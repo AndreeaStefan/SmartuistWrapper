@@ -1,19 +1,14 @@
 ﻿using UnityEngine;
-using InputTracking = UnityEngine.XR.InputTracking;
 
 public class FollowCamera : MonoBehaviour
 {
     public  GameObject target;
-    void Start() 
-    {
-        InputTracking.disablePositionalTracking = false;
-        var rotation = Helper.getYAxisRotation(transform.rotation);
-//        target.transform.localRotation = Quaternion.Inverse(rotation);
-        var transform1 = transform;
-        var newPosition = transform1.position + transform1.forward * 2;
-        newPosition.y = 0;
-        target.transform.position = newPosition;
-        target.transform.rotation = rotation;
-    }
 
+    private void Update()
+    {
+        var currentTransform = transform;
+        var point = target.transform.position;
+        point.y = currentTransform.position.y;
+        transform.RotateAround(point, Vector3.up, Vector3.Angle(currentTransform.forward, target.transform.forward) * Time.deltaTime);
+    }
 }
