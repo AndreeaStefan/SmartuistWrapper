@@ -14,6 +14,5 @@ public class TrackerPositionHandler : MonoBehaviour
         var newPosition = transform.position;
         newPosition.y = PlayerContainer.transform.position.y;
         PlayerContainer.transform.position = newPosition;
-
     }
 }
