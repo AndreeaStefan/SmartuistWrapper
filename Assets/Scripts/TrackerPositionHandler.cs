@@ -7,6 +7,16 @@ public class TrackerPositionHandler : MonoBehaviour
 {
     [FormerlySerializedAs("target")] public GameObject PlayerContainer;
 
+    void Start()
+    {
+        StartCoroutine(LateStart(0.5f));
+    }
+ 
+    IEnumerator LateStart(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        FindObjectOfType<Academy>().RelocateTheArena();
+    }
 
     // Update is called once per frame
     void Update()
