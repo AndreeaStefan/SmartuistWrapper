@@ -8,8 +8,9 @@ public class Academy : MonoBehaviour
     public GameObject Tracker;
     public GameObject Room;
     public GameObject Camera;
+    public GameObject PlayerContainer;
 
-    void Awake()
+    void Start()
     {
         // aligning the room with the headset        
         var position = Tracker.transform.position;
@@ -17,7 +18,7 @@ public class Academy : MonoBehaviour
         Room.transform.position = position;
         var rotation = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
         Room.transform.rotation = rotation;
-        
+        PlayerContainer.transform.rotation = rotation;
         // 
     }
 }
