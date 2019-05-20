@@ -6,12 +6,30 @@ public class TargetSpawner : MonoBehaviour
 {
     public GameObject Floor;
     public GameObject Player;
+    public Transform TargetContainer;
+    public GameObject TargetPrefab;
 
+    [Range(1, 15)] public int NumberOfTargets;
+    [Range(0.1f, 1)] public float ScaleOfTargets;
     [Range(0.2f, 5f)] public float MinDistanceFromPlayer = 1;
     [Range(0.2f, 5f)] public float MaxDistanceFromPlayer = 5;
     [Range(1f, 2f)] public float Height = 1.7f;
 
     private Bounds _areaBounds;
+
+    void Awake()
+    {
+        _areaBounds = Floor.GetComponent<Collider>().bounds;
+
+        // spawn the targets
+        for (int i = 0; i < NumberOfTargets; i++)
+        {
+            var target = Instantiate(TargetPrefab) as GameObject;
+            target.transform.parent = TargetContainer;
+            target.transform.position = GetNewPosition();
+            target.transform.localScale = new Vector3(ScaleOfTargets, ScaleOfTargets, ScaleOfTargets);
+        }
+    }
 
     /// <summary>
     /// Get a new position in the area for the target
@@ -21,11 +39,6 @@ public class TargetSpawner : MonoBehaviour
     {
         var position = GetRandomSpawnPosition();
         return position;
-    }
-
-    void Awake()
-    {
-        _areaBounds = Floor.GetComponent<Collider>().bounds;
     }
 
     private Vector3 GetRandomSpawnPosition()
@@ -42,7 +55,7 @@ public class TargetSpawner : MonoBehaviour
             randomSpawnPos.y = randomPosY;
 
             // Checks if not colliding with anything
-            if (Physics.CheckBox(randomSpawnPos, new Vector3(1f, 0.01f, 1f)) == false)
+            if (Physics.CheckBox(randomSpawnPos, new Vector3(0.5f, 0.5f, 0.5f)) == false)
             {
                 //check if it is in bounds and not too close to the player
                 if (_areaBounds.min.x < randomPosX && _areaBounds.max.x > randomPosX &&
