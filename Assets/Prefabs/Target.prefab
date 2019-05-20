@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8334903183150838228}
   m_Layer: 0
   m_Name: Target
-  m_TagString: Untagged
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,6 +106,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Floor: {fileID: 0}
   Player: {fileID: 0}
+  TargetContainer: {fileID: 0}
+  TargetPrefab: {fileID: 0}
+  NumberOfTargets: 0
+  ScaleOfTargets: 0
   MinDistanceFromPlayer: 1
   MaxDistanceFromPlayer: 5
   Height: 1.7
