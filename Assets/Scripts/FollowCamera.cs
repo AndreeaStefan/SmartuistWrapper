@@ -4,8 +4,14 @@ using UnityEngine.UIElements;
 public class FollowCamera : MonoBehaviour
 {
     public  GameObject target;
-    public float distanceFromCamera = -2;
     public float deltaTime = 0.05f;
+
+    private Academy academy;
+
+    private void Start()
+    {
+        academy = FindObjectOfType<Academy>();
+    }
 
     private void Update()
     {
@@ -16,7 +22,7 @@ public class FollowCamera : MonoBehaviour
         //  Debug.Log("Rotating to align with camera, angle: " + angle);
         //transform.RotateAround(point, Vector3.up, angle * deltaTime);
 
-        Vector3 resultingPosition = target.transform.position - target.transform.forward * distanceFromCamera;
+        Vector3 resultingPosition = target.transform.position - target.transform.forward * academy.DistanceFromCamera;
         transform.position = new Vector3(resultingPosition.x, transform.position.y, resultingPosition.z);
         Vector3 relativePos = target.transform.position - transform.position;
         relativePos.y = 0;
@@ -24,10 +30,7 @@ public class FollowCamera : MonoBehaviour
         // the second argument, upwards, defaults to Vector3.up
         Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
         transform.rotation = rotation;
-      
 
-
-      
 
     }
 }

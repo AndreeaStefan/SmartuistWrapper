@@ -1,14 +1,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Assessment;
 using Assets.Scripts.Mapping;
-using Assets.Scripts.Utils;
 using Effectors;
-using Mapping;
 using Rokoko.Smartsuit;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -53,6 +49,8 @@ public class AnhaActor : MonoBehaviour
         _bones = bonesType.Bones();
         _initialRot = new Dictionary<GameObject, Quaternion>();
         InitialisePose();
+
+        transform.position = actor.transform.position;
     }
 
         private void InitialisePose()
@@ -69,7 +67,10 @@ public class AnhaActor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.position = actor.transform.position;
+        transform.rotation = actor.transform.rotation;
         Move();
+        
     }
 
 

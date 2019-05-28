@@ -7,6 +7,8 @@ public class Academy : MonoBehaviour
     public GameObject Room;
     public GameObject Camera;
     public GameObject PlayerContainer;
+    public GameObject Source;
+    [Range(-1,5)] public float DistanceFromCamera = 2;
 
     [Range(0f, 50f)]public float CameraRotationSpeed;
     void Start()

@@ -8,6 +8,7 @@ namespace Assets.Scripts.Mapping
         [HideInInspector]
         public List<GameObject> _bones;
         public GameObject Hips;
+        public GameObject Head;
 
 
         private void Awake()
