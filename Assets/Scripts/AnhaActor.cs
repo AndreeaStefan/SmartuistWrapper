@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Assessment;
 using Assets.Scripts.Mapping;
 using Effectors;
+using Mapping;
+using Mapping.Types;
 using Rokoko.Smartsuit;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -42,10 +44,14 @@ public class AnhaActor : MonoBehaviour
     private Dictionary<GameObject, Quaternion> _initialRot;
     private int count;
     [FormerlySerializedAs("_assessor")] public Assessor assessor;
+    public List<Mapper> mappers;
     
     private void Start()
     {
         if(assessor == null) assessor = new Assessor();
+        if(mappers == null) mappers = new List<Mapper>();
+        // todo: change later
+        
         _bones = bonesType.Bones();
         _initialRot = new Dictionary<GameObject, Quaternion>();
         InitialisePose();
@@ -76,6 +82,8 @@ public class AnhaActor : MonoBehaviour
 
     private void Move()
     {
+        if ((uint) actor.CurrentState.sensors.Length <= 0U)
+            return;
         var rotation = transform.rotation;
 
         // init 
@@ -90,7 +98,6 @@ public class AnhaActor : MonoBehaviour
 
             count++;
         }
-
         
         _quaternionArray = new Quaternion[_poseOffsets.Length];
         _scaleArray = new Vector3[_poseOffsets.Length];
@@ -106,9 +113,9 @@ public class AnhaActor : MonoBehaviour
         MoveSection(upperLegsIndices, 0, 0, 0);
         MoveSection(mainIndices, 0, 0, 0);
 
-        ScaleSection(armIndices, 1, scaleArms, 1);
-        ScaleSection(legIndices, 1, scaleLegs, 1);
-        ScaleSection(mainIndices, 1, scaleBody, 1);
+//        ScaleSection(armIndices, 1, scaleArms, 1);
+//        ScaleSection(legIndices, 1, scaleLegs, 1);
+//        ScaleSection(mainIndices, 1, scaleBody, 1);
 
         _quaternionArray[7] = Quaternion.Lerp(_quaternionArray[0], _quaternionArray[8], 0.5f);
 
@@ -118,12 +125,10 @@ public class AnhaActor : MonoBehaviour
             if (_bones[index] != null && index < _quaternionArray.Length)
             {
                 _bones[index].transform.rotation = _quaternionArray[index] * _poseOffsets[index];
-                _bones[index].transform.localScale = _scaleArray[index];
+//                _bones[index].transform.localScale = _scaleArray[index];
             } 
         }
-               
-        if ((uint) actor.CurrentState.sensors.Length <= 0U)
-            return;
+              
             
         var vector3 = transform.TransformPoint(actor.CurrentState.sensors[0].UnityPosition);
         if (!float.IsNaN(vector3.x) && !float.IsNaN(vector3.y) && !float.IsNaN(vector3.z) && (bool) _bones[bonesType.RootBone()])
@@ -179,5 +184,12 @@ public class AnhaActor : MonoBehaviour
         if(assessor == null) assessor = new Assessor();
         assessor.AddEffector(endEffector);
     }
+
+    public void SetMapper(Mapper mapper)
+    {
+        if(mappers == null) mappers = new List<Mapper>();
+        mapper.SetMapping(new Pointing());
+    }
+    
 
 }
