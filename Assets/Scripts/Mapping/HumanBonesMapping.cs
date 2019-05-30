@@ -15,7 +15,6 @@ namespace Mapping
         public GameObject Spine;
         public GameObject Chest;
         public GameObject Neck;
-        public GameObject Head;
         public GameObject LeftShoulder;
         public GameObject RightShoulder;
         public GameObject LeftUpperArm;

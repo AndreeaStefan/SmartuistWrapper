@@ -32,7 +32,9 @@ namespace Effectors
                 if (actor.SpawnTargets != null)
                 {
                     var newPos = actor.SpawnTargets.GetNewPosition();
+                    var newScale = actor.SpawnTargets.GetNewScale();
                     other.transform.position = newPos;
+                    other.transform.localScale = newScale;
                 }
                     
             }
