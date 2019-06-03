@@ -1000,11 +1000,43 @@ MonoBehaviour:
   TargetContainer: {fileID: 731086437}
   TargetPrefab: {fileID: 5729906419821984780, guid: fa21b7eae08982c459f0e17f927dc462,
     type: 3}
+  Spiral: 0
   NumberOfTargets: 3
-  ScaleOfTargets: 0.3
-  MinDistanceFromPlayer: 0.2
-  MaxDistanceFromPlayer: 0.29
   Height: 1.7
+--- !u!21 &756073006
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Sprites/Default
+  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - PixelSnap: 0
+    - _EnableExternalAlpha: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &819905655 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 391296707483388013, guid: 50de860967eb7cb4c87d34c79af8ab6e,
@@ -1081,47 +1113,13 @@ PrefabInstance:
     - target: {fileID: 2348914, guid: 4d293c8e162f3874b982baadd71153d2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 1432559694}
+      objectReference: {fileID: 756073006}
     - target: {fileID: 3380982, guid: 4d293c8e162f3874b982baadd71153d2, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 1461105844}
+      objectReference: {fileID: 1735198275}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d293c8e162f3874b982baadd71153d2, type: 3}
---- !u!21 &1432559694
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Sprites/Default
-  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _AlphaTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - PixelSnap: 0
-    - _EnableExternalAlpha: 0
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1446896618 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 391296707257851800, guid: 50de860967eb7cb4c87d34c79af8ab6e,
@@ -1134,7 +1132,81 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 731086436}
   m_PrefabAsset: {fileID: 0}
---- !u!43 &1461105844
+--- !u!1 &1692380319 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1236357028541834, guid: 64bf992e5b0823d40a3e5421dc5d0ba3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1786773345}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1692380320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1692380319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 33807172, guid: 595a313eb2195f244982a4cc42e699c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actor: {fileID: 1692380322}
+  animator: {fileID: 1692380321}
+  opacity: 1
+--- !u!95 &1692380321 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 95153749792701178, guid: 64bf992e5b0823d40a3e5421dc5d0ba3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1786773345}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1692380322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1692380319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -383841817, guid: 595a313eb2195f244982a4cc42e699c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HubID: 
+  autoSelect: 1
+  CurrentState:
+    name: 
+    sensors: []
+    isUnicast: 0
+    hasProfile: 0
+    profileToggle: 0
+    timestamp: 0
+  suitInfo:
+    details: []
+  autoSelectUnique: 1
+  useHumanoidBones: 1
+  boneMapping:
+    Hips: {fileID: 0}
+    LeftUpperLeg: {fileID: 0}
+    RightUpperLeg: {fileID: 0}
+    LeftLowerLeg: {fileID: 0}
+    RightLowerLeg: {fileID: 0}
+    LeftFoot: {fileID: 0}
+    RightFoot: {fileID: 0}
+    Spine: {fileID: 0}
+    Chest: {fileID: 0}
+    Neck: {fileID: 0}
+    Head: {fileID: 0}
+    LeftShoulder: {fileID: 0}
+    RightShoulder: {fileID: 0}
+    LeftUpperArm: {fileID: 0}
+    RightUpperArm: {fileID: 0}
+    LeftLowerArm: {fileID: 0}
+    RightLowerArm: {fileID: 0}
+    LeftHand: {fileID: 0}
+    RightHand: {fileID: 0}
+    LeftToe: {fileID: 0}
+    RightToe: {fileID: 0}
+--- !u!43 &1735198275
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1297,80 +1369,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1692380319 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1236357028541834, guid: 64bf992e5b0823d40a3e5421dc5d0ba3,
-    type: 3}
-  m_PrefabInstance: {fileID: 1786773345}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1692380320
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1692380319}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 33807172, guid: 595a313eb2195f244982a4cc42e699c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actor: {fileID: 1692380322}
-  animator: {fileID: 1692380321}
-  opacity: 1
---- !u!95 &1692380321 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 95153749792701178, guid: 64bf992e5b0823d40a3e5421dc5d0ba3,
-    type: 3}
-  m_PrefabInstance: {fileID: 1786773345}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1692380322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1692380319}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -383841817, guid: 595a313eb2195f244982a4cc42e699c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HubID: 
-  autoSelect: 1
-  CurrentState:
-    name: 
-    sensors: []
-    isUnicast: 0
-    hasProfile: 0
-    profileToggle: 0
-    timestamp: 0
-  suitInfo:
-    details: []
-  autoSelectUnique: 1
-  useHumanoidBones: 1
-  boneMapping:
-    Hips: {fileID: 0}
-    LeftUpperLeg: {fileID: 0}
-    RightUpperLeg: {fileID: 0}
-    LeftLowerLeg: {fileID: 0}
-    RightLowerLeg: {fileID: 0}
-    LeftFoot: {fileID: 0}
-    RightFoot: {fileID: 0}
-    Spine: {fileID: 0}
-    Chest: {fileID: 0}
-    Neck: {fileID: 0}
-    Head: {fileID: 0}
-    LeftShoulder: {fileID: 0}
-    RightShoulder: {fileID: 0}
-    LeftUpperArm: {fileID: 0}
-    RightUpperArm: {fileID: 0}
-    LeftLowerArm: {fileID: 0}
-    RightLowerArm: {fileID: 0}
-    LeftHand: {fileID: 0}
-    RightHand: {fileID: 0}
-    LeftToe: {fileID: 0}
-    RightToe: {fileID: 0}
 --- !u!1001 &1786773345
 PrefabInstance:
   m_ObjectHideFlags: 0

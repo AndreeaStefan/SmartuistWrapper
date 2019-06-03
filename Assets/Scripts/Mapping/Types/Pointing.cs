@@ -10,6 +10,7 @@ namespace Mapping.Types
     {
         private ChangeDetector _changeDetector;
         private GameObject _bone;
+        private float _initialYScale;
 
         public void Change(float how)
         {
@@ -28,7 +29,13 @@ namespace Mapping.Types
 
         private void Shorten(float speed)
         {
+            if (_initialYScale >= _bone.transform.localScale.y) return;
             
+            var newScale = _bone.transform.localScale;
+            newScale.y = newScale.y - speed * Time.deltaTime;
+            
+            // todo: add counter scale for the children bones
+            _bone.transform.localScale = newScale;
         }
         
 
@@ -40,6 +47,7 @@ namespace Mapping.Types
         public void SetBone(GameObject newBone)
         {
             _bone = newBone;
+            _initialYScale = _bone.transform.localScale.y;
         }
 
         public void SetChangeDetector(ChangeDetector changeDetector)
