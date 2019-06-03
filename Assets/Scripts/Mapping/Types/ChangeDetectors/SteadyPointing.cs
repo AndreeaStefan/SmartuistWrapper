@@ -8,6 +8,7 @@ namespace Mapping.Types.ChangeDetectors
     public class SteadyPointing : ChangeDetector
     {
         private EndEffector _endEffector;
+        private LineRenderer _lineRenderer;
         private Transform _transform;
         private int _layerMask;
         private Stopwatch _stopwatch;
@@ -22,6 +23,15 @@ namespace Mapping.Types.ChangeDetectors
             _layerMask = 1 << 9;
             _transform = effector.transform;
             _stopwatch = new Stopwatch();
+
+            _lineRenderer =  effector.transform.parent.parent.GetComponent<LineRenderer>();
+            _lineRenderer.startWidth = 0.05f;
+            _lineRenderer.endWidth = 0.05f;
+            _lineRenderer.SetPosition(0,_transform.position);
+            _lineRenderer.SetPosition(1,(-_transform.up) * 10);
+            _lineRenderer.enabled = true;
+            _lineRenderer.startColor = Color.green;
+            _lineRenderer.endColor = Color.green;
         }
 
         /// <summary>
@@ -30,6 +40,8 @@ namespace Mapping.Types.ChangeDetectors
         /// <returns>result should be from [-10;10]</returns>
         public float IsChanging()
         {
+            _lineRenderer.SetPosition(0,_transform.position);
+            _lineRenderer.SetPosition(1,(-_transform.up) * 1000);
             RaycastHit hit;
             // Does the ray intersect any objects excluding the player layer
             if (Physics.Raycast(_transform.position, -_transform.up, out hit, Mathf.Infinity, _layerMask))
@@ -40,7 +52,7 @@ namespace Mapping.Types.ChangeDetectors
                     _stopwatch.Start();
                     return 0;
                 }
-
+                Debug.Log(_stopwatch.Elapsed.Milliseconds);
                 if (_stopwatch.Elapsed.Milliseconds <= focusTime) return 0;
                 
                 
