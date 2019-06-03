@@ -15,30 +15,30 @@ public class TargetSpawner : MonoBehaviour
     [Range(1f, 2f)] public float Height = 1.7f;
 
     private Bounds _areaBounds;
-    private float _radius = 1.5f;
-    private int[] _depths = new int[3] { 3, 5, 7 };
-    private float[] _scales = new float[3] { 0.3f, 0.5f, 0.7f };
+    private float _radius = 0.8f;
+    private float[] _depths = new float[3] { 1, 1.8f, 2.6f };
+    private float[] _scales = new float[3] { 0.2f, 0.3f, 0.4f };
     private GameObject _target;
-    
+
 
     private Vector3[] _targetPositions;
     private System.Random _randomGenerator;
 
-    void Awake()
+    void Start()
     {
         _randomGenerator = new System.Random(5);
         _areaBounds = Floor.GetComponent<Collider>().bounds;
 
         if (Spiral)
             GenerateTargetsSpiral();
-        else 
+        else
             GenerateTargetsDifferentDepths();
-      
-        _target = Instantiate(TargetPrefab) as GameObject;
-        _target.transform.parent = TargetContainer;
-        _target.transform.position = _targetPositions[0];
-        _target.transform.localScale = new Vector3(_scales[0], _scales[0], _scales[0]);
-      
+
+          _target = Instantiate(TargetPrefab) as GameObject;
+           _target.transform.parent = TargetContainer;
+          _target.transform.position = _targetPositions[1];
+          _target.transform.localScale = new Vector3(_scales[0], _scales[0], _scales[0]);
+
     }
 
     void Update()
@@ -78,12 +78,21 @@ public class TargetSpawner : MonoBehaviour
         foreach (var d in _depths)
         {
             var center = Player.transform.position + Player.transform.forward * d;
+            center.y = Height;
             for (var i = 0; i < targetsPerCircle; i++)
             {
                 var a = i * angle;
                 var pos = RandomCircle(center, _radius, a);
                 _targetPositions[count] = pos;
                 count++;
+
+                /*
+                var target = Instantiate(TargetPrefab) as GameObject;
+                target.transform.parent = TargetContainer;
+                target.transform.position = pos;
+                target.transform.localScale = new Vector3(_scales[0], _scales[0], _scales[0]);
+                */
+
             }
         }
     }
@@ -95,27 +104,35 @@ public class TargetSpawner : MonoBehaviour
     {
         var nrTargets = 18;
         _targetPositions = new Vector3[_depths.Length * nrTargets];
-        _radius = 0.8f; // radius of the initial circle - increases after a full circle is done 
+        _radius = 0.3f; // radius of the initial circle - increases after a full circle is done 
         var angle = 360 / 6; //targets are placed at angles: 0, 60, 120....
         var count = 0;
-        var d = 3f; // depth - increases with every new target
-        var cnt = 0; 
+        var d = 0.5f; // depth - increases with every new target
+        var cnt = 0;
         for (var i = 0; i < nrTargets; i++)
         {
             var center = Player.transform.position + Player.transform.forward * d;
-            
+            center.y = Height ;
+
             var a = cnt * angle;
             cnt += 1;
-            d += 0.3f;
-            
+            d += 0.12f;
+
             if (cnt == 6)
             {
                 cnt = 0;
-                _radius += 0.4f;
+                _radius += 0.2f;
             }
             var pos = RandomCircle(center, _radius, a);
             _targetPositions[count] = pos;
             count++;
+
+            /*
+               var target = Instantiate(TargetPrefab) as GameObject;
+               target.transform.parent = TargetContainer;
+               target.transform.position = pos;
+               target.transform.localScale = new Vector3(_scales[0], _scales[0], _scales[0]);
+               */
         }
 
     }
@@ -124,9 +141,9 @@ public class TargetSpawner : MonoBehaviour
     {
         float ang = a;
         Vector3 pos;
-        pos.x = center.x + radius * Mathf.Sin(ang * Mathf.Deg2Rad);
-        pos.y = center.y + radius * Mathf.Cos(ang * Mathf.Deg2Rad) + 1;
-        pos.z = center.z;
+        pos.x = center.x;
+        pos.y = center.y + radius * Mathf.Cos(ang * Mathf.Deg2Rad);
+        pos.z = center.z + radius * Mathf.Sin(ang * Mathf.Deg2Rad);
         return pos;
     }
 }

@@ -5,7 +5,8 @@ public class Academy : MonoBehaviour
 {
     public GameObject Room;
     public GameObject Root;
-    void Start()
+
+    void Awake()
     {
         ResizeFloor();
     }
@@ -19,7 +20,10 @@ public class Academy : MonoBehaviour
         var currentScale = floor.transform.localScale;
         currentScale.x = x;
         currentScale.z = z;
-        
+
         floor.transform.localScale = currentScale;
+
+        var targetSpawner = FindObjectsOfType<TargetSpawner>()[0];
+        targetSpawner.Floor = floor;
     }
 }
