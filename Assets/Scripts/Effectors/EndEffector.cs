@@ -26,7 +26,7 @@ namespace Effectors
         private void OnTriggerEnter(Collider other)
         {
             //Debug.Log( $"{name} triggered on Enter {other.name} at: {DateTime.Now}");
-            if (other.transform.gameObject.tag == "Target")
+            if (other.transform.gameObject.CompareTag("Target"))
             {
                 Debug.Log($"{name} hit target");
                 if (actor.SpawnTargets != null)
