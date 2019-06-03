@@ -52,9 +52,7 @@ namespace Mapping.Types.ChangeDetectors
                     _stopwatch.Start();
                     return 0;
                 }
-                Debug.Log(_stopwatch.Elapsed.Milliseconds);
-                if (_stopwatch.Elapsed.Milliseconds <= focusTime) return 0;
-                
+                if (_stopwatch.Elapsed.TotalMilliseconds <= focusTime) return 0;
                 
                 Debug.DrawRay(_transform.position, -_transform.up * hit.distance,
                     Color.yellow);
