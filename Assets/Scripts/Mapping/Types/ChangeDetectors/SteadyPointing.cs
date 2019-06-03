@@ -7,7 +7,6 @@ namespace Mapping.Types.ChangeDetectors
 {
     public class SteadyPointing : ChangeDetector
     {
-        private EndEffector _endEffector;
         private LineRenderer _lineRenderer;
         private Transform _transform;
         private int _layerMask;
@@ -16,15 +15,14 @@ namespace Mapping.Types.ChangeDetectors
         private readonly int focusTime = 500;
 
 
-        public SteadyPointing(EndEffector effector)
+        public SteadyPointing(GameObject pointer)
         {
-            _endEffector = effector;
             // Bit shift the index of the layer (9) to get a bit mask
             _layerMask = 1 << 9;
-            _transform = effector.transform;
+            _transform = pointer.transform;
             _stopwatch = new Stopwatch();
 
-            _lineRenderer =  effector.transform.parent.parent.GetComponent<LineRenderer>();
+            _lineRenderer =  pointer.transform.GetComponentInParent<LineRenderer>();
             _lineRenderer.startWidth = 0.05f;
             _lineRenderer.endWidth = 0.05f;
             _lineRenderer.SetPosition(0,_transform.position);
@@ -69,11 +67,6 @@ namespace Mapping.Types.ChangeDetectors
             
             Debug.DrawRay(_transform.position, -_transform.up * 100, Color.white);
             return -1.3f;
-        }
-
-        public void SetEndEffector(EndEffector endEffector)
-        {
-            _endEffector = endEffector;
         }
     }
 }

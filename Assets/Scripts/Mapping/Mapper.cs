@@ -27,8 +27,7 @@ namespace Mapping
         {
             Mapping = mapping;
             mapping.SetBone(gameObject);
-            var endEffector = transform.GetComponentInChildren<EndEffector>();
-            var changeDetector = new SteadyPointing(endEffector);
+            var changeDetector = new SteadyPointing(gameObject);
             mapping.SetChangeDetector(changeDetector);
         }
     }
