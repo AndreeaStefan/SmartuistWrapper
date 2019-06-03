@@ -25,11 +25,6 @@ namespace Mapping.Types.ChangeDetectors
             _lineRenderer =  pointer.transform.GetComponentInParent<LineRenderer>();
             _lineRenderer.startWidth = 0.05f;
             _lineRenderer.endWidth = 0.05f;
-            _lineRenderer.SetPosition(0,_transform.position);
-            _lineRenderer.SetPosition(1,(-_transform.up) * 10);
-            _lineRenderer.enabled = true;
-            _lineRenderer.startColor = Color.green;
-            _lineRenderer.endColor = Color.green;
         }
 
         /// <summary>
