@@ -5,6 +5,19 @@ using UnityEngine;
 
 public class Helper
 {
+    public static Transform ChildWithTag(Transform parent, string tag)
+    {
+
+        if (parent.childCount == 0) return null;
+
+        foreach (Transform child in parent)
+        {
+            if (child.CompareTag(tag))
+                return child;
+        }
+        return null;
+    }
+
     /// <summary>  </summary>
     public static List<int> GetArmIndices()
     {

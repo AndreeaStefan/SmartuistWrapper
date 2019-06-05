@@ -16,23 +16,9 @@ public class AnhaActor : MonoBehaviour
     public BasicBoneMapping bonesType ;
     public Transform floor;
 
-    [Range(0, 180)]
-    public float armsExtensionX = 0;
-
-    [Range(0, 90)]
-    public float legsExtensionZ = 0;
-
-    [Range(0, 2)]
-    public float scaleArms = 1;
-
-    [Range(0, 2)]
-    public float scaleLegs = 1;
-
-    [Range(0, 2)]
-    public float scaleBody = 1;
-
 
     public TargetSpawner SpawnTargets;
+    public Academy academy;
 
     private List<GameObject> _bones;
     private Quaternion[] _poseOffsets;
@@ -108,8 +94,8 @@ public class AnhaActor : MonoBehaviour
         var mainIndices = Helper.GetMainBodyIndices();
         var upperLegsIndices = Helper.GetUpperLegIndices();
 
-        MoveSection(armIndices, armsExtensionX, 0, 0);
-        MoveSection(legIndices, 0, 0, legsExtensionZ);
+        MoveSection(armIndices, 0, 0, 0);
+        MoveSection(legIndices, 0, 0, 0);
         MoveSection(upperLegsIndices, 0, 0, 0);
         MoveSection(mainIndices, 0, 0, 0);
 

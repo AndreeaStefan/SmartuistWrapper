@@ -22,7 +22,7 @@ namespace Mapping.Types.ChangeDetectors
             _transform = pointer.transform;
             _stopwatch = new Stopwatch();
 
-            _lineRenderer =  pointer.transform.GetComponentInParent<LineRenderer>();
+            _lineRenderer = pointer.AddComponent<LineRenderer>() as LineRenderer;
             _lineRenderer.startWidth = 0.05f;
             _lineRenderer.endWidth = 0.05f;
         }

@@ -85,6 +85,7 @@
     <Compile Include="Assets\Scripts\Pose.cs" />
     <Compile Include="Assets\Scripts\Utils\Bones.cs" />
     <Compile Include="Assets\Scripts\Utils\Helper.cs" />
+    <Compile Include="Assets\Scripts\Utils\MappingsEnum.cs" />
     <Compile Include="Assets\Scripts\Utils\PoseOffsets.cs" />
     <Compile Include="Assets\Scripts\Utils\TargetSpawner.cs" />
     <Reference Include="Unity.Timeline.Editor">

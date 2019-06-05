@@ -6,6 +6,7 @@ TagManager:
   tags:
   - EndEffector
   - Target
+  - Hand
   layers:
   - Default
   - TransparentFX

@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Utils;
+using UnityEngine;
 using Valve.VR;
 
 public class Academy : MonoBehaviour
 {
     public GameObject Room;
-    public GameObject Root;
+    public Mappings Mapping;
 
     void Awake()
     {

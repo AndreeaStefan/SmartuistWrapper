@@ -9,10 +9,10 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
     {
         private Stopwatch _stopwatch;
         private int _debouncer = 10;
-        private GameObject _hand;
+        private Transform _hand;
         private readonly int focusTime = 200;
 
-        public WristMove(GameObject hand)
+        public WristMove(Transform hand)
         {
             _hand = hand;
             _stopwatch = new Stopwatch();
@@ -25,7 +25,7 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
         public float IsChanging()
         {
 
-            var angleX = WrapAngle(_hand.transform.localRotation.eulerAngles.x);
+            var angleX = WrapAngle(_hand.localRotation.eulerAngles.x);
 
            // UnityEngine.Debug.Log(angleX);
 
