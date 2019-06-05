@@ -10,13 +10,11 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
         private Stopwatch _stopwatch;
         private int _debouncer = 10;
         private GameObject _hand;
-        private GameObject _parent;
         private readonly int focusTime = 200;
 
-        public WristMove(GameObject hand, GameObject parent)
+        public WristMove(GameObject hand)
         {
             _hand = hand;
-            _parent = parent;
             _stopwatch = new Stopwatch();
         }
 
@@ -26,14 +24,12 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
         /// <returns>result should be from [-10;10]</returns>
         public float IsChanging()
         {
-            var fw = _parent.transform.up;
-            var handFw = _hand.transform.up;
 
-            var signeAngle = Vector3.SignedAngle(fw, handFw, -Vector3.up);
+            var angleX = WrapAngle(_hand.transform.localRotation.eulerAngles.x);
 
-            UnityEngine.Debug.Log(signeAngle);
+           // UnityEngine.Debug.Log(angleX);
 
-            if (signeAngle > 70 )
+            if (angleX > 40)
             {
                 if (!_stopwatch.IsRunning)
                 {
@@ -47,7 +43,7 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
             }
 
 
-            if (signeAngle < -35)
+            if (angleX < -10)
             {
                 if (!_stopwatch.IsRunning)
                 {
@@ -56,7 +52,7 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
                     return 0;
                 }
                 if (_stopwatch.Elapsed.TotalMilliseconds <= focusTime) return 0;
-                return -2;
+                return -3;
             }
 
             if (_debouncer == 0)
@@ -68,5 +64,16 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
 
             return 0;
         }
+
+        private  float WrapAngle(float angle)
+        {
+            angle %= 360;
+            if (angle > 180)
+                return angle - 360;
+
+            return angle;
+        }
     }
+
+ 
 }

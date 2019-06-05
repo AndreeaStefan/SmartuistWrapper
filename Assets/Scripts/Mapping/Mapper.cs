@@ -37,7 +37,7 @@ namespace Mapping
         {
             Mapping = mapping;
             mapping.SetBone(toExtend);
-            var changeDetector = new WristMove(gameObject, toExtend);//new SteadyPointing(gameObject);
+            var changeDetector = new WristMove(gameObject);//new SteadyPointing(gameObject);
             mapping.SetChangeDetector(changeDetector);
         }
     }
