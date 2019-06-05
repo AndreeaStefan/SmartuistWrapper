@@ -11,6 +11,7 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
         private int _debouncer = 10;
         private GameObject _hand;
         private GameObject _parent;
+        private readonly int focusTime = 200;
 
         public WristMove(GameObject hand, GameObject parent)
         {
@@ -25,20 +26,37 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
         /// <returns>result should be from [-10;10]</returns>
         public float IsChanging()
         {
-            var fw = _parent.transform.forward;
-            var handFw = _hand.transform.forward;
+            var fw = _parent.transform.up;
+            var handFw = _hand.transform.up;
+
             var signeAngle = Vector3.SignedAngle(fw, handFw, -Vector3.up);
 
             UnityEngine.Debug.Log(signeAngle);
 
             if (signeAngle > 70 )
             {
-                return 1;
+                if (!_stopwatch.IsRunning)
+                {
+                    _debouncer = 10;
+                    _stopwatch.Start();
+                    return 0;
+                }
+                if (_stopwatch.Elapsed.TotalMilliseconds <= focusTime) return 0;
+
+                return 2;
             }
 
-            if (signeAngle < -40)
+
+            if (signeAngle < -35)
             {
-                return -1;
+                if (!_stopwatch.IsRunning)
+                {
+                    _debouncer = 10;
+                    _stopwatch.Start();
+                    return 0;
+                }
+                if (_stopwatch.Elapsed.TotalMilliseconds <= focusTime) return 0;
+                return -2;
             }
 
             if (_debouncer == 0)
