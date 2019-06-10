@@ -1,0 +1,8 @@
+Effector,Mapping type, Target depth,Target size,Movement Time
+EndEffector_RokokoGuy_LeftHand,SteadyPointing,1,0.2,12782
+EndEffector_RokokoGuy_LeftHand,SteadyPointing,1.8,0.2,5734
+EndEffector_RokokoGuy_LeftHand,SteadyPointing,1,0.3,1065
+EndEffector_RokokoGuy_RightHand,SteadyPointing,1.8,0.4,37405
+EndEffector_RokokoGuy_RightHand,SteadyPointing,1,0.4,3678
+EndEffector_RokokoGuy_RightHand,SteadyPointing,1.8,0.2,2534
+EndEffector_RokokoGuy_RightHand,SteadyPointing,2.6,0.3,3695
