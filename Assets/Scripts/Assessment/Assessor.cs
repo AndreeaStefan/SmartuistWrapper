@@ -51,7 +51,7 @@ namespace Assessment
             effortSW.Close();
             
             var file = File.CreateText(resultPath);
-//            var line = string.Join(",", "Player","Effector", "Mapping type", " Target depth", "Target size", "Movement Time");
+//            var line = string.Join(",", "Player", "target","Effector", "Mapping type", " Target depth", "Target size", "Movement Time");
 //            file.WriteLine(line);
             foreach (var effectorResult in _effectors)
             {
