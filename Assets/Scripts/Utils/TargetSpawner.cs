@@ -27,6 +27,8 @@ public class TargetSpawner : MonoBehaviour
     private Vector3[] _targetPositions;
     private System.Random _randomGenerator;
 
+    [HideInInspector] public int CurrentTarget;
+
     void Start()
     {
         _randomGenerator = new System.Random(5);
@@ -37,10 +39,10 @@ public class TargetSpawner : MonoBehaviour
         else
             GenerateTargetsDifferentDepths();
 
-          _target = Instantiate(TargetPrefab) as GameObject;
+          _target = Instantiate(TargetPrefab);
            _target.transform.parent = TargetContainer;
-          _target.transform.position = _targetPositions[1];
-          _target.transform.localScale = new Vector3(_scales[0], _scales[0], _scales[0]);
+           _target.transform.position = GetNewPosition();
+          _target.transform.localScale = GetNewScale();
 
           CurrentTargetDepth = _targetDepths[1];
 
@@ -62,6 +64,7 @@ public class TargetSpawner : MonoBehaviour
     public Vector3 GetNewPosition()
     {
         var index = _randomGenerator.Next(0, _targetPositions.Length);
+        CurrentTarget = index;
         CurrentTargetDepth = _targetDepths[index];
         return _targetPositions[index];
     }

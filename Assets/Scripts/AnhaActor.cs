@@ -72,7 +72,7 @@ public class AnhaActor : MonoBehaviour
         transform.rotation = actor.transform.rotation;
         Move();
         if (savePosition)
-            SavePosition();
+            assessor.SaveBaselineRecord(Helper.GetPositionRecord(actor.CurrentState));
     }
 
 
@@ -147,19 +147,6 @@ public class AnhaActor : MonoBehaviour
                 _quaternionArray[index] = rotFromTheSuit;
             }
         }
-    }
-
-    private void SavePosition()
-    {
-        var positions = actor.CurrentState.sensors.Select(s =>
-        {
-            var tmp = s.UnityQuaternion.eulerAngles;
-            return $"{tmp.x:F1},{tmp.y:F1},{tmp.z:F1}";
-        }).ToList();
-        positions.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff",
-            CultureInfo.InvariantCulture));
-        var record = string.Join(",", positions);
-        assessor.SaveBaselineRecord(record);
     }
     
     public void AddEffector(EndEffector endEffector)

@@ -43,7 +43,8 @@ namespace Effectors
 
                     stopwatch.Stop();
                     var elapsedMs = stopwatch.ElapsedMilliseconds;
-                    var result = new Result(other.transform.localScale.x, 
+                    var result = new Result(actor.SpawnTargets.CurrentTarget,
+                                            other.transform.localScale.x, 
                                             actor.SpawnTargets.CurrentTargetDepth, 
                                             elapsedMs,
                                             actor.academy.Mapping.ToString());
