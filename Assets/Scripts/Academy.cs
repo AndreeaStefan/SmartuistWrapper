@@ -6,6 +6,7 @@ public class Academy : MonoBehaviour
 {
     public GameObject Room;
     public Mappings Mapping;
+    public string PlayerIndex;
 
     void Awake()
     {

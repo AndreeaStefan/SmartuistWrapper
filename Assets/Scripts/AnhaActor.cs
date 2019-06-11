@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Assessment;
 using Assets.Scripts.Mapping;
@@ -9,6 +10,7 @@ using Mapping.Types;
 using Rokoko.Smartsuit;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class AnhaActor : MonoBehaviour
 {
@@ -31,11 +33,13 @@ public class AnhaActor : MonoBehaviour
     private int count;
     [FormerlySerializedAs("_assessor")] public Assessor assessor;
     public List<Mapper> mappers;
+    private Text _text;
     
     private void Start()
     {
-        if(assessor == null) assessor = new Assessor();
+        if (assessor == null) assessor = FindObjectOfType<Assessor>();
         if(mappers == null) mappers = new List<Mapper>();
+        _text = FindObjectOfType<Text>();
         // todo: change later
         
         _bones = bonesType.Bones();
@@ -99,10 +103,6 @@ public class AnhaActor : MonoBehaviour
         MoveSection(upperLegsIndices, 0, 0, 0);
         MoveSection(mainIndices, 0, 0, 0);
 
-//        ScaleSection(armIndices, 1, scaleArms, 1);
-//        ScaleSection(legIndices, 1, scaleLegs, 1);
-//        ScaleSection(mainIndices, 1, scaleBody, 1);
-
         _quaternionArray[7] = Quaternion.Lerp(_quaternionArray[0], _quaternionArray[8], 0.5f);
 
         for (var index = 0; index < _poseOffsets.Length; ++index)
@@ -111,7 +111,6 @@ public class AnhaActor : MonoBehaviour
             if (_bones[index] != null && index < _quaternionArray.Length)
             {
                 _bones[index].transform.rotation = _quaternionArray[index] * _poseOffsets[index];
-//                _bones[index].transform.localScale = _scaleArray[index];
             } 
         }
               
@@ -144,30 +143,9 @@ public class AnhaActor : MonoBehaviour
         }
     }
 
-    private void ScaleSection(List<int> indices, float extX, float extY, float extZ)
-    {
-        for (var i = 0; i < indices.Count; i++)
-        {
-            var index = indices[i];
-            if (_bones[index] != null && index < _quaternionArray.Length)
-            {
-                _scaleArray[index] = new Vector3(extX, extY, extZ);
-            }
-        }
-    }
-
-    private float ClampAngle(float angle, float min, float max)
-    {
-        if (angle < -360F)
-            angle += 360F;
-        if (angle > 360F)
-            angle -= 360F;
-        return Mathf.Clamp(angle, min, max);
-    }
-
     public void AddEffector(EndEffector endEffector)
     {
-        if(assessor == null) assessor = new Assessor();
+        if (assessor == null) assessor = FindObjectOfType<Assessor>();
         assessor.AddEffector(endEffector);
     }
 
@@ -176,6 +154,28 @@ public class AnhaActor : MonoBehaviour
         if(mappers == null) mappers = new List<Mapper>();
         mapper.SetMapping(new Pointing());
     }
+
+    public void GetNeutralPosition()
+    {
+        _text.text = "Keep neutral position after the countdown\n3";
+        StartCoroutine(DisplayTextFor("Keep neutral position after the countdown\n5", 1.0f));
+        StartCoroutine(DisplayTextFor("Keep neutral position after the countdown\n4", 2.0f));
+        StartCoroutine(DisplayTextFor("Keep neutral position after the countdown\n3", 3.0f));
+        StartCoroutine(DisplayTextFor("Keep neutral position after the countdown\n2", 4.0f));
+        StartCoroutine(DisplayTextFor("Keep neutral position after the countdown\n1", 5.0f));
+        StartCoroutine(DisplayTextFor("Keep neutral position after the countdown\n0", 6.0f));
+        StartCoroutine(DisplayTextFor("Done!", 7.0f));
+        StartCoroutine(DisplayTextFor("", 9.0f));
+        
+    }
+
+    IEnumerator DisplayTextFor(string text, float time)
+    {
+        yield return new WaitForSeconds(time);
+        _text.text = text;
+    }
+    
+    
     
 
 }
