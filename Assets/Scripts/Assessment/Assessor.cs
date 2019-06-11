@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Effectors;
@@ -9,7 +10,9 @@ namespace Assessment
     {
         private readonly Dictionary<EndEffector, List<Result>> _effectors = new Dictionary<EndEffector, List<Result>>();
         private string resultPath = "result.csv";
-        private string effortPath = "result.csv";
+        private string effortPath = "effortResult.csv";
+        private string effortBaselinePath = "effortBaselineResult.csv";
+        private StreamWriter baselineSW;
         private Academy _academy;
         private AnhaActor _actor;
         private string _playerName;
@@ -19,6 +22,7 @@ namespace Assessment
             _playerName = FindObjectOfType<Academy>().PlayerIndex;
             _actor = FindObjectOfType<AnhaActor>();
             _actor.GetNeutralPosition();
+            baselineSW = new StreamWriter(effortBaselinePath, true);
         }
 
         public void AddEffector(EndEffector effector)
@@ -60,6 +64,18 @@ namespace Assessment
             Debug.Log("Application ending  " );
             SaveResult();
 
+        }
+
+
+        public void SaveBaselineRecord(string record)
+        {
+            baselineSW.WriteLine($"{_playerName},{record}");
+        }
+
+        public IEnumerator FinaliseSavingPosition(float time)
+        {
+            yield return new WaitForSeconds(time);
+            baselineSW.Close();
         }
     }
     

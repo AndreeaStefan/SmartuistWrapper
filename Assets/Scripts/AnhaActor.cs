@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Assessment;
 using Assets.Scripts.Mapping;
 using Effectors;
@@ -11,6 +13,7 @@ using Rokoko.Smartsuit;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Valve.VR.InteractionSystem;
 
 public class AnhaActor : MonoBehaviour
 {
@@ -34,6 +37,8 @@ public class AnhaActor : MonoBehaviour
     [FormerlySerializedAs("_assessor")] public Assessor assessor;
     public List<Mapper> mappers;
     private Text _text;
+
+    private bool savePosition = false;
     
     private void Start()
     {
@@ -66,7 +71,8 @@ public class AnhaActor : MonoBehaviour
         transform.position = actor.transform.position;
         transform.rotation = actor.transform.rotation;
         Move();
-        
+        if (savePosition)
+            SavePosition();
     }
 
 
@@ -143,6 +149,19 @@ public class AnhaActor : MonoBehaviour
         }
     }
 
+    private void SavePosition()
+    {
+        var positions = actor.CurrentState.sensors.Select(s =>
+        {
+            var tmp = s.UnityQuaternion.eulerAngles;
+            return $"{tmp.x:F1},{tmp.y:F1},{tmp.z:F1}";
+        }).ToList();
+        positions.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff",
+            CultureInfo.InvariantCulture));
+        var record = string.Join(",", positions);
+        assessor.SaveBaselineRecord(record);
+    }
+    
     public void AddEffector(EndEffector endEffector)
     {
         if (assessor == null) assessor = FindObjectOfType<Assessor>();
@@ -157,22 +176,22 @@ public class AnhaActor : MonoBehaviour
 
     public void GetNeutralPosition()
     {
-        _text.text = "Keep neutral position after the countdown\n3";
-        StartCoroutine(DisplayTextFor("Keep neutral position after the countdown\n5", 1.0f));
-        StartCoroutine(DisplayTextFor("Keep neutral position after the countdown\n4", 2.0f));
-        StartCoroutine(DisplayTextFor("Keep neutral position after the countdown\n3", 3.0f));
-        StartCoroutine(DisplayTextFor("Keep neutral position after the countdown\n2", 4.0f));
-        StartCoroutine(DisplayTextFor("Keep neutral position after the countdown\n1", 5.0f));
-        StartCoroutine(DisplayTextFor("Keep neutral position after the countdown\n0", 6.0f));
-        StartCoroutine(DisplayTextFor("Done!", 7.0f));
-        StartCoroutine(DisplayTextFor("", 9.0f));
-        
+        _text.text = "Keep neutral position after the countdown\n6";
+        var countdown = 6;
+        for (var i = countdown; i >= 0; i--)
+        {
+            StartCoroutine(DisplayTextFor($"Keep neutral position after the countdown\n{i}", (countdown - i), i == 0));
+        }
+        StartCoroutine(DisplayTextFor("Done!", 7.0f, false));
+        StartCoroutine(DisplayTextFor("", 9.0f, false));        
+        StartCoroutine(assessor.FinaliseSavingPosition(10f));        
     }
 
-    IEnumerator DisplayTextFor(string text, float time)
+    IEnumerator DisplayTextFor(string text, float time, bool measure)
     {
         yield return new WaitForSeconds(time);
         _text.text = text;
+        savePosition = measure;
     }
     
     
