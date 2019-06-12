@@ -45,8 +45,8 @@ class DataProcessor(Thread):
 
     def run(self):
         while True:
-            if not self.queue.empty:
-                self.process(self.queue.get())
+            if not self.queue.empty():
+                self.process(self.queue.get().decode("utf-8"))
 
 
 

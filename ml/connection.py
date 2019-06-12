@@ -18,9 +18,9 @@ class ConnectionHandler:
             sys.exit()
 
         self.logger.debug('Socket bind complete')
-        s.listen(1)
+        s.listen(5)
         conn, addr = s.accept()
-        self.logger.debug("Connected to {}:{}".format([0], str(addr[1])))
+        self.logger.debug("Connected to {}:{}".format(addr[0], str(addr[1])))
         return conn
 
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Connection;
 using Effectors;
 using Rokoko.Smartsuit;
 using UnityEngine;
@@ -20,9 +21,11 @@ namespace Assessment
         private TargetSpawner _targetSpawner;
         private string _playerName;
         private int frame = 10;
+        private DataForwarder _dataForwarder;
 
         private void Start()
         {
+//            _dataForwarder = new DataForwarder();
             _playerName = FindObjectOfType<Academy>().PlayerIndex;
             _targetSpawner = FindObjectOfType<TargetSpawner>();
             var actor = FindObjectOfType<AnhaActor>();
@@ -74,7 +77,9 @@ namespace Assessment
             {
                 frame = 10;
                 var tmp = Helper.GetPositionRecord(suit.CurrentState);
-                effortSW.WriteLine($"{_playerName},{_targetSpawner.CurrentTarget},{tmp}");
+                var line = $"{_playerName},{_targetSpawner.CurrentTarget},{tmp}\n";
+//                _dataForwarder.Send(line);
+                effortSW.Write(line);
             }
 
             frame--;

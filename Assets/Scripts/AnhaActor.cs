@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using Assessment;
 using Assets.Scripts.Mapping;
+using Connection;
 using Effectors;
 using Mapping;
 using Mapping.Types;
@@ -38,10 +39,12 @@ public class AnhaActor : MonoBehaviour
     public List<Mapper> mappers;
     private Text _text;
 
-    private bool savePosition = false;
+    private bool savePosition;
+    private DataForwarder _dataForwarder;
     
     private void Start()
     {
+        _dataForwarder = new DataForwarder();
         if (assessor == null) assessor = FindObjectOfType<Assessor>();
         if(mappers == null) mappers = new List<Mapper>();
         _text = FindObjectOfType<Text>();
@@ -68,6 +71,7 @@ public class AnhaActor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _dataForwarder.Send(DateTime.Now.Millisecond.ToString());
         transform.position = actor.transform.position;
         transform.rotation = actor.transform.rotation;
         Move();

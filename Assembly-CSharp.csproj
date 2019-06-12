@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\Assessment\Assessor.cs" />
     <Compile Include="Assets\Scripts\Assessment\Result.cs" />
     <Compile Include="Assets\Scripts\Bone.cs" />
+    <Compile Include="Assets\Scripts\Connection\DataForwarder.cs" />
     <Compile Include="Assets\Scripts\CreateAvatar\AvatarCreator.cs" />
     <Compile Include="Assets\Scripts\Effectors\EndEffector.cs" />
     <Compile Include="Assets\Scripts\Mapping\BasicBoneMapping.cs" />

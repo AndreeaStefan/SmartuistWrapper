@@ -31,9 +31,9 @@ def main():
 
     logger.debug("dsadsad")
 
-    connection = ConnectionHandler()
-    connection.start(host, port)
-    teacher = Teacher(connection)
+    connectionHandler = ConnectionHandler()
+    conn = connectionHandler.start(host, port)
+    teacher = Teacher(conn)
     teacher.teach()
 
 
