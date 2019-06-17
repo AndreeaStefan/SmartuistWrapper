@@ -14,7 +14,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{11716BC0-F56E-0A68-2A82-BEB2C1C1847C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -68,7 +69,6 @@
     <Compile Include="Assets\Scripts\Assessment\Assessor.cs" />
     <Compile Include="Assets\Scripts\Assessment\Result.cs" />
     <Compile Include="Assets\Scripts\Bone.cs" />
-    <Compile Include="Assets\Scripts\Connection\DataForwarder.cs" />
     <Compile Include="Assets\Scripts\CreateAvatar\AvatarCreator.cs" />
     <Compile Include="Assets\Scripts\Effectors\EndEffector.cs" />
     <Compile Include="Assets\Scripts\Mapping\BasicBoneMapping.cs" />

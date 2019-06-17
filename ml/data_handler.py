@@ -1,53 +1,31 @@
 import logging
 from threading import Thread
 from queue import Queue
+import time
+import numpy as np
+
+
+def obtainData(file, queue):
+    file.seek(0, 2)
+    while True:
+        line = file.readline()
+        if not line:
+            time.sleep(0.1)
+            continue
+        queue.put(line)
+
 
 
 class DataHandler:
 
-    def __init__(self, conn):
+    def __init__(self, fileName):
         self.logger = logging.getLogger("anha")
-        self.rawQueue = Queue()
-        self.processedQueue = Queue()
-        dataObtainer = DataObtainer(conn, self.rawQueue)
-        dataProcessor = DataProcessor(self.rawQueue, self.processedQueue)
-        dataObtainer.start()
-        dataProcessor.start()
+        self.queue = Queue()
+        file = open(fileName, "r")
+        thread = Thread(target=obtainData, args=[file, self.queue])
+        thread.start()
 
-
-class DataObtainer(Thread):
-
-    def __init__(self, conn, queue):
-        Thread.__init__(self)
-        self.queue = queue
-        self.logger = logging.getLogger("anha")
-        self.conn = conn
-
-    def run(self):
-        while True:
-            data = self.conn.recv(4096)
-            if data:
-                self.queue.put_nowait(data)
-
-
-
-
-class DataProcessor(Thread):
-
-    def __init__(self, queue, processedQueue):
-        Thread.__init__(self)
-        self.queue = queue
-        self.processedQueue = processedQueue
-        self.logger = logging.getLogger("anha")
-
-    def process(self, data):
-        self.processedQueue.put(data)
-
-    def run(self):
-        while True:
-            if not self.queue.empty():
-                self.process(self.queue.get().decode("utf-8"))
-
-
+    def getData(self):
+        return self.queue.get()
 
 

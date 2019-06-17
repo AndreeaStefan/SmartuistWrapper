@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +5,6 @@ using System.Globalization;
 using System.Linq;
 using Assessment;
 using Assets.Scripts.Mapping;
-using Connection;
 using Effectors;
 using Mapping;
 using Mapping.Types;
@@ -19,7 +17,7 @@ using Valve.VR.InteractionSystem;
 public class AnhaActor : MonoBehaviour
 {
     public SmartsuitActor actor;
-    public BasicBoneMapping bonesType ;
+    public BasicBoneMapping bonesType;
     public Transform floor;
 
 
@@ -40,16 +38,14 @@ public class AnhaActor : MonoBehaviour
     private Text _text;
 
     private bool savePosition;
-    private DataForwarder _dataForwarder;
-    
+
     private void Start()
     {
-        _dataForwarder = new DataForwarder();
         if (assessor == null) assessor = FindObjectOfType<Assessor>();
-        if(mappers == null) mappers = new List<Mapper>();
+        if (mappers == null) mappers = new List<Mapper>();
         _text = FindObjectOfType<Text>();
         // todo: change later
-        
+
         _bones = bonesType.Bones();
         _initialRot = new Dictionary<GameObject, Quaternion>();
         InitialisePose();
@@ -57,7 +53,7 @@ public class AnhaActor : MonoBehaviour
         transform.position = actor.transform.position;
     }
 
-        private void InitialisePose()
+    private void InitialisePose()
     {
         _pose = new Pose();
         _pose.Store(bonesType);
@@ -66,12 +62,13 @@ public class AnhaActor : MonoBehaviour
     }
 
     private void GetAngle()
-        { }
+    {
+    }
 
     // Update is called once per frame
     void Update()
     {
-        _dataForwarder.Send(DateTime.Now.Millisecond.ToString());
+
         transform.position = actor.transform.position;
         transform.rotation = actor.transform.rotation;
         Move();
@@ -89,7 +86,6 @@ public class AnhaActor : MonoBehaviour
         // init 
         if (count == 0)
         {
-           
             for (var index = 0; index < _poseOffsets.Length; ++index)
             {
                 var rr = rotation * actor.CurrentState.sensors[index].UnityQuaternion;
@@ -98,7 +94,7 @@ public class AnhaActor : MonoBehaviour
 
             count++;
         }
-        
+
         _quaternionArray = new Quaternion[_poseOffsets.Length];
         _scaleArray = new Vector3[_poseOffsets.Length];
         _limits = new float[_poseOffsets.Length];
@@ -117,16 +113,16 @@ public class AnhaActor : MonoBehaviour
 
         for (var index = 0; index < _poseOffsets.Length; ++index)
         {
-    
             if (_bones[index] != null && index < _quaternionArray.Length)
             {
                 _bones[index].transform.rotation = _quaternionArray[index] * _poseOffsets[index];
-            } 
+            }
         }
-              
-            
+
+
         var vector3 = transform.TransformPoint(actor.CurrentState.sensors[0].UnityPosition);
-        if (!float.IsNaN(vector3.x) && !float.IsNaN(vector3.y) && !float.IsNaN(vector3.z) && (bool) _bones[bonesType.RootBone()])
+        if (!float.IsNaN(vector3.x) && !float.IsNaN(vector3.y) && !float.IsNaN(vector3.z) &&
+            (bool) _bones[bonesType.RootBone()])
             _bones[bonesType.RootBone()].transform.position = vector3;
     }
 
@@ -137,13 +133,14 @@ public class AnhaActor : MonoBehaviour
         {
             var index = indices[i];
             // TODO: here introduce index change to have sensor mapped onto different body part
-            if ( _bones[index] != null && index < _quaternionArray.Length)
+            if (_bones[index] != null && index < _quaternionArray.Length)
             {
-                var rotFromTheSuit = rotation * actor.CurrentState.sensors[index].UnityQuaternion ;
+                var rotFromTheSuit = rotation * actor.CurrentState.sensors[index].UnityQuaternion;
 
                 var euler = rotFromTheSuit.eulerAngles;
                 var rotX = euler.x + Mathf.Sign(euler.x) * extX;
-                var rotY = euler.y + Mathf.Sign(euler.y) * extY; //Mathf.Lerp(euler.y, euler.y * extY, Time.time * 0.1f);
+                var rotY = euler.y + Mathf.Sign(euler.y) *
+                           extY; //Mathf.Lerp(euler.y, euler.y * extY, Time.time * 0.1f);
                 var rotZ = euler.z + Mathf.Sign(euler.z) * extZ;
                 var nextRot = Quaternion.Euler(rotX, rotY, rotZ);
                 var angle = Math.Abs(Quaternion.Angle(_initialRot[_bones[index]], rotFromTheSuit));
@@ -152,7 +149,7 @@ public class AnhaActor : MonoBehaviour
             }
         }
     }
-    
+
     public void AddEffector(EndEffector endEffector)
     {
         if (assessor == null) assessor = FindObjectOfType<Assessor>();
@@ -161,7 +158,7 @@ public class AnhaActor : MonoBehaviour
 
     public void SetMapper(Mapper mapper)
     {
-        if(mappers == null) mappers = new List<Mapper>();
+        if (mappers == null) mappers = new List<Mapper>();
         mapper.SetMapping(new Pointing());
     }
 
@@ -173,9 +170,10 @@ public class AnhaActor : MonoBehaviour
         {
             StartCoroutine(DisplayTextFor($"Keep neutral position after the countdown\n{i}", (countdown - i), i == 0));
         }
+
         StartCoroutine(DisplayTextFor("Done!", 7.0f, false));
-        StartCoroutine(DisplayTextFor("", 9.0f, false));        
-        StartCoroutine(assessor.FinaliseSavingPosition(10f));        
+        StartCoroutine(DisplayTextFor("", 9.0f, false));
+        StartCoroutine(assessor.FinaliseSavingPosition(10f));
     }
 
     IEnumerator DisplayTextFor(string text, float time, bool measure)
@@ -184,8 +182,4 @@ public class AnhaActor : MonoBehaviour
         _text.text = text;
         savePosition = measure;
     }
-    
-    
-    
-
 }

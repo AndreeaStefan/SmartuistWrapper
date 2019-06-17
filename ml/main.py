@@ -23,17 +23,13 @@ def main():
 
     info_handler = ConcurrentFileHandler("logs/" + time.strftime("%Y%m%d") + "-INFO.log")
     info_handler.setLevel(logging.INFO)
-    info_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(message)s'))
+    info_handler.setFormatter(logging.Formatter('%(message)s'))
 
     logger.addHandler(error_handler)
     logger.addHandler(debug_handler)
     logger.addHandler(info_handler)
 
-    logger.debug("dsadsad")
-
-    connectionHandler = ConnectionHandler()
-    conn = connectionHandler.start(host, port)
-    teacher = Teacher(conn)
+    teacher = Teacher("../effortResult.csv")
     teacher.teach()
 
 
