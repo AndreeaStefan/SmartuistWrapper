@@ -42,6 +42,7 @@ namespace Assessment
         {
             if (_effectors.ContainsKey(effector))
             {
+                _academy.newTarget = true;
                 _effectors[effector].Add(result);
             }
         }

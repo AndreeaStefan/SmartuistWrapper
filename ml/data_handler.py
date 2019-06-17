@@ -8,11 +8,15 @@ import numpy as np
 def obtainData(file, queue):
     file.seek(0, 2)
     while True:
+        last_pos = file.tell()
         line = file.readline()
         if not line:
             time.sleep(0.1)
             continue
-        queue.put(line)
+        elif not line.endswith('\n'):
+            file.seek(last_pos)
+        else:
+            queue.put(line[:-1].split(","))
 
 
 

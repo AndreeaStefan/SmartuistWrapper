@@ -1,3 +1,4 @@
+using System.Linq;
 using Assets.Scripts.Mapping.Types.ChangeDetectors;
 using Assets.Scripts.Utils;
 using Effectors;
@@ -44,6 +45,13 @@ namespace Mapping
                     var changeDetector1 = new WristMove(hand);
                     mapping.SetBone(gameObject);
                     mapping.SetChangeDetector(changeDetector1);
+                    break;
+                
+                case Mappings.Genetic:
+                    var secondBone = GameObject.FindGameObjectsWithTag("Mapper").First(g => g != gameObject);
+                    ((Genetic)mapping).SetSecondBone(secondBone);
+                    mapping.SetBone(gameObject);
+                    mapping.SetChangeDetector(null);
                     break;
             }
         }

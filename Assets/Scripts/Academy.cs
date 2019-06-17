@@ -7,6 +7,7 @@ public class Academy : MonoBehaviour
     public GameObject Room;
     public Mappings Mapping;
     public string PlayerIndex;
+    [HideInInspector] public bool newTarget = true;
 
     void Awake()
     {
