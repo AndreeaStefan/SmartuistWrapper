@@ -7,6 +7,8 @@ using System.Linq;
 using Assessment;
 using Assets.Scripts.Mapping;
 using Connection;
+using Assets.Scripts.Mapping.Types;
+using Assets.Scripts.Utils;
 using Effectors;
 using Mapping;
 using Mapping.Types;
@@ -41,6 +43,9 @@ public class AnhaActor : MonoBehaviour
 
     private bool savePosition;
     private DataForwarder _dataForwarder;
+
+    [Range(1, 15)] public int BatchSize = 5;
+
     
     private void Start()
     {
@@ -162,7 +167,25 @@ public class AnhaActor : MonoBehaviour
     public void SetMapper(Mapper mapper)
     {
         if(mappers == null) mappers = new List<Mapper>();
-        mapper.SetMapping(new Pointing());
+       
+
+        switch (academy.Mapping)
+        {
+            case Mappings.SteadyPointing:
+
+                mapper.SetMapping(new Pointing());
+
+                break;
+
+            case Mappings.WristMove:
+                mapper.SetMapping(new Pointing());
+
+                break;
+
+            case Mappings.LearnStaticMapping:
+                mapper.SetMapping(new LearnStaticMapping());
+                break;
+        }
     }
 
     public void GetNeutralPosition()
