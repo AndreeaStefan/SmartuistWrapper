@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Utils;
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 
@@ -17,9 +18,10 @@ public class TargetSpawner : MonoBehaviour
 
     private Bounds _areaBounds;
     private float _radius = 0.8f;
-    private float[] _depths = new float[3] { 1, 1.8f, 2.6f };
-    private float[] _scales = new float[3] { 0.2f, 0.3f, 0.4f };
-    private GameObject _target;
+    private float[] _depths =  { 1, 1.8f, 2.6f };
+    private float[] _scales =  { 0.2f, 0.3f, 0.4f };
+    [FormerlySerializedAs("_target")] public GameObject Target;
+    private MeshRenderer targetRenderer;
 
     public float CurrentTargetDepth;
     private float[] _targetDepths;
@@ -39,26 +41,9 @@ public class TargetSpawner : MonoBehaviour
         else
             GenerateTargetsDifferentDepths();
 
-          _target = Instantiate(TargetPrefab);
-           _target.transform.parent = TargetContainer;
-           _target.transform.position = GetNewPosition();
-          _target.transform.localScale = GetNewScale();
-
-          CurrentTargetDepth = _targetDepths[1];
-
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown("space"))
-        {
-            var index = _randomGenerator.Next(0, _targetPositions.Length);
-            var scale = _randomGenerator.Next(0, _scales.Length);
-            Debug.Log(index);
-            var pos = _targetPositions[index];
-            _target.transform.position = pos;
-            _target.transform.localScale = new Vector3(_scales[scale], _scales[scale], _scales[scale]);
-        }
+          Target = Instantiate(TargetPrefab);
+          Target.transform.parent = TargetContainer;
+          Target.GetComponent<MeshRenderer>().enabled = false;
     }
 
     public Vector3 GetNewPosition()
@@ -96,14 +81,6 @@ public class TargetSpawner : MonoBehaviour
                 _targetPositions[count] = pos;
                 _targetDepths[count] = d;
                 count++;
-
-                /*
-                var target = Instantiate(TargetPrefab) as GameObject;
-                target.transform.parent = TargetContainer;
-                target.transform.position = pos;
-                target.transform.localScale = new Vector3(_scales[0], _scales[0], _scales[0]);
-                */
-
             }
         }
     }
@@ -139,13 +116,6 @@ public class TargetSpawner : MonoBehaviour
             _targetPositions[count] = pos;
             _targetDepths[count] = d;
             count++;
-
-            /*
-               var target = Instantiate(TargetPrefab) as GameObject;
-               target.transform.parent = TargetContainer;
-               target.transform.position = pos;
-               target.transform.localScale = new Vector3(_scales[0], _scales[0], _scales[0]);
-               */
         }
 
     }

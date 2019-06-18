@@ -64,14 +64,10 @@ public class AnhaActor : MonoBehaviour
         _poseOffsets = _pose.ExtractRotationOffsets();
     }
 
-    private void GetAngle()
-    {
-    }
 
     // Update is called once per frame
     void Update()
     {
-
         transform.position = actor.transform.position;
         transform.rotation = actor.transform.rotation;
         Move();

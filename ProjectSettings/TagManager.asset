@@ -8,6 +8,7 @@ TagManager:
   - Target
   - Hand
   - Mapper
+  - Start
   layers:
   - Default
   - TransparentFX
