@@ -15,7 +15,14 @@ namespace Connection
             clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             var ipAdd = IPAddress.Parse(Host);
             var remoteEP = new IPEndPoint(ipAdd, Port);
-            clientSocket.Connect(remoteEP);
+            try
+            {
+                clientSocket.Connect(remoteEP);
+            }
+            catch
+            {
+                Debug.Log("Could not connect");
+            }
         }
 
         public void Send(string data)
@@ -23,8 +30,13 @@ namespace Connection
             var byData = System.Text.Encoding.UTF8.GetBytes(data);
             clientSocket.Send(byData);
         }
-        
-        
-        
+
+        public bool IsConnected()
+        {
+            return clientSocket.Connected;
+        }
+
+
+
     }
 }
