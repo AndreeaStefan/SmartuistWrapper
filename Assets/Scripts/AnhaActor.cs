@@ -50,8 +50,10 @@ public class AnhaActor : MonoBehaviour
     private void Start()
     {
         _dataForwarder = new DataForwarder();
-        if (assessor == null) assessor = FindObjectOfType<Assessor>();
-        if(mappers == null) mappers = new List<Mapper>();
+        if (assessor == null)
+            assessor = FindObjectOfType<Assessor>();
+        if(mappers == null)
+            mappers = new List<Mapper>();
         _text = FindObjectOfType<Text>();
         // todo: change later
         
@@ -76,7 +78,8 @@ public class AnhaActor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _dataForwarder.Send(DateTime.Now.Millisecond.ToString());
+        if(_dataForwarder.IsConnected())
+            _dataForwarder.Send(DateTime.Now.Millisecond.ToString());
         transform.position = actor.transform.position;
         transform.rotation = actor.transform.rotation;
         Move();
