@@ -30,6 +30,7 @@ class DataHandler:
         thread.start()
 
     def getData(self):
+
         return self.queue.get()
 
 

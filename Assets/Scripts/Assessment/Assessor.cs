@@ -26,6 +26,7 @@ namespace Assessment
             _playerName = FindObjectOfType<Academy>().PlayerIndex;
             _targetSpawner = FindObjectOfType<TargetSpawner>();
             var actor = FindObjectOfType<AnhaActor>();
+            _academy = FindObjectOfType<Academy>();
             suit = actor.actor;
             actor.GetNeutralPosition();
             baselineSW = new StreamWriter(effortBaselinePath, true);

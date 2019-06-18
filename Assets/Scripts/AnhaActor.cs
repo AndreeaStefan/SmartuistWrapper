@@ -5,9 +5,12 @@ using System.Globalization;
 using System.Linq;
 using Assessment;
 using Assets.Scripts.Mapping;
+using Assets.Scripts.Mapping.Types.ChangeDetectors;
+using Assets.Scripts.Utils;
 using Effectors;
 using Mapping;
 using Mapping.Types;
+using Mapping.Types.ChangeDetectors;
 using Rokoko.Smartsuit;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -159,7 +162,27 @@ public class AnhaActor : MonoBehaviour
     public void SetMapper(Mapper mapper)
     {
         if (mappers == null) mappers = new List<Mapper>();
-        mapper.SetMapping(new Pointing());
+        MappingType mapping;
+        switch (academy.Mapping)
+        {
+            case Mappings.SteadyPointing:
+                mapping = new Pointing();
+                break;
+
+            case Mappings.WristMove:
+                mapping = new Pointing();
+                break;
+                
+            case Mappings.Genetic:
+                mapping = new Genetic(academy);
+                break;
+            
+            default:
+                mapping = new Pointing();
+                break;
+        }
+        
+        mapper.SetMapping(mapping);
     }
 
     public void GetNeutralPosition()

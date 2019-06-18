@@ -29,7 +29,7 @@ def main():
     logger.addHandler(debug_handler)
     logger.addHandler(info_handler)
 
-    teacher = Teacher("../effortResult.csv", "../lengths.txt", 0.1)
+    teacher = Teacher("../effortResult.csv", "../lengths.txt", 0.2)
     teacher.teach()
 
 

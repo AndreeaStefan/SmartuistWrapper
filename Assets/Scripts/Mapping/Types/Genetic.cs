@@ -9,7 +9,7 @@ namespace Mapping.Types
     public class Genetic : MappingType
     {
         
-        private readonly string fileName;
+        private readonly string fileName = "lengths.txt";
         private StreamReader sReader;
         private List<string> lengths;
         private Academy _academy;
@@ -21,7 +21,8 @@ namespace Mapping.Types
         {
             _academy = a;
             lengths = new List<string>();
-            sReader = new StreamReader(fileName);
+            sReader = new StreamReader(new FileStream(fileName, FileMode.Open, 
+                FileAccess.Read, FileShare.ReadWrite));
             
         }
         
@@ -29,7 +30,9 @@ namespace Mapping.Types
         public void Change(float how)
         {
             _academy.newTarget = false;
-            var scale = int.Parse(sReader.ReadLine() ?? throw new Exception("No Stream Reader in Genetic"))/100f;
+            var line = sReader.ReadLine();
+            if (line == null) return;
+            var scale = int.Parse(line)/100f;
             var newScale = _bone.transform.localScale;
             newScale.y = scale;
             _bone.transform.localScale = newScale;
@@ -38,7 +41,7 @@ namespace Mapping.Types
 
         public float IsChanging()
         {
-            return _academy == true ? 1 : 0;
+            return _academy.newTarget ? 1 : 0;
         }
 
         public void SetChangeDetector(ChangeDetector changeDetector)

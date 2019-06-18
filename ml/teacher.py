@@ -8,6 +8,9 @@ import operator
 populus = 5
 bits = 9
 
+def toStr(whatev, deli):
+    return deli.join([str(i) for i in whatev])
+
 def bitfield(n):
     inBits = [1 if digit == '1' else 0 for digit in bin(n)[2:]]
     while len(inBits) < bits:
@@ -38,9 +41,10 @@ class Teacher:
         self.numbers = [bitArrayToInt(bitArray) for bitArray in pop]
         for number in self.numbers:
             self.resultFile.write("%d\n" % number)
+        self.resultFile.flush()
 
     def evolve(self, results):
-        self.logger.debug("About to evolve based on results: " + ", ".join(results))
+        self.logger.debug("About to evolve based on results: \n" + ", ".join([str(i) for i, j in results]) + "\n" + ", ".join([str(j) for i, j in results]))
         oldPop = [j for i, j in results]
         selNum = int(len(results)/2)
         first = int(bits/2)
@@ -49,8 +53,8 @@ class Teacher:
         selected = oldPop[:selNum]
 
         for i in range(left):
-            child = oldPop[i][:first] + oldPop[i+1][:second]
-            self.logger.debug("Parent#1: " + ", ".join(oldPop[i]) + "\nParent#2: " + ", ".join(oldPop[i+1]) + "\nChild: " + ", ".join(child))
+            child = oldPop[i][:first] + oldPop[i+1][second:]
+            self.logger.debug("\nParent#1:\t" + toStr(oldPop[i], ", ") + "\nParent#2:\t" + toStr(oldPop[i+1], ", ") + "\nChild:\t" + toStr(child, ", "))
             selected.append(child)
 
         return selected
@@ -58,8 +62,10 @@ class Teacher:
     def mutate(self, pop):
         for single in pop:
             if random() < self.mutationChance:
+                self.logger.debug("mutating\n" + toStr(single, "") + " outcome:\n")
                 place_to_modify = randint(0, bits)
                 single[place_to_modify] = 1 if single[place_to_modify] == 0 else 0
+                self.logger.debug(toStr(single, ""))
         return pop
 
 
@@ -80,7 +86,6 @@ class Teacher:
                         i = i + 1
                         self.logger.debug("Collected info from target: %d" % endedTrials)
                         endedTrials = endedTrials + 1
-                        records[i].append(data)
                     else:
                         records[i].append(data)
                 else:
@@ -90,9 +95,9 @@ class Teacher:
             results.sort(key=operator.itemgetter(0))
 
             population = self.evolve(results)
-            self.logger.debug("After evolution: " + ", ".join(population))
+            self.logger.debug("After evolution: " + toStr(population, ", "))
             population = self.mutate(population)
-            self.logger.debug("After mutation: " + ", ".join(population))
+            self.logger.debug("After mutation: " +  toStr(population, ", "))
             self.savePopulation(population)
             self.logger.debug("Finished lesson %d" % lesson)
             lesson = lesson + 1
