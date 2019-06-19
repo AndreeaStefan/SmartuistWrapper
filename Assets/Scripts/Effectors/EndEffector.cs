@@ -47,7 +47,9 @@ namespace Effectors
                                             other.transform.localScale.x, 
                                             actor.SpawnTargets.CurrentTargetDepth, 
                                             elapsedMs,
-                                            actor.academy.Mapping.ToString());
+                                            actor.academy.Mapping.ToString(),
+                                            actor.PreviousPosition,
+                                            other.transform.position);
 
                     _assessor.AddResult(result, this);
 
@@ -59,11 +61,13 @@ namespace Effectors
                     other.transform.localScale = newScale;
 
                     stopwatch.Restart();
-                   
 
+                    actor.PreviousPosition = actor.GetRoot();
                 }
                     
             }
+
+
         }
         
         

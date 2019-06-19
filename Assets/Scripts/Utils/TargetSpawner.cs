@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Utils;
 using System;
+using Assessment;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -58,6 +59,8 @@ public class TargetSpawner : MonoBehaviour
             var pos = _targetPositions[index];
             _target.transform.position = pos;
             _target.transform.localScale = new Vector3(_scales[scale], _scales[scale], _scales[scale]);
+
+            var result = new Result(index, _scales[scale], _targetDepths[index],0, "test", Player.transform, pos);
         }
     }
 

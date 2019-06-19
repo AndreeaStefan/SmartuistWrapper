@@ -22,7 +22,6 @@ public class AnhaActor : MonoBehaviour
     public BasicBoneMapping bonesType ;
     public Transform floor;
 
-
     public TargetSpawner SpawnTargets;
     public Academy academy;
 
@@ -41,7 +40,8 @@ public class AnhaActor : MonoBehaviour
 
     private bool savePosition;
     private DataForwarder _dataForwarder;
-    
+    [HideInInspector]  public Transform PreviousPosition;
+
     private void Start()
     {
         _dataForwarder = new DataForwarder();
@@ -55,6 +55,8 @@ public class AnhaActor : MonoBehaviour
         InitialisePose();
 
         transform.position = actor.transform.position;
+
+        PreviousPosition = _bones[bonesType.RootBone()].transform;
     }
 
         private void InitialisePose()
@@ -80,6 +82,10 @@ public class AnhaActor : MonoBehaviour
             assessor.SaveBaselineRecord(Helper.GetPositionRecord(actor.CurrentState));
     }
 
+    public Transform GetRoot()
+    {
+        return _bones[bonesType.RootBone()].transform;
+    }
 
     private void Move()
     {
@@ -185,8 +191,5 @@ public class AnhaActor : MonoBehaviour
         _text.text = text;
         savePosition = measure;
     }
-    
-    
-    
 
 }
