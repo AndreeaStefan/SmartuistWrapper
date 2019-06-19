@@ -46,6 +46,8 @@ namespace Assessment
         private Vector3 _currTargetPos;
         private Vector3 _currTargetScale;
 
+        public Camera camera;
+
 
         private void Start()
         {
@@ -67,7 +69,7 @@ namespace Assessment
             currentLesson.Initialise(suit, _targetSpawner.Target, _effectors, _currentLesson, _currentRepetition);
             
             _text = FindObjectOfType<Text>();
-            _facingChecker = new FacingChecker(suit, GameObject.FindWithTag("Start"));
+            _facingChecker = new FacingChecker(camera, GameObject.FindWithTag("Start"));
         }
 
         private void Update()
@@ -89,7 +91,8 @@ namespace Assessment
                         _startedCounting = true;
                     }
                 }
-                _text.text = "" + _countdown;
+                else
+                    _text.text = "" + _countdown;
                 if(_countdown == 0)
                 {
                     StartNewRepetition();
@@ -150,7 +153,8 @@ namespace Assessment
                 _currentResults = new List<RepetitionResult>();
             }
             
-            _tapSW.Write(result.ToString());
+            _tapSW.WriteLine(result.ToString());
+            _tapSW.Flush();
             _countdown = 3;
             _stopwatch.Reset();
         }

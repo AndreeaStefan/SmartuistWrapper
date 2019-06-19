@@ -5,7 +5,7 @@
       "app_key": "application.generated.unity.smartsuitwrapper.exe",
       "launch_type": "url",
       "url": "steam://launch/",
-      "action_manifest_path": "C:\\Users\\huber\\OneDrive\\Dokumenty\\thesis-hubert\\unity\\SmartuistWrapper\\actions.json",
+      "action_manifest_path": "E:\\Andreea\\Projects\\Git\\SmartsuitWrapper\\SmartuistWrapper\\actions.json",
       "strings": {
         "en_us": {
           "name": "smartsuitWrapper [Testing]"

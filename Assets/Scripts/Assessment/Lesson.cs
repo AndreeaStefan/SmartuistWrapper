@@ -48,7 +48,8 @@ namespace Assessment
             if(IsRunning && _everyFrame == 0)
             {
                 _everyFrame = 10;
-                _effortSW.Write(FrameResult.GetNewFrame(_suit, _position, _effectorLeft, _effectorRight, _playerName, _lesson, _repetition).ToString());
+                _effortSW.WriteLine(FrameResult.GetNewFrame(_suit, _position, _effectorLeft, _effectorRight, _playerName, _lesson, _repetition).ToString());
+                _effortSW.Flush();
             }
             if(IsRunning)
                 _everyFrame--;
