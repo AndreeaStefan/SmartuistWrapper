@@ -32,7 +32,7 @@ namespace Mapping
         {
             Mapping = mapping;
             var assessor = FindObjectsOfType<Assessor>()[0];
-            var changeDetector2 = new LearnStaticChange(actor.BatchSize, assessor, gameObject.transform.localScale.y);
+            var changeDetector2 = new LearnStaticChange(assessor, gameObject.transform.localScale.y);
 
             switch (actor.academy.Mapping)
             {

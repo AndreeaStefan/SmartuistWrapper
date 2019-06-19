@@ -12,8 +12,6 @@ namespace Effectors
 
         public AnhaActor actor;
         private Assessor _assessor;
-        private Stopwatch stopwatch;
-
         // Start is called before the first frame update
         void Start()
         {
@@ -22,8 +20,6 @@ namespace Effectors
 
             _assessor = FindObjectsOfType<Assessor>()[0];
             _assessor.AddEffector(this);
-
-            stopwatch = Stopwatch.StartNew();
         }
 
         public void Initialise(Assessor assessor)
@@ -36,7 +32,7 @@ namespace Effectors
         {
             if (other.transform.gameObject.CompareTag("Target"))
             {
-                _assessor.StopTry();
+                _assessor.StopRepetition();
             }
         }
     }

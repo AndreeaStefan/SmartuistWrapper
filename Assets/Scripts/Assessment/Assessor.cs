@@ -1,54 +1,70 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Effectors;
 using Rokoko.Smartsuit;
-using Rokoko.Smartsuit.Commands;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
-using Valve.VR;
-using UnityEngine.Experimental.LowLevel;
+using Debug = UnityEngine.Debug;
 
 namespace Assessment
 {
     public class Assessor: MonoBehaviour
     {
-        private readonly Dictionary<EndEffector, List<Result>> _effectors = new Dictionary<EndEffector, List<Result>>();
+        private readonly List<EndEffector> _effectors = new List<EndEffector>();
         private string effortBaselinePath = "effortBaselineResult.csv";
         private StreamWriter baselineSW;
+        private string _resultPath = "tapResult.csv";
+        private StreamWriter _tapSW;
+        
         private SmartsuitActor suit;
         private Academy _academy;
         private TargetSpawner _targetSpawner;
-        private string _playerName;
-        public Try currentTry;
-        private bool _gotNeutral;
         private Text _text;
         private FacingChecker _facingChecker;
-        private int countdown = 3;
-        private bool startedCounting = false;
 
-        
+        private string _playerName;
+        [FormerlySerializedAs("currentTry")] public Lesson currentLesson;
+        private int _countdown = 3;
+        private Stopwatch _stopwatch;
+
+        [Range(1, 15)] public int BatchSize = 5;
+        private int _currentLesson;
+        private int _currentRepetition;
+        private List<RepetitionResult> _previousBatchResults;
+        private List<RepetitionResult> _currentResults;
+        [FormerlySerializedAs("TargetsTapped")] public int targetsTapped;
         
 
-        private int _currentBatch;
-        private List<Result> _batchResults;
-        public int TargetsTapped = 0;
+        private bool _startedCounting;
+        private bool _gotNeutral;
+
+        private int _currTargetId;
+        private Vector3 _currTargetPos;
+        private Vector3 _currTargetScale;
+
 
         private void Start()
         {
+            _stopwatch = new Stopwatch();
             _academy = FindObjectOfType<Academy>();
             _playerName = _academy.PlayerIndex;
             _targetSpawner = FindObjectOfType<TargetSpawner>();
             var actor = FindObjectsOfType<AnhaActor>().First(a => a.name == "CURRENT");
+            _tapSW = new StreamWriter(_resultPath, true);
             suit = actor.actor;
-            _gotNeutral = false;
-            actor.GetNeutralPosition();
-            _currentBatch = 0;
-            TargetsTapped = 0;
-            _batchResults = new List<Result>();
-            currentTry = gameObject.AddComponent<Try>();    
-            currentTry.Initialise(suit, _targetSpawner.Target, _effectors.Keys.ToList());
+            // todo kill it when we won't need the neutral position
+            _gotNeutral = true;
+//            actor.GetNeutralPosition();
+            _currentLesson = 0;
+            _currentRepetition = 0;
+            _previousBatchResults = new List<RepetitionResult>();
+            _currentResults = new List<RepetitionResult>();
+            currentLesson = gameObject.AddComponent<Lesson>();    
+            currentLesson.Initialise(suit, _targetSpawner.Target, _effectors, _currentLesson, _currentRepetition);
             
             _text = FindObjectOfType<Text>();
             _facingChecker = new FacingChecker(suit, GameObject.FindWithTag("Start"));
@@ -56,28 +72,28 @@ namespace Assessment
 
         private void Update()
         {
-            if (!currentTry.IsRunning && _gotNeutral)
+            if (!currentLesson.IsRunning && _gotNeutral)
             {
-                if (!startedCounting)
+                if (!_startedCounting)
                 {
                     if (!_facingChecker.InTheArea())
                         _text.text = "Please go to the start area";
                     else if (!_facingChecker.FacingForward())
                     {
                         _text.text = "Please turn to the playing area";
-                        countdown = 4;
+                        _countdown = 3;
                     }
                     else
                     {
                         StartCoroutine(nameof(LoseTime));
-                        startedCounting = true;
+                        _startedCounting = true;
                     }
                 }
-                _text.text = "" + countdown;
-                if(countdown == 0)
+                _text.text = "" + _countdown;
+                if(_countdown == 0)
                 {
-                    StartNewTry();
-                    startedCounting = false;
+                    StartNewRepetition();
+                    _startedCounting = false;
                     _text.text = "";
                 }
             }
@@ -86,27 +102,14 @@ namespace Assessment
 
         public void AddEffector(EndEffector effector)
         {
-            _effectors[effector] = new List<Result>();
+            _effectors.Add(effector);
             effector.Initialise(this);
         }
         
         // get results for a batch 
-        public List<Result> GetResult(int batchSize)
+        public List<RepetitionResult> GetBatchResult()
         {
-            var res = _batchResults;        
-            _batchResults = new List<Result>();
-            return  res;
-            
-        }
-        
-        public void AddResult(Result result, EndEffector effector )
-        {
-            if (_effectors.ContainsKey(effector))
-            {
-                _effectors[effector].Add(result);
-            }
-            _batchResults.Add(result);
-            TargetsTapped++;
+            return  _previousBatchResults;
         }
 
         public void SaveBaselineRecord(string record)
@@ -121,28 +124,50 @@ namespace Assessment
             _gotNeutral = true;
         }
 
-        public void StartNewTry()
+        public void StartNewRepetition()
         {
-            var position = _targetSpawner.GetNewPosition();
-            var scale = _targetSpawner.GetNewScale();
-            var id = _targetSpawner.CurrentTarget;
-            currentTry.StartNewTry(_playerName, id.ToString(), position, scale);
+            _currTargetPos = _targetSpawner.GetNewPosition();
+            _currTargetScale = _targetSpawner.GetNewScale();
+            _currTargetId = _targetSpawner.CurrentTargetID;
+            _currentRepetition++;
+            currentLesson.StartNewTry(_playerName, _currentLesson, _currentRepetition, _currTargetPos, _currTargetScale);
+            _stopwatch.Start();    
         }
 
-        public void StopTry()
+        public void StopRepetition()
         {
-            currentTry.StopTry();
-            countdown = 3;
+            _stopwatch.Stop();
+            currentLesson.StopTry();
+            var result = new RepetitionResult(_playerName, _currentLesson, _currentRepetition, _currTargetId,
+                _currTargetScale, _currTargetPos, _stopwatch.ElapsedMilliseconds);
+            _currentResults.Add(result);
+            
+            if (BatchSize == _currentRepetition)
+            {
+                _currentRepetition = 0;
+                _currentLesson++;
+                _previousBatchResults = _currentResults;
+                _currentResults = new List<RepetitionResult>();
+            }
+            
+            _tapSW.Write(result.ToString());
+            _countdown = 3;
+            _stopwatch.Reset();
         }
         
         IEnumerator LoseTime()
         {
-            while (countdown >= 0) {
+            while (_countdown >= 0) {
                 yield return new WaitForSeconds (1);
-                countdown--; 
+                _countdown--; 
             }
         }
         
+        private void OnApplicationQuit()
+        {
+            Debug.Log("Application ending  " );
+            _tapSW.Close();
+        }
     }
     
 }

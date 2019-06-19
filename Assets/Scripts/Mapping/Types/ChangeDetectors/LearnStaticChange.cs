@@ -12,7 +12,6 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
 {
     public class LearnStaticChange : ChangeDetector
     {
-        private int _batchSize;
         private Assessor _assessor;
         private float _currentScale;
 
@@ -29,9 +28,8 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
 
         private StreamWriter writer; 
 
-        public LearnStaticChange(int batchSize, Assessor assessor, float scale)
+        public LearnStaticChange(Assessor assessor, float scale)
         {
-            _batchSize = batchSize;
             _assessor = assessor;
             _currentScale = scale;
 
@@ -51,9 +49,9 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
 
         public float IsChanging()
         {
-            if (_assessor.TargetsTapped == _batchSize  )
+            if (_assessor.targetsTapped == _assessor.BatchSize  )
             {
-                _assessor.TargetsTapped = 0;
+                _assessor.targetsTapped = 0;
                 var nextScale = GetNextScale();
                 UnityEngine.Debug.Log("Next Scale" + nextScale);
                 return nextScale;
@@ -65,8 +63,8 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
         private float GetNextScale()
         {
             var nextScale = _currentScale;
-            var results = _assessor.GetResult(_batchSize);
-            if (results.Count == _batchSize)
+            var results = _assessor.GetBatchResult();
+            if (results.Count == _assessor.BatchSize)
             {
                 var currentResult = GetCombinedResult(results);
 
@@ -138,14 +136,14 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
         }
 
         // TODO: a better way of combining the results + use all the effort 
-        private float GetCombinedResult(List<Result> results)
+        private float GetCombinedResult(List<RepetitionResult> results)
         {
 
             var sum = 0f;
 
             foreach (var res in results)
             {
-                sum += res.movementTime;
+                sum += res.MovementTime;
             }
 
             return sum / results.Count;

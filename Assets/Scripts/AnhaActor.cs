@@ -31,7 +31,7 @@ public class AnhaActor : MonoBehaviour
     private Text _text;
 
     private bool savePosition;
-    [Range(1, 15)] public int BatchSize = 5;
+    
 
     private void Start()
     {
@@ -59,8 +59,8 @@ public class AnhaActor : MonoBehaviour
         transform.position = actor.transform.position;
         transform.rotation = actor.transform.rotation;
         Move();
-        if (savePosition)
-            assessor.SaveBaselineRecord(Helper.GetPositionRecord(actor.CurrentState));
+//        if (savePosition)
+//            assessor.SaveBaselineRecord(Helper.GetPositionRecord(actor.CurrentState));
     }
 
 

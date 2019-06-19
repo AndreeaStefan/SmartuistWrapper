@@ -93,24 +93,4 @@ public class Helper
         list.AddRange(Enumerable.Range(7, 6)); 
         return list;
     }
-    
-    public static Quaternion getYAxisRotation(Quaternion q)
-    {
-        var theta = Mathf.Atan2(q.y, q.w);
-        // quaternion representing rotation about the y axis
-        return new Quaternion(0, Mathf.Sin(theta), 0, Mathf.Cos(theta));
-    }
-
-    public static string GetPositionRecord(Frame suit)
-    {
-        var positions = suit.sensors.Select(s =>
-        {
-            var tmp = s.UnityQuaternion.eulerAngles;
-            return $"{tmp.x:F1},{tmp.y:F1},{tmp.z:F1}";
-        }).ToList();
-        positions.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff",
-            CultureInfo.InvariantCulture));
-        var record = string.Join(",", positions);
-        return record;
-    }
 }

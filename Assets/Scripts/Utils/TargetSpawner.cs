@@ -13,28 +13,23 @@ public class TargetSpawner : MonoBehaviour
     public GameObject TargetPrefab;
     public bool Spiral;
 
-    [Range(1, 15)] public int NumberOfTargets;
     [Range(1f, 2f)] public float Height = 1.7f;
 
-    private Bounds _areaBounds;
     private float _radius = 0.8f;
     private float[] _depths =  { 1, 1.8f, 2.6f };
     private float[] _scales =  { 0.2f, 0.3f, 0.4f };
     [FormerlySerializedAs("_target")] public GameObject Target;
-    private MeshRenderer targetRenderer;
+    [FormerlySerializedAs("CurrentTarget")] [HideInInspector] public int CurrentTargetID;
 
-    public float CurrentTargetDepth;
     private float[] _targetDepths;
-    
     private Vector3[] _targetPositions;
+    
     private System.Random _randomGenerator;
 
-    [HideInInspector] public int CurrentTarget;
 
     void Start()
     {
         _randomGenerator = new System.Random(5);
-        _areaBounds = Floor.GetComponent<Collider>().bounds;
 
         if (Spiral)
             GenerateTargetsSpiral();
@@ -49,8 +44,7 @@ public class TargetSpawner : MonoBehaviour
     public Vector3 GetNewPosition()
     {
         var index = _randomGenerator.Next(0, _targetPositions.Length);
-        CurrentTarget = index;
-        CurrentTargetDepth = _targetDepths[index];
+        CurrentTargetID = index;
         return _targetPositions[index];
     }
 

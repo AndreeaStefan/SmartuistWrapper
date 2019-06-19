@@ -67,8 +67,9 @@
     <Compile Include="Assets\Scripts\AnhaActor.cs" />
     <Compile Include="Assets\Scripts\Assessment\Assessor.cs" />
     <Compile Include="Assets\Scripts\Assessment\FacingChecker.cs" />
-    <Compile Include="Assets\Scripts\Assessment\Result.cs" />
-    <Compile Include="Assets\Scripts\Assessment\Try.cs" />
+    <Compile Include="Assets\Scripts\Assessment\FrameResult.cs" />
+    <Compile Include="Assets\Scripts\Assessment\Lesson.cs" />
+    <Compile Include="Assets\Scripts\Assessment\RepetitionResult.cs" />
     <Compile Include="Assets\Scripts\Bone.cs" />
     <Compile Include="Assets\Scripts\Connection\DataForwarder.cs" />
     <Compile Include="Assets\Scripts\CreateAvatar\AvatarCreator.cs" />
@@ -81,7 +82,6 @@
     <Compile Include="Assets\Scripts\Mapping\Types\ChangeDetectors\LearnStaticChange.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\ChangeDetectors\SteadyPointing.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\ChangeDetectors\WristMove.cs" />
-    <Compile Include="Assets\Scripts\Mapping\Types\Genetic.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\LearnStaticMapping.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\MappingType.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\Pointing.cs" />
