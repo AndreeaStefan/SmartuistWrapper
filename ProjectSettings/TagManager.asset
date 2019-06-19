@@ -9,6 +9,7 @@ TagManager:
   - Hand
   - Mapper
   - Start
+  - ForeArm
   layers:
   - Default
   - TransparentFX

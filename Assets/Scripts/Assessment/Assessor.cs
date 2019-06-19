@@ -8,6 +8,7 @@ using Rokoko.Smartsuit.Commands;
 using UnityEngine;
 using UnityEngine.UI;
 using Valve.VR;
+using UnityEngine.Experimental.LowLevel;
 
 namespace Assessment
 {
@@ -30,6 +31,10 @@ namespace Assessment
         
         
 
+        private int _currentBatch;
+        private List<Result> _batchResults;
+        public int TargetsTapped = 0;
+
         private void Start()
         {
             _academy = FindObjectOfType<Academy>();
@@ -39,8 +44,9 @@ namespace Assessment
             suit = actor.actor;
             _gotNeutral = false;
             actor.GetNeutralPosition();
-            
-            baselineSW = new StreamWriter(effortBaselinePath, true);
+            _currentBatch = 0;
+            TargetsTapped = 0;
+            _batchResults = new List<Result>();
             currentTry = gameObject.AddComponent<Try>();    
             currentTry.Initialise(suit, _targetSpawner.Target, _effectors.Keys.ToList());
             
@@ -82,6 +88,25 @@ namespace Assessment
         {
             _effectors[effector] = new List<Result>();
             effector.Initialise(this);
+        }
+        
+        // get results for a batch 
+        public List<Result> GetResult(int batchSize)
+        {
+            var res = _batchResults;        
+            _batchResults = new List<Result>();
+            return  res;
+            
+        }
+        
+        public void AddResult(Result result, EndEffector effector )
+        {
+            if (_effectors.ContainsKey(effector))
+            {
+                _effectors[effector].Add(result);
+            }
+            _batchResults.Add(result);
+            TargetsTapped++;
         }
 
         public void SaveBaselineRecord(string record)

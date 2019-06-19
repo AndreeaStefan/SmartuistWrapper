@@ -1,4 +1,5 @@
 using System.Linq;
+using Assessment;
 using Assets.Scripts.Mapping.Types.ChangeDetectors;
 using Assets.Scripts.Utils;
 using Effectors;
@@ -30,6 +31,8 @@ namespace Mapping
         public void SetMapping(MappingType mapping)
         {
             Mapping = mapping;
+            var assessor = FindObjectsOfType<Assessor>()[0];
+            var changeDetector2 = new LearnStaticChange(actor.BatchSize, assessor, gameObject.transform.localScale.y);
 
             switch (actor.academy.Mapping)
             {
@@ -46,12 +49,15 @@ namespace Mapping
                     mapping.SetBone(gameObject);
                     mapping.SetChangeDetector(changeDetector1);
                     break;
-                
-                case Mappings.Genetic:
-                    var secondBone = GameObject.FindGameObjectsWithTag("Mapper").First(g => g != gameObject);
-                    ((Genetic)mapping).SetSecondBone(secondBone);
-                    mapping.SetBone(gameObject);
-                    mapping.SetChangeDetector(null);
+
+                case Mappings.LearnStaticMapping:
+                    var mappers = FindObjectsOfType<Mapper>();
+                    foreach (var m in mappers)
+                    {
+                       mapping.SetBone(m.gameObject);
+                       mapping.SetChangeDetector(changeDetector2); 
+                    }
+                    
                     break;
             }
         }

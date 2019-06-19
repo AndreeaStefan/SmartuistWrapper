@@ -5,6 +5,6 @@
     {
         SteadyPointing = 0,
         WristMove,
-        Genetic,
+        LearnStaticMapping,
     }
 }

@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Assessment\Result.cs" />
     <Compile Include="Assets\Scripts\Assessment\Try.cs" />
     <Compile Include="Assets\Scripts\Bone.cs" />
+    <Compile Include="Assets\Scripts\Connection\DataForwarder.cs" />
     <Compile Include="Assets\Scripts\CreateAvatar\AvatarCreator.cs" />
     <Compile Include="Assets\Scripts\Effectors\EndEffector.cs" />
     <Compile Include="Assets\Scripts\Mapping\BasicBoneMapping.cs" />
@@ -77,9 +78,11 @@
     <Compile Include="Assets\Scripts\Mapping\IBonesMapping.cs" />
     <Compile Include="Assets\Scripts\Mapping\Mapper.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\ChangeDetectors\ChangeDetector.cs" />
+    <Compile Include="Assets\Scripts\Mapping\Types\ChangeDetectors\LearnStaticChange.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\ChangeDetectors\SteadyPointing.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\ChangeDetectors\WristMove.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\Genetic.cs" />
+    <Compile Include="Assets\Scripts\Mapping\Types\LearnStaticMapping.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\MappingType.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\Pointing.cs" />
     <Compile Include="Assets\Scripts\Pose.cs" />
