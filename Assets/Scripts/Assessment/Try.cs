@@ -84,7 +84,7 @@ namespace Assessment
             
             var line = $"{_playerName},{_id},{_position},{_scale},{_stopwatch.Elapsed.TotalMilliseconds}\n";
             _tapSW.Write(line);
-            
+              
             _stopwatch.Reset();
         }
 
