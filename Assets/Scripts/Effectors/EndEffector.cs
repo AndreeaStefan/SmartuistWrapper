@@ -37,7 +37,7 @@ namespace Effectors
             //Debug.Log( $"{name} triggered on Enter {other.name} at: {DateTime.Now}");
             if (other.transform.gameObject.CompareTag("Target"))
             {
-                Debug.Log($"{name} hit target");
+            //    Debug.Log($"{name} hit target");
                 if (actor.SpawnTargets != null)
                 {
 
@@ -51,7 +51,7 @@ namespace Effectors
 
                     _assessor.AddResult(result, this);
 
-                    Debug.Log($"{name} hit target,  size {result.targetSize}, depth {result.targetDepth}, time {result.movementTime}");
+                 //   Debug.Log($"{name} hit target,  size {result.targetSize}, depth {result.targetDepth}, time {result.movementTime}");
 
                     var newPos = actor.SpawnTargets.GetNewPosition();
                     var newScale = actor.SpawnTargets.GetNewScale();

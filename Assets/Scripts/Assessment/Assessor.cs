@@ -5,6 +5,7 @@ using Connection;
 using Effectors;
 using Rokoko.Smartsuit;
 using UnityEngine;
+using UnityEngine.Experimental.LowLevel;
 
 namespace Assessment
 {
@@ -23,6 +24,10 @@ namespace Assessment
         private int frame = 10;
         private DataForwarder _dataForwarder;
 
+        private int _currentBatch;
+        private List<Result> _batchResults;
+        public int TargetsTapped = 0;
+
         private void Start()
         {
 //            _dataForwarder = new DataForwarder();
@@ -33,6 +38,10 @@ namespace Assessment
             actor.GetNeutralPosition();
             baselineSW = new StreamWriter(effortBaselinePath, true);
             effortSW = new StreamWriter(effortPath, true);
+
+            _currentBatch = 0;
+            TargetsTapped = 0;
+            _batchResults = new List<Result>();
         }
 
         public void AddEffector(EndEffector effector)
@@ -47,6 +56,9 @@ namespace Assessment
             {
                 _effectors[effector].Add(result);
             }
+
+            _batchResults.Add(result);
+            TargetsTapped++;
         }
 
         public void SaveResult()
@@ -71,6 +83,15 @@ namespace Assessment
             file.Close();
         }
 
+        // get results for a batch 
+        public List<Result> GetResult(int batchSize)
+        {
+            var res = _batchResults;        
+            _batchResults = new List<Result>();
+            return  res;
+            
+        }
+
         private void Update()
         {
             if (frame == 0)
@@ -81,9 +102,7 @@ namespace Assessment
 //                _dataForwarder.Send(line);
                 effortSW.Write(line);
             }
-
             frame--;
-
         }
 
 

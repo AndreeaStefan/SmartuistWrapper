@@ -24,11 +24,17 @@ namespace Connection
                 Debug.Log("Could not connect");
             }
         }
+        }
 
         public void Send(string data)
         {
             var byData = System.Text.Encoding.UTF8.GetBytes(data);
             clientSocket.Send(byData);
+        }
+
+        public bool IsConnected()
+        {
+            return clientSocket.Connected;
         }
 
         public bool IsConnected()

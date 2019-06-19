@@ -7,6 +7,7 @@ TagManager:
   - EndEffector
   - Target
   - Hand
+  - ForeArm
   layers:
   - Default
   - TransparentFX
