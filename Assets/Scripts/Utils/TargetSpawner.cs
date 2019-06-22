@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Utils;
 using System;
+using Assessment;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -39,6 +40,8 @@ public class TargetSpawner : MonoBehaviour
           Target = Instantiate(TargetPrefab);
           Target.transform.parent = TargetContainer;
           Target.GetComponent<MeshRenderer>().enabled = false;
+
+            var result = new Result(index, _scales[scale], _targetDepths[index],0, "test", Player.transform, pos);
     }
 
     public Vector3 GetNewPosition()

@@ -350,6 +350,7 @@ MonoBehaviour:
   academy: {fileID: 378452904}
   assessor: {fileID: 0}
   mappers: []
+  PreviousPosition: {fileID: 0}
 --- !u!114 &90074320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -947,12 +948,13 @@ MonoBehaviour:
   Floor: {fileID: 391296706864554492}
   Player: {fileID: 141141345}
   TargetContainer: {fileID: 5512380207319471428}
-  TargetPrefab: {fileID: 5729906419821984780, guid: fa21b7eae08982c459f0e17f927dc462,
+  TargetPrefab: {fileID: 9107475234644251640, guid: 43fd488c5853caa469b1f69334c188cc,
     type: 3}
   Spiral: 0
   Height: 1.35
   Target: {fileID: 0}
   CurrentTargetID: 0
+  CurrentTarget: 0
 --- !u!1 &773698621
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,7 +1002,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!43 &1034733531
+--- !u!21 &896639275
+--- !u!43 &918453840
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1283,11 +1286,11 @@ PrefabInstance:
     - target: {fileID: 2348914, guid: 4d293c8e162f3874b982baadd71153d2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 1734476062}
+      objectReference: {fileID: 896639275}
     - target: {fileID: 3380982, guid: 4d293c8e162f3874b982baadd71153d2, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 1034733531}
+      objectReference: {fileID: 918453840}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d293c8e162f3874b982baadd71153d2, type: 3}
 --- !u!20 &1374782373 stripped

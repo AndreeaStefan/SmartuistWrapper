@@ -33,7 +33,14 @@ namespace Effectors
             if (other.transform.gameObject.CompareTag("Target"))
             {
                 _assessor.StopRepetition();
+                                            actor.academy.Mapping.ToString(),
+                                            actor.PreviousPosition,
+                                            other.transform.position);
+
+                    actor.PreviousPosition = actor.GetRoot();
             }
+
+
         }
     }
 }
