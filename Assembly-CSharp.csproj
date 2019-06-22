@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\Assessment\FrameResult.cs" />
     <Compile Include="Assets\Scripts\Assessment\Lesson.cs" />
     <Compile Include="Assets\Scripts\Assessment\RepetitionResult.cs" />
+    <Compile Include="Assets\Scripts\Assessment\Target.cs" />
     <Compile Include="Assets\Scripts\Bone.cs" />
     <Compile Include="Assets\Scripts\Connection\DataForwarder.cs" />
     <Compile Include="Assets\Scripts\CreateAvatar\AvatarCreator.cs" />

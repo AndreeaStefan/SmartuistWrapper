@@ -14,17 +14,14 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
     {
         private Assessor _assessor;
         private float _currentScale;
-
-        private float _increaseScaleRate;
-        private float _decreaseScaleRate;
         private float _learningRate;
-        
 
         private float _previousResult;
         private bool _firstBatch;
         private float _previousDelta;
         private float _noSignChanges;
         private float _signOscillations;
+        private int _lesson;
 
         private StreamWriter writer; 
 
@@ -32,16 +29,12 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
         {
             _assessor = assessor;
             _currentScale = scale;
-
-            _increaseScaleRate = 0.5f;
-            _decreaseScaleRate = 0.05f;
-
             _firstBatch = true;
             _noSignChanges = 0;
             _signOscillations = 0;
-            _learningRate = 0.3f;
-
-            var file = new FileStream(@"deltas.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+            _learningRate = 0.5f;
+            _lesson = 0;
+            var file = new FileStream(@"deltas.txt", FileMode.Append, FileAccess.Write, FileShare.Write);
             writer = new StreamWriter(file);
             writer.WriteLine("Start");
             writer.Flush();
@@ -49,9 +42,9 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
 
         public float IsChanging()
         {
-            if (_assessor.targetsTapped == _assessor.BatchSize  )
+            if (_assessor.CurrentLessonNr != _lesson)
             {
-                _assessor.targetsTapped = 0;
+                _lesson = _assessor.CurrentLessonNr;
                 var nextScale = GetNextScale();
                 UnityEngine.Debug.Log("Next Scale" + nextScale);
                 return nextScale;
@@ -76,11 +69,11 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
                 }
                 else
                 {
-                    var delta = (_previousResult - currentResult) / 2;
-                    nextScale = _currentScale + _learningRate * Math.Sign(delta) * Normalize(Math.Abs(delta), 0,2000, 1, 3);
+                    var delta = (currentResult - _previousResult) / 2; // throughput should increase
+                    nextScale = _currentScale + _learningRate * Math.Sign(delta) ;
                     _previousResult = currentResult;
                     _currentScale = nextScale;
-                    UnityEngine.Debug.Log("Delta" + delta + "Norm" + Normalize(Math.Abs(delta), 0,2000, 1, 3));
+                    UnityEngine.Debug.Log("Delta" + delta + "Norm" + delta);
                     writer.WriteLine(delta);
                     writer.WriteLine("Scale:" + nextScale);
                     writer.Flush();
@@ -140,13 +133,15 @@ namespace Assets.Scripts.Mapping.Types.ChangeDetectors
         {
 
             var sum = 0f;
+            var sumTh = 0f;
 
             foreach (var res in results)
             {
-                sum += res.MovementTime;
+                sum  += res.MovementTime;
+                sumTh += 1000 * res.DifficultyIndex / res.MovementTime;
             }
 
-            return sum / results.Count;
+            return sumTh / results.Count;
         }
 
         private float Normalize(float val, float valmin, float valmax, float min, float max)
