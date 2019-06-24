@@ -23,7 +23,6 @@ namespace Assessment
         private StreamWriter _tapSW;
 
         private AnhaActor _player;
-        private SmartsuitActor suit;
         private Academy _academy;
         private TargetSpawner _targetSpawner;
         private Text _text;
@@ -41,12 +40,15 @@ namespace Assessment
         private List<RepetitionResult> _currentResults;
         private bool _startedCounting;
         private bool _gotNeutral;
+        private bool _alreadyStopped;
 
         private Target _currTarget;
 
 
         public Camera camera;
 
+        private GradientDescent _gradientDescent;
+        public float Scale;
 
         private void Start()
         {
@@ -54,23 +56,24 @@ namespace Assessment
             _academy = FindObjectOfType<Academy>();
             _playerName = _academy.PlayerIndex;
             _targetSpawner = FindObjectOfType<TargetSpawner>();
-            var actor = FindObjectsOfType<AnhaActor>().First(a => a.name == "CURRENT");
-            _player = actor;
+            _player = FindObjectsOfType<AnhaActor>().First(a => a.name == "CURRENT");
             _tapSW = new StreamWriter(_resultPath, true);
-            suit = actor.actor;
+       
             // todo kill it when we won't need the neutral position
             _gotNeutral = true;
 //            actor.GetNeutralPosition();
             CurrentLessonNr = 0;
-            _currentRepetition = 0;
+            _currentRepetition = -1;
             _previousBatchResults = new List<RepetitionResult>();
             _currentResults = new List<RepetitionResult>();
             currentLesson = gameObject.AddComponent<Lesson>();    
-            currentLesson.Initialise(suit, _targetSpawner.Target, _effectors, CurrentLessonNr, _currentRepetition);
+            currentLesson.Initialise(_player, _targetSpawner.Target, _effectors, CurrentLessonNr, _currentRepetition);
             
             _text = FindObjectOfType<Text>();
             _text = FindObjectOfType<Text>();
             _facingChecker = new FacingChecker(camera, GameObject.FindWithTag("Start"));
+            Scale = 1;
+            _gradientDescent = new GradientDescent(1, BatchSize);
         }
 
         private void Update()
@@ -130,6 +133,7 @@ namespace Assessment
 
         public void StartNewRepetition()
         {
+            _alreadyStopped = false;
             _targetSpawner.GetNewPosition();
            _targetSpawner.GetNewScale();
            _currTarget = _targetSpawner.CurrentTarget;
@@ -141,25 +145,35 @@ namespace Assessment
 
         public void StopRepetition()
         {
-            _stopwatch.Stop();
-            currentLesson.StopTry();
-            var result = new RepetitionResult(_playerName, CurrentLessonNr, _currentRepetition, _targetSpawner.CurrentTarget.ID,
-                _targetSpawner.CurrentTarget.Scale, _targetSpawner.CurrentTarget.Position, _player.PreviousPosition.position, _targetSpawner.CurrentTarget.Angle, _stopwatch.ElapsedMilliseconds);
-            _currentResults.Add(result);
-            
-            if (BatchSize == _currentRepetition)
+            if (!_alreadyStopped)
             {
-                _currentRepetition = 0;
-                CurrentLessonNr++;
+                _alreadyStopped = true;
 
-                _previousBatchResults = _currentResults;
-                _currentResults = new List<RepetitionResult>();
+                _stopwatch.Stop();
+                currentLesson.StopTry();
+
+
+                if (BatchSize == _currentRepetition)
+                {
+                    _currentRepetition = 0;
+                    CurrentLessonNr++;
+                    Scale = _gradientDescent.GetNextScale(_currentResults);
+                    _previousBatchResults = _currentResults;
+                    _currentResults = new List<RepetitionResult>();
+                }
+
+                var result = new RepetitionResult(_playerName, CurrentLessonNr, _currentRepetition,
+                    _targetSpawner.CurrentTarget.ID,
+                    _targetSpawner.CurrentTarget.Scale, _targetSpawner.CurrentTarget.Position,
+                    _player.PreviousPosition.position, _targetSpawner.CurrentTarget.Angle,
+                    _stopwatch.ElapsedMilliseconds);
+                _currentResults.Add(result);
+
+                _tapSW.WriteLine(result.ToString() + "," + Scale + "," + _gradientDescent.Delta);
+                _tapSW.Flush();
+                _countdown = 3;
+                _stopwatch.Reset();
             }
-            
-            _tapSW.WriteLine(result.ToString());
-            _tapSW.Flush();
-            _countdown = 3;
-            _stopwatch.Reset();
         }
         
         IEnumerator LoseTime()

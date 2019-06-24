@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\Assessment\Assessor.cs" />
     <Compile Include="Assets\Scripts\Assessment\FacingChecker.cs" />
     <Compile Include="Assets\Scripts\Assessment\FrameResult.cs" />
+    <Compile Include="Assets\Scripts\Assessment\GradientDescent.cs" />
     <Compile Include="Assets\Scripts\Assessment\Lesson.cs" />
     <Compile Include="Assets\Scripts\Assessment\RepetitionResult.cs" />
     <Compile Include="Assets\Scripts\Assessment\Target.cs" />

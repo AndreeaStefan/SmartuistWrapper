@@ -18,7 +18,7 @@ namespace Assessment
         private Vector3 _position;
         private Vector3 _scale;
         private StreamWriter _writer;
-        private SmartsuitActor _suit;
+        private AnhaActor _suit;
         private GameObject _target;
         private EndEffector _effectorLeft;
         private EndEffector _effectorRight;
@@ -30,7 +30,7 @@ namespace Assessment
         private int _lesson;
 
 
-        public void Initialise(SmartsuitActor sa, GameObject target, List<EndEffector> effectors, int lesson, int repetition)
+        public void Initialise(AnhaActor sa, GameObject target, List<EndEffector> effectors, int lesson, int repetition)
         {
             _effortSW = new StreamWriter(_effortPath, true);
             _effectorLeft = effectors.First(e => e.name.Contains("Left"));

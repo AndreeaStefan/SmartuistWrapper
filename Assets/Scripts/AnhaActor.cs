@@ -19,7 +19,7 @@ public class AnhaActor : MonoBehaviour
     public BasicBoneMapping bonesType;
     public Academy academy;
 
-    private List<GameObject> _bones;
+    [HideInInspector] public List<GameObject> Bones;
     private Quaternion[] _poseOffsets;
     private Pose _pose;
     private Quaternion[] _quaternionArray;
@@ -39,12 +39,12 @@ public class AnhaActor : MonoBehaviour
         if (assessor == null) assessor = FindObjectOfType<Assessor>();
         if (mappers == null) mappers = new List<Mapper>();
         _text = FindObjectOfType<Text>();
-        _bones = bonesType.Bones();
+        Bones = bonesType.Bones();
         _initialRot = new Dictionary<GameObject, Quaternion>();
         InitialisePose();
         transform.position = actor.transform.position;
 
-        PreviousPosition = _bones[bonesType.RootBone()].transform;
+        PreviousPosition = Bones[bonesType.RootBone()].transform;
     }
 
     private void InitialisePose()
@@ -68,7 +68,7 @@ public class AnhaActor : MonoBehaviour
 
     public Transform GetRoot()
     {
-        return _bones[bonesType.RootBone()].transform;
+        return Bones[bonesType.RootBone()].transform;
     }
 
     private void Move()
@@ -83,7 +83,7 @@ public class AnhaActor : MonoBehaviour
             for (var index = 0; index < _poseOffsets.Length; ++index)
             {
                 var rr = rotation * actor.CurrentState.sensors[index].UnityQuaternion;
-                _initialRot.Add(_bones[index], rr * _poseOffsets[index]);
+                _initialRot.Add(Bones[index], rr * _poseOffsets[index]);
             }
 
             count++;
@@ -105,16 +105,16 @@ public class AnhaActor : MonoBehaviour
 
         for (var index = 0; index < _poseOffsets.Length; ++index)
         {
-            if (_bones[index] != null && index < _quaternionArray.Length)
+            if (Bones[index] != null && index < _quaternionArray.Length)
             {
-                _bones[index].transform.rotation = _quaternionArray[index] * _poseOffsets[index];
+                Bones[index].transform.rotation = _quaternionArray[index] * _poseOffsets[index];
             }
         }
 
 
         var vector3 = transform.TransformPoint(actor.CurrentState.sensors[0].UnityPosition);
-        if (!float.IsNaN(vector3.x) && !float.IsNaN(vector3.y) && !float.IsNaN(vector3.z) && (bool) _bones[bonesType.RootBone()])
-            _bones[bonesType.RootBone()].transform.position = vector3;
+        if (!float.IsNaN(vector3.x) && !float.IsNaN(vector3.y) && !float.IsNaN(vector3.z) && (bool) Bones[bonesType.RootBone()])
+            Bones[bonesType.RootBone()].transform.position = vector3;
     }
 
     private void MoveSection(List<int> indices, float extX, float extY, float extZ)
@@ -124,7 +124,7 @@ public class AnhaActor : MonoBehaviour
         {
             var index = indices[i];
             // TODO: here introduce index change to have sensor mapped onto different body part
-            if ( _bones[index] != null && index < _quaternionArray.Length)
+            if ( Bones[index] != null && index < _quaternionArray.Length)
             {
                 var rotFromTheSuit = rotation * actor.CurrentState.sensors[index].UnityQuaternion ;
 
@@ -133,7 +133,7 @@ public class AnhaActor : MonoBehaviour
                 var rotY = euler.y + Mathf.Sign(euler.y) * extY; //Mathf.Lerp(euler.y, euler.y * extY, Time.time * 0.1f);
                 var rotZ = euler.z + Mathf.Sign(euler.z) * extZ;
                 var nextRot = Quaternion.Euler(rotX, rotY, rotZ);
-                var angle = Math.Abs(Quaternion.Angle(_initialRot[_bones[index]], rotFromTheSuit));
+                var angle = Math.Abs(Quaternion.Angle(_initialRot[Bones[index]], rotFromTheSuit));
 
                 _quaternionArray[index] = rotFromTheSuit;
             }

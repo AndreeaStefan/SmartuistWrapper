@@ -19,6 +19,7 @@ namespace Assessment
         public long MovementTime;
         public float DifficultyIndex;
         public float TargetAngle;
+        public float Throughput;
 
         public RepetitionResult(string player, int lesson, int repetition, int targetIndex, Vector3 targetSize, Vector3 targetPosition, Vector3 actorPosition, float angle, long time)
         {
@@ -31,12 +32,14 @@ namespace Assessment
             MovementTime = time;
             ActorPosition = actorPosition;
             DifficultyIndex = ComputeDifficultyIndex();
+            if(MovementTime != 0)
+                Throughput = 1000 * DifficultyIndex / MovementTime;
             TargetAngle = angle;
         }
 
         public override string ToString()
         {
-            return $"{Player},{Lesson},{Repetition},{TargetIndex},{TargetSize},{TargetPosition},{MovementTime}";
+            return $"{Player},{Lesson},{Repetition},{TargetIndex},{TargetSize},{TargetPosition},{MovementTime}, {DifficultyIndex}, {Throughput}";
         }
 
         private float ComputeDifficultyIndex()

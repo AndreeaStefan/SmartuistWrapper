@@ -26,10 +26,10 @@ namespace Assessment
         public DateTime Time;
 
 
-        public static FrameResult GetNewFrame(SmartsuitActor actor, Vector3 targetPosition, EndEffector eL, EndEffector eR,
+        public static FrameResult GetNewFrame(AnhaActor actor, Vector3 targetPosition, EndEffector eL, EndEffector eR,
             string player, int lesson, int repetition)
         {
-            var positions = actor.CurrentState.sensors.Select(s => s.UnityPosition).ToList();
+            var positions = actor.Bones.Select(s => s.transform.position).ToList();
             return new FrameResult
             {
                 PlayerName = player,
@@ -53,7 +53,7 @@ namespace Assessment
         public override string ToString()
         {
             return
-                $"{PlayerName},{Lesson},{Repetition},{DistanceFromMain},{DistanceFromLeftE},{DistanceFromRightE},{V3ToS(PositionMain)},{V3ToS(PositionLeftHand)},{V3ToS(PositionLeftArm)},{V3ToS(PositionRightHand)},{V3ToS(PositionRightArm)},{V3ToS(PositionLeftFoot)},{V3ToS(PositionRightFoot)},,{V3ToS(PositionRightArm)},{Time.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}";
+                $"{PlayerName},{Lesson},{Repetition},{DistanceFromMain},{DistanceFromLeftE},{DistanceFromRightE},{V3ToS(PositionMain)},{V3ToS(PositionLeftHand)},{V3ToS(PositionLeftArm)},{V3ToS(PositionRightHand)},{V3ToS(PositionRightArm)},{V3ToS(PositionLeftFoot)},{V3ToS(PositionRightFoot)},{Time.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}";
         }
 
         private string V3ToS(Vector3 v)
