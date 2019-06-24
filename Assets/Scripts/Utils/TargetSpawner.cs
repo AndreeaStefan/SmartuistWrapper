@@ -1,9 +1,8 @@
-﻿using Assets.Scripts.Utils;
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Serialization;
-using Random = UnityEngine.Random;
-
+using Assets.Scripts;
+using Assessment;
+using Assets.Scripts.Assessment;
 
 public class TargetSpawner : MonoBehaviour
 {
@@ -21,9 +20,9 @@ public class TargetSpawner : MonoBehaviour
     [FormerlySerializedAs("_target")] public GameObject Target;
     [FormerlySerializedAs("CurrentTarget")] [HideInInspector] public int CurrentTargetID;
 
-    private float[] _targetDepths;
-    private Vector3[] _targetPositions;
-    
+    public Target[] Targets;
+    public Target CurrentTarget;
+
     private System.Random _randomGenerator;
 
 
@@ -36,22 +35,26 @@ public class TargetSpawner : MonoBehaviour
         else
             GenerateTargetsDifferentDepths();
 
-          Target = Instantiate(TargetPrefab);
-          Target.transform.parent = TargetContainer;
-          Target.GetComponent<MeshRenderer>().enabled = false;
+        CurrentTarget = new Target();
+        Target = Instantiate(TargetPrefab);
+        Target.transform.parent = TargetContainer;
+        Target.GetComponent<MeshRenderer>().enabled = false;
+
     }
 
     public Vector3 GetNewPosition()
     {
-        var index = _randomGenerator.Next(0, _targetPositions.Length);
-        CurrentTargetID = index;
-        return _targetPositions[index];
+        var index = _randomGenerator.Next(0, Targets.Length);
+        CurrentTarget = Targets[index];
+        return CurrentTarget.Position;
     }
 
     public Vector3 GetNewScale()
     {
         var index = _randomGenerator.Next(0, _scales.Length);
-        return new Vector3(_scales[index], _scales[index], _scales[index]);
+        var scale = new  Vector3(_scales[index], _scales[index], _scales[index]);
+        CurrentTarget.Scale = scale;
+        return scale;
     }
 
     /// <summary>
@@ -61,8 +64,8 @@ public class TargetSpawner : MonoBehaviour
     {
         var targetsPerCircle = 6;
         var angle = 360 / targetsPerCircle;
-        _targetPositions = new Vector3[_depths.Length * targetsPerCircle];
-        _targetDepths = new float[_depths.Length * targetsPerCircle];
+        Targets = new Target[_depths.Length * targetsPerCircle];
+      
         var count = 0;
         foreach (var d in _depths)
         {
@@ -72,8 +75,14 @@ public class TargetSpawner : MonoBehaviour
             {
                 var a = i * angle;
                 var pos = RandomCircle(center, _radius, a);
-                _targetPositions[count] = pos;
-                _targetDepths[count] = d;
+                Targets[count] = new Target
+                {
+                    Angle = a ,
+                    Depth = d, 
+                    Position = pos,
+                    ID = count,
+                };
+
                 count++;
             }
         }
@@ -85,8 +94,6 @@ public class TargetSpawner : MonoBehaviour
     private void GenerateTargetsSpiral()
     {
         var nrTargets = 18;
-        _targetPositions = new Vector3[_depths.Length * nrTargets];
-        _targetDepths = new float[_depths.Length * nrTargets];
         _radius = 0.3f; // radius of the initial circle - increases after a full circle is done 
         var angle = 360 / 6; //targets are placed at angles: 0, 60, 120....
         var count = 0;
@@ -107,8 +114,13 @@ public class TargetSpawner : MonoBehaviour
                 _radius += 0.2f;
             }
             var pos = RandomCircle(center, _radius, a);
-            _targetPositions[count] = pos;
-            _targetDepths[count] = d;
+            Targets[count] = new Target
+            {
+                Angle = a,
+                Depth = d,
+                Position = pos,
+                ID = count,
+            };
             count++;
         }
 

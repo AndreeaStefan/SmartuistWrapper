@@ -6,11 +6,11 @@ namespace Assessment
 {
     public class FacingChecker
     {
-        private SmartsuitActor _suit;
+        private Camera _suit;
         private GameObject _startArea;
         private Vector3 _forward;
 
-        public FacingChecker(SmartsuitActor suit, GameObject startArea)
+        public FacingChecker(Camera suit, GameObject startArea)
         {
             _suit = suit;
             _startArea = startArea;

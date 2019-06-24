@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Assets.Scripts;
+using Assets.Scripts.Assessment;
 using Effectors;
 using Rokoko.Smartsuit;
 using UnityEngine;
@@ -19,7 +21,8 @@ namespace Assessment
         private StreamWriter baselineSW;
         private string _resultPath = "tapResult.csv";
         private StreamWriter _tapSW;
-        
+
+        private AnhaActor _player;
         private SmartsuitActor suit;
         private Academy _academy;
         private TargetSpawner _targetSpawner;
@@ -32,19 +35,17 @@ namespace Assessment
         private Stopwatch _stopwatch;
 
         [Range(1, 15)] public int BatchSize = 5;
-        private int _currentLesson;
+        public int CurrentLessonNr;
         private int _currentRepetition;
         private List<RepetitionResult> _previousBatchResults;
         private List<RepetitionResult> _currentResults;
-        [FormerlySerializedAs("TargetsTapped")] public int targetsTapped;
-        
-
         private bool _startedCounting;
         private bool _gotNeutral;
 
-        private int _currTargetId;
-        private Vector3 _currTargetPos;
-        private Vector3 _currTargetScale;
+        private Target _currTarget;
+
+
+        public Camera camera;
 
 
         private void Start()
@@ -54,20 +55,22 @@ namespace Assessment
             _playerName = _academy.PlayerIndex;
             _targetSpawner = FindObjectOfType<TargetSpawner>();
             var actor = FindObjectsOfType<AnhaActor>().First(a => a.name == "CURRENT");
+            _player = actor;
             _tapSW = new StreamWriter(_resultPath, true);
             suit = actor.actor;
             // todo kill it when we won't need the neutral position
             _gotNeutral = true;
 //            actor.GetNeutralPosition();
-            _currentLesson = 0;
+            CurrentLessonNr = 0;
             _currentRepetition = 0;
             _previousBatchResults = new List<RepetitionResult>();
             _currentResults = new List<RepetitionResult>();
             currentLesson = gameObject.AddComponent<Lesson>();    
-            currentLesson.Initialise(suit, _targetSpawner.Target, _effectors, _currentLesson, _currentRepetition);
+            currentLesson.Initialise(suit, _targetSpawner.Target, _effectors, CurrentLessonNr, _currentRepetition);
             
             _text = FindObjectOfType<Text>();
-            _facingChecker = new FacingChecker(suit, GameObject.FindWithTag("Start"));
+            _text = FindObjectOfType<Text>();
+            _facingChecker = new FacingChecker(camera, GameObject.FindWithTag("Start"));
         }
 
         private void Update()
@@ -89,7 +92,8 @@ namespace Assessment
                         _startedCounting = true;
                     }
                 }
-                _text.text = "" + _countdown;
+                else
+                    _text.text = "" + _countdown;
                 if(_countdown == 0)
                 {
                     StartNewRepetition();
@@ -126,11 +130,12 @@ namespace Assessment
 
         public void StartNewRepetition()
         {
-            _currTargetPos = _targetSpawner.GetNewPosition();
-            _currTargetScale = _targetSpawner.GetNewScale();
-            _currTargetId = _targetSpawner.CurrentTargetID;
-            _currentRepetition++;
-            currentLesson.StartNewTry(_playerName, _currentLesson, _currentRepetition, _currTargetPos, _currTargetScale);
+            _targetSpawner.GetNewPosition();
+           _targetSpawner.GetNewScale();
+           _currTarget = _targetSpawner.CurrentTarget;
+           _currentRepetition++;
+           
+            currentLesson.StartNewTry(_playerName, CurrentLessonNr, _currentRepetition, _currTarget.Position, _currTarget.Scale);
             _stopwatch.Start();    
         }
 
@@ -138,19 +143,21 @@ namespace Assessment
         {
             _stopwatch.Stop();
             currentLesson.StopTry();
-            var result = new RepetitionResult(_playerName, _currentLesson, _currentRepetition, _currTargetId,
-                _currTargetScale, _currTargetPos, _stopwatch.ElapsedMilliseconds);
+            var result = new RepetitionResult(_playerName, CurrentLessonNr, _currentRepetition, _targetSpawner.CurrentTarget.ID,
+                _targetSpawner.CurrentTarget.Scale, _targetSpawner.CurrentTarget.Position, _player.PreviousPosition.position, _targetSpawner.CurrentTarget.Angle, _stopwatch.ElapsedMilliseconds);
             _currentResults.Add(result);
             
             if (BatchSize == _currentRepetition)
             {
                 _currentRepetition = 0;
-                _currentLesson++;
+                CurrentLessonNr++;
+
                 _previousBatchResults = _currentResults;
                 _currentResults = new List<RepetitionResult>();
             }
             
-            _tapSW.Write(result.ToString());
+            _tapSW.WriteLine(result.ToString());
+            _tapSW.Flush();
             _countdown = 3;
             _stopwatch.Reset();
         }
