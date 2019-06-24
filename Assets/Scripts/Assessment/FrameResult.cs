@@ -52,6 +52,7 @@ namespace Assessment
 
         public override string ToString()
         {
+            // total size: 28 entries. 6 - 26 - vectors. 27 - time
             return
                 $"{PlayerName},{Lesson},{Repetition},{DistanceFromMain},{DistanceFromLeftE},{DistanceFromRightE},{V3ToS(PositionMain)},{V3ToS(PositionLeftHand)},{V3ToS(PositionLeftArm)},{V3ToS(PositionRightHand)},{V3ToS(PositionRightArm)},{V3ToS(PositionLeftFoot)},{V3ToS(PositionRightFoot)},{Time.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}";
         }
