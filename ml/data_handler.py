@@ -1,12 +1,11 @@
 import logging
 from threading import Thread
-from queue import Queue
+from queue import Queue, Empty
 import time
-import numpy as np
 
 
 def obtainData(file, queue):
-    file.seek(0, 2)
+    # file.seek(0, 2)
     while True:
         last_pos = file.tell()
         line = file.readline()
@@ -16,7 +15,9 @@ def obtainData(file, queue):
         elif not line.endswith('\n'):
             file.seek(last_pos)
         else:
-            queue.put(line[:-1].split(","))
+            splitLine = line[:-1].split(",")
+            if len(splitLine) == 28:
+                queue.put(splitLine)
 
 
 
@@ -30,7 +31,9 @@ class DataHandler:
         thread.start()
 
     def getData(self):
-
-        return self.queue.get()
+        try:
+            return self.queue.get(block=False)
+        except Empty:
+            return []
 
 

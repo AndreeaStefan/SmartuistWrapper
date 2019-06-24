@@ -3,7 +3,7 @@ from multiprocessing import freeze_support
 import time
 from utils.concurrent_file_logger_handler import ConcurrentFileHandler
 from connection import ConnectionHandler
-from teacher import Teacher
+from coach import Coach
 
 host = ""
 port = 7000
@@ -29,8 +29,8 @@ def main():
     logger.addHandler(debug_handler)
     logger.addHandler(info_handler)
 
-    teacher = Teacher("../effortResult.csv", "../lengths.txt", 0.2)
-    teacher.teach()
+    teacher = Coach("../effortResult.csv", "../effortComputed.csv")
+    teacher.assess()
 
 
 if __name__ == '__main__':
