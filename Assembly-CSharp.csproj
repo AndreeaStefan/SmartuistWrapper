@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\Academy.cs" />
     <Compile Include="Assets\Scripts\AnhaActor.cs" />
     <Compile Include="Assets\Scripts\Assessment\Assessor.cs" />
+    <Compile Include="Assets\Scripts\Assessment\EffortResult.cs" />
     <Compile Include="Assets\Scripts\Assessment\FacingChecker.cs" />
     <Compile Include="Assets\Scripts\Assessment\FrameResult.cs" />
     <Compile Include="Assets\Scripts\Assessment\GradientDescent.cs" />

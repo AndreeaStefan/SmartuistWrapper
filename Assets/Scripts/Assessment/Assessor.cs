@@ -29,12 +29,10 @@ namespace Assessment
         private FacingChecker _facingChecker;
 
         private string _playerName;
-        [FormerlySerializedAs("currentTry")] public Lesson currentLesson;
+       
         private int _countdown = 3;
         private Stopwatch _stopwatch;
-
-        [Range(1, 15)] public int BatchSize = 5;
-        public int CurrentLessonNr;
+        
         private int _currentRepetition;
         private List<RepetitionResult> _previousBatchResults;
         private List<RepetitionResult> _currentResults;
@@ -42,13 +40,24 @@ namespace Assessment
         private bool _gotNeutral;
         private bool _alreadyStopped;
 
+
         private Target _currTarget;
-
-
-        public Camera camera;
-
         private GradientDescent _gradientDescent;
+        private EffortResult _effortResult;
+
+        [FormerlySerializedAs("currentTry")] public Lesson currentLesson;
+        [Range(1, 15)] public int BatchSize = 5;
+        public int CurrentLessonNr;
+        public Camera camera;
+        public float ParticipantWeight;
+        public bool Male;
+        
         public float Scale;
+        
+        private void Awake()
+        {
+            _effortResult = new EffortResult(ParticipantWeight, Male);
+        }
 
         private void Start()
         {
@@ -63,7 +72,7 @@ namespace Assessment
             _gotNeutral = true;
 //            actor.GetNeutralPosition();
             CurrentLessonNr = 0;
-            _currentRepetition = -1;
+            _currentRepetition = 0;
             _previousBatchResults = new List<RepetitionResult>();
             _currentResults = new List<RepetitionResult>();
             currentLesson = gameObject.AddComponent<Lesson>();    
@@ -73,7 +82,7 @@ namespace Assessment
             _text = FindObjectOfType<Text>();
             _facingChecker = new FacingChecker(camera, GameObject.FindWithTag("Start"));
             Scale = 1;
-            _gradientDescent = new GradientDescent(1, BatchSize);
+            _gradientDescent = new GradientDescent(1, BatchSize);      
         }
 
         private void Update()
@@ -118,7 +127,7 @@ namespace Assessment
         {
             return  _previousBatchResults;
         }
-
+        
         public void SaveBaselineRecord(string record)
         {
             baselineSW.WriteLine($"{_playerName},{record}");
@@ -152,25 +161,33 @@ namespace Assessment
                 _stopwatch.Stop();
                 currentLesson.StopTry();
 
+                var result = new RepetitionResult(_playerName, CurrentLessonNr, _currentRepetition,
+                    _targetSpawner.CurrentTarget.ID,
+                    _targetSpawner.CurrentTarget.Scale, _targetSpawner.CurrentTarget.Position,
+                    _player.PreviousPosition.position, _targetSpawner.CurrentTarget.Angle,
+                    _stopwatch.ElapsedMilliseconds);
+
+                _tapSW.WriteLine(result.ToString() + "," + Scale + "," + _gradientDescent.Delta);
+                _tapSW.Flush();
+
+                _currentResults.Add(result);
 
                 if (BatchSize == _currentRepetition)
                 {
                     _currentRepetition = 0;
                     CurrentLessonNr++;
                     Scale = _gradientDescent.GetNextScale(_currentResults);
+
+
                     _previousBatchResults = _currentResults;
                     _currentResults = new List<RepetitionResult>();
+
+                    var effortResults = _effortResult.GetNewResult();
+
+
                 }
 
-                var result = new RepetitionResult(_playerName, CurrentLessonNr, _currentRepetition,
-                    _targetSpawner.CurrentTarget.ID,
-                    _targetSpawner.CurrentTarget.Scale, _targetSpawner.CurrentTarget.Position,
-                    _player.PreviousPosition.position, _targetSpawner.CurrentTarget.Angle,
-                    _stopwatch.ElapsedMilliseconds);
-                _currentResults.Add(result);
-
-                _tapSW.WriteLine(result.ToString() + "," + Scale + "," + _gradientDescent.Delta);
-                _tapSW.Flush();
+               
                 _countdown = 3;
                 _stopwatch.Reset();
             }
@@ -191,4 +208,5 @@ namespace Assessment
         }
     }
     
+
 }

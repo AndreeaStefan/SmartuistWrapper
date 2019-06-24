@@ -20,8 +20,11 @@ namespace Assessment
         public float DifficultyIndex;
         public float TargetAngle;
         public float Throughput;
+        public float[] EffortPerBodyPart;
 
-        public RepetitionResult(string player, int lesson, int repetition, int targetIndex, Vector3 targetSize, Vector3 targetPosition, Vector3 actorPosition, float angle, long time)
+        public RepetitionResult(string player, int lesson, int repetition, int targetIndex,
+            Vector3 targetSize, Vector3 targetPosition, Vector3 actorPosition,
+            float angle, long time)
         {
             Player = player;
             Lesson = lesson;
@@ -35,6 +38,7 @@ namespace Assessment
             if(MovementTime != 0)
                 Throughput = 1000 * DifficultyIndex / MovementTime;
             TargetAngle = angle;
+
         }
 
         public override string ToString()

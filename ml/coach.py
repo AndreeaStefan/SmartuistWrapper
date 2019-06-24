@@ -29,7 +29,7 @@ class Coach:
     def __init__(self, fileName, resultFileName):
         self.logger = logging.getLogger("anha")
         self.dataHandler = DataHandler(fileName)
-        self.resultFile = open(resultFileName, "a")
+        self.resultFile = open(resultFileName, "a+")
         self.current = []
         self.forEffort = []
         self.distances = []

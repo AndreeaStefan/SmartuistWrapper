@@ -5,7 +5,7 @@ import time
 
 
 def obtainData(file, queue):
-    # file.seek(0, 2)
+    file.seek(0, 2)
     while True:
         last_pos = file.tell()
         line = file.readline()
