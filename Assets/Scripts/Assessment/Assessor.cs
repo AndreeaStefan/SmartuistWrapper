@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Assessment.Results;
 using Assets.Scripts;
 using Assets.Scripts.Assessment;
 using Effectors;
@@ -43,7 +44,6 @@ namespace Assessment
 
         private Target _currTarget;
         private GradientDescent _gradientDescent;
-        private EffortResult _effortResult;
 
         [FormerlySerializedAs("currentTry")] public Lesson currentLesson;
         [Range(1, 15)] public int BatchSize = 5;
@@ -53,14 +53,10 @@ namespace Assessment
         public bool Male;
         
         public float Scale;
-        
-        private void Awake()
-        {
-            _effortResult = new EffortResult(ParticipantWeight, Male);
-        }
 
         private void Start()
         {
+            EffortResult.SetStats(ParticipantWeight, Male);
             _stopwatch = new Stopwatch();
             _academy = FindObjectOfType<Academy>();
             _playerName = _academy.PlayerIndex;
@@ -72,7 +68,7 @@ namespace Assessment
             _gotNeutral = true;
 //            actor.GetNeutralPosition();
             CurrentLessonNr = 0;
-            _currentRepetition = 0;
+            _currentRepetition = -1;
             _previousBatchResults = new List<RepetitionResult>();
             _currentResults = new List<RepetitionResult>();
             currentLesson = gameObject.AddComponent<Lesson>();    
@@ -122,11 +118,6 @@ namespace Assessment
             effector.Initialise(this);
         }
         
-        // get results for a batch 
-        public List<RepetitionResult> GetBatchResult()
-        {
-            return  _previousBatchResults;
-        }
         
         public void SaveBaselineRecord(string record)
         {
@@ -165,9 +156,9 @@ namespace Assessment
                     _targetSpawner.CurrentTarget.ID,
                     _targetSpawner.CurrentTarget.Scale, _targetSpawner.CurrentTarget.Position,
                     _player.PreviousPosition.position, _targetSpawner.CurrentTarget.Angle,
-                    _stopwatch.ElapsedMilliseconds);
+                    _stopwatch.ElapsedMilliseconds, EffortResult.GetNewResult());
 
-                _tapSW.WriteLine(result.ToString() + "," + Scale + "," + _gradientDescent.Delta);
+                _tapSW.WriteLine(result + "," + Scale + "," + _gradientDescent.Delta);
                 _tapSW.Flush();
 
                 _currentResults.Add(result);
@@ -181,13 +172,7 @@ namespace Assessment
 
                     _previousBatchResults = _currentResults;
                     _currentResults = new List<RepetitionResult>();
-
-                    var effortResults = _effortResult.GetNewResult();
-
-
                 }
-
-               
                 _countdown = 3;
                 _stopwatch.Reset();
             }
