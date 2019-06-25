@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Assessment.Results;
 using Effectors;
 using Rokoko.Smartsuit;
 using UnityEngine;
@@ -48,8 +49,12 @@ namespace Assessment
             if(IsRunning && _everyFrame == 0)
             {
                 _everyFrame = 10;
-                _effortSW.WriteLine(FrameResult.GetNewFrame(_suit, _position, _effectorLeft, _effectorRight, _playerName, _lesson, _repetition).ToString());
+                var result = FrameResult.GetNewFrame(_suit, _position, _effectorLeft, _effectorRight, _playerName,
+                    _lesson, _repetition);
+                FrameResultDb.AddResult(result);
+                _effortSW.WriteLine(result.ToString());
                 _effortSW.Flush();
+                
             }
             if(IsRunning)
                 _everyFrame--;

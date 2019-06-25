@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Numerics;
+using Assets.Scripts.Assessment;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -20,11 +21,11 @@ namespace Assessment
         public float DifficultyIndex;
         public float TargetAngle;
         public float Throughput;
-        public float[] EffortPerBodyPart;
+        public EffortResult EffortResult;
 
         public RepetitionResult(string player, int lesson, int repetition, int targetIndex,
             Vector3 targetSize, Vector3 targetPosition, Vector3 actorPosition,
-            float angle, long time)
+            float angle, long time, EffortResult effortResult)
         {
             Player = player;
             Lesson = lesson;
@@ -38,12 +39,12 @@ namespace Assessment
             if(MovementTime != 0)
                 Throughput = 1000 * DifficultyIndex / MovementTime;
             TargetAngle = angle;
-
+            EffortResult = effortResult;
         }
 
         public override string ToString()
         {
-            return $"{Player},{Lesson},{Repetition},{TargetIndex},{TargetSize},{TargetPosition},{MovementTime}, {DifficultyIndex}, {Throughput}";
+            return $"{Player},{Lesson},{Repetition},{TargetIndex},{TargetSize},{TargetPosition},{MovementTime},{DifficultyIndex},{Throughput},{EffortResult}";
         }
 
         private float ComputeDifficultyIndex()
@@ -58,7 +59,7 @@ namespace Assessment
             return id1;
         }
 
-        // DificultyIndex - using the method form the paper from Jonas --> The Eyes Don’t Have It: ...
+        // DificultyIndex - using the method form the paper from Jonas --> The Eyes Donï¿½t Have It: ...
         private float Method1_Qian()
         {
             // id = log((alpha / w) + 1) 
@@ -75,7 +76,7 @@ namespace Assessment
             return (float)id;
         }
 
-        // DificultyIndex - Extending Fitts’ law to a three-dimensional pointing task
+        // DificultyIndex - Extending Fittsï¿½ law to a three-dimensional pointing task
         private float Method2_Murata()
         {
             // id = log((dist / w) + 1) + c sin(theta) 
@@ -86,10 +87,10 @@ namespace Assessment
             var id = Math.Log((distance / width) + 1) + Math.Sin(theta);
             return (float)id;
         }
-        // Extended Fitts’ law for 3D pointing tasks using 3D target arrangements
+        // Extended Fittsï¿½ law for 3D pointing tasks using 3D target arrangements
         private float Method3_Cha()
         {
-            // movement time = a + b theta1 + c sin(theta2) + d log(2d/w) - from: Extended Fitts’ law for 3D pointing tasks..... Yeonjoo Cha and Rohae Myung 
+            // movement time = a + b theta1 + c sin(theta2) + d log(2d/w) - from: Extended Fittsï¿½ law for 3D pointing tasks..... Yeonjoo Cha and Rohae Myung 
             // theta1 - inclination angle: angle between the positive z-axis and the target location
             // theta2 - azimuth angle: angle between the positive x-axis and the projected target location on the xy plane
 
