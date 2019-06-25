@@ -14,13 +14,15 @@ namespace Assets.Scripts.Assessment
 
         private float _batchSize;
         private bool _firstBatch;
-        private float _previousLoss;
+        private float _previousGain;
+        private float _previousDelta;
         private float _noSignChanges;
         private float _signOscillations;
         private int _trackedBodyParts = 7;
         private float[] _previousResults;
 
-        public float Loss; 
+        public float Gain;
+        public float Delta;
 
         public GradientDescent(float scale, int batchSize)
         {
@@ -28,9 +30,9 @@ namespace Assets.Scripts.Assessment
             _firstBatch = true;
             _noSignChanges = 0;
             _signOscillations = 0;
-            _learningRate = 0.5f;
+            _learningRate = 0.1f;
             _batchSize = batchSize;
-            Loss = -1f;
+            Gain = -1f;
         }
 
         // get the next scale based on some computational magic
@@ -42,18 +44,19 @@ namespace Assets.Scripts.Assessment
             if (_firstBatch) // 
             {
                 _previousResults = currentResults;
-                _previousLoss = 0;
+                _previousGain = 0;
                 _firstBatch = false;
             }
             else
             {
-                Loss = GetLoss(currentResults);
-                nextScale = _currentScale + _learningRate * Normalize(Loss,0, 50, 1, 3);
-                UnityEngine.Debug.Log("Loss " + Loss + " _previousResult:  " + _previousLoss);
-                _previousLoss = Loss;
+                Gain = GetGain(currentResults);
+                Delta = Gain - _previousGain;
+                nextScale = _currentScale + _learningRate * Normalize(Gain,0, 50, 0, 3) * Math.Sign(Delta);
+                UnityEngine.Debug.Log("Loss " + Gain + " _previousResult:  " + _previousGain);
+                _previousGain = Gain;
                 _currentScale = nextScale;
 
-                AdaptLearingRate(Loss);
+                AdaptLearingRate(Delta);
             }
 
            
@@ -61,20 +64,23 @@ namespace Assets.Scripts.Assessment
             return nextScale;
         }
 
-        private float GetLoss(float[] results)
+        private float GetGain(float[] results)
         {
-            var loss = 0f;
-            for (int i = 0; i <= _trackedBodyParts; i++)
+            var gainEffort = 0f;
+            var gainThroughput = results[_trackedBodyParts];
+
+            for (int i = 0; i < _trackedBodyParts; i++)
             {
-                loss += (float) Math.Pow((_previousResults[i] - results[i]), 2); // based on sum of squard error
+                gainEffort += (float) Math.Pow((_previousResults[i] - results[i]), 2); // based on sum of squard error
             }
 
-            return loss / (_trackedBodyParts +1 ) ; 
+            gainEffort =  gainEffort / (_trackedBodyParts +1 ) ;
+            return (gainEffort + gainThroughput) / 2;
         }
 
         private void AdaptLearingRate(float delta)
         {
-            if (Math.Sign(_previousLoss) == delta)
+            if (Math.Sign(_previousDelta) == delta)
             {
                 _noSignChanges++;
             }
@@ -92,12 +98,12 @@ namespace Assets.Scripts.Assessment
 
             if (_signOscillations >= 3) // decrease learing rate 
             {
-                _learningRate -= 0.01f;
+                _learningRate -= 0.05f;
                 UnityEngine.Debug.Log("Learning rate decreased to: " + _learningRate);
                 _signOscillations = 0;
             }
 
-            _previousLoss = delta;
+            _previousGain = delta;
         }
 
         // TODO: a better way of combining the results 
@@ -137,7 +143,6 @@ namespace Assets.Scripts.Assessment
                 sum[i] = sum[i] / count;
             }
 
-            UnityEngine.Debug.Log("Combined results - Th: " + sumTh + " "  );
             return sum;
         }
 

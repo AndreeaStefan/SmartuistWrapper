@@ -158,7 +158,7 @@ namespace Assessment
                     _player.PreviousPosition.position, _targetSpawner.CurrentTarget.Angle,
                     _stopwatch.ElapsedMilliseconds, EffortResult.GetNewResult());
 
-                _tapSW.WriteLine(result.ToString() + "," + Scale + "," + _gradientDescent.Loss);
+                _tapSW.WriteLine(result.ToString() + "," + Scale + "," + _gradientDescent.Gain);
                 _tapSW.Flush();
 
                 _currentResults.Add(result);
