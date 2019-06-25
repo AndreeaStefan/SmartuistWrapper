@@ -5,6 +5,7 @@ using Assets.Scripts.Mapping.Types.ChangeDetectors;
 using UnityEngine;
 using Mapping;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Assets.Scripts.Mapping.Types
 {
@@ -12,26 +13,30 @@ namespace Assets.Scripts.Mapping.Types
     {
         private ChangeDetector _changeDetector;
         private List<GameObject> _bones;
+        private List<GameObject> _bonesChildren;
 
         public LearnStaticMapping()
         {
             _bones = new List<GameObject>();
+            _bonesChildren = new List<GameObject>();
         }
 
         public void Change(float amount)
         {
-            foreach (var bone in _bones)
+            var newYScale = IsChanging();
+            _bones.ForEach(b =>
             {
-
-                var newScale = bone.transform.localScale;
-                newScale.y = IsChanging();
-
+                var newScale = b.transform.localScale;
+                newScale.y = newYScale;
                 if (newScale.y <= 1) return;
-
-                // todo: add counter scale for the children bones
-                bone.transform.localScale = newScale;
-            }
-
+                b.transform.localScale = newScale;
+            } );
+            _bonesChildren.ForEach(b =>
+            {
+                var newScale = b.transform.localScale;
+                newScale.y = 1/newYScale;
+                b.transform.localScale = newScale;
+            });
         }
 
         public float IsChanging()
@@ -42,6 +47,7 @@ namespace Assets.Scripts.Mapping.Types
         public void SetBone(GameObject bone)
         {
             _bones.Add(bone);
+            _bonesChildren.Add(bone.transform.GetComponentsInChildren<Transform>().First(t => t.CompareTag("Hand")).gameObject);
         }
 
         public void SetChangeDetector(ChangeDetector changeDetector)
