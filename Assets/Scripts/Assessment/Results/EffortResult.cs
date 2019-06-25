@@ -53,7 +53,7 @@ namespace Assets.Scripts.Assessment
                 (distances, next) => distances.Select((curr, i) => curr + next[i]).ToArray()).ToArray();
 
             effort._effortPerBodyPart = effort._distancePerBodyPart
-                .Select((d, i) => d * _weightPercentage[i] ).ToArray();
+                .Select((d, i) => d * _weightPercentage[i] * 100).ToArray();
 
             return effort;
         }

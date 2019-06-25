@@ -30,7 +30,7 @@ namespace Assets.Scripts.Assessment
             _firstBatch = true;
             _noSignChanges = 0;
             _signOscillations = 0;
-            _learningRate = 0.1f;
+            _learningRate = 0.5f;
             _batchSize = batchSize;
             Gain = -1f;
         }
@@ -51,8 +51,8 @@ namespace Assets.Scripts.Assessment
             {
                 Gain = GetGain(currentResults);
                 Delta = Gain - _previousGain;
-                nextScale = _currentScale + _learningRate * Normalize(Gain,0, 50, 0, 3) * Math.Sign(Delta);
-                UnityEngine.Debug.Log("Loss " + Gain + " _previousResult:  " + _previousGain);
+                nextScale = _currentScale + _learningRate * Gain  * Math.Sign(Delta);
+                UnityEngine.Debug.Log("Gain " + Gain + " _previousGain:  " + _previousGain);
                 _previousGain = Gain;
                 _currentScale = nextScale;
 
@@ -67,14 +67,14 @@ namespace Assets.Scripts.Assessment
         private float GetGain(float[] results)
         {
             var gainEffort = 0f;
-            var gainThroughput = results[_trackedBodyParts];
+            var gainThroughput = (float) Math.Pow((_previousResults[_trackedBodyParts] - results[_trackedBodyParts]), 2);
 
             for (int i = 0; i < _trackedBodyParts; i++)
             {
                 gainEffort += (float) Math.Pow((_previousResults[i] - results[i]), 2); // based on sum of squard error
             }
 
-            gainEffort =  gainEffort / (_trackedBodyParts +1 ) ;
+            gainEffort =  gainEffort / (_trackedBodyParts) ;
             return (gainEffort + gainThroughput) / 2;
         }
 
@@ -98,7 +98,7 @@ namespace Assets.Scripts.Assessment
 
             if (_signOscillations >= 3) // decrease learing rate 
             {
-                _learningRate -= 0.05f;
+                _learningRate -= 0.01f;
                 UnityEngine.Debug.Log("Learning rate decreased to: " + _learningRate);
                 _signOscillations = 0;
             }
