@@ -58,6 +58,19 @@ namespace Assets.Scripts.Assessment
             return effort;
         }
 
+        public static EffortResult GetNewBadResult()
+        {
+            var effort = new EffortResult();
+            FrameResultDb.NewRep();
+            var distances = new float[_trackedBodyParts];
+            effort._distancePerBodyPart = distances.Select(d => 10f).ToArray();
+            effort._effortPerBodyPart =
+                effort._distancePerBodyPart.Select((d, i) => d * _weightPercentage[i] * 100).ToArray();
+
+            return effort;
+        }
+        
+
         public float[] GetEffortPerBodyPart()
         {
             return _effortPerBodyPart;
