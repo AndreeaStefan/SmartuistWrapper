@@ -15,7 +15,7 @@ using Debug = UnityEngine.Debug;
 
 namespace Assessment
 {
-    public class Assessor: MonoBehaviour
+    public class Assessor : MonoBehaviour
     {
         private readonly List<EndEffector> _effectors = new List<EndEffector>();
         private string effortBaselinePath = "effortBaselineResult.csv";
@@ -30,10 +30,10 @@ namespace Assessment
         private FacingChecker _facingChecker;
 
         private string _playerName;
-       
+
         private int _countdown = 3;
         private Stopwatch _stopwatch;
-        
+
         private int _currentRepetition;
         private List<RepetitionResult> _previousBatchResults;
         private List<RepetitionResult> _currentResults;
@@ -51,7 +51,7 @@ namespace Assessment
         public Camera camera;
         public float ParticipantWeight;
         public bool Male;
-        
+
         public float Scale;
 
         private void Start()
@@ -63,7 +63,7 @@ namespace Assessment
             _targetSpawner = FindObjectOfType<TargetSpawner>();
             _player = FindObjectsOfType<AnhaActor>().First(a => a.name == "CURRENT");
             _tapSW = new StreamWriter(_resultPath, true);
-       
+
             // todo kill it when we won't need the neutral position
             _gotNeutral = true;
 //            actor.GetNeutralPosition();
@@ -71,14 +71,14 @@ namespace Assessment
             _currentRepetition = -1;
             _previousBatchResults = new List<RepetitionResult>();
             _currentResults = new List<RepetitionResult>();
-            currentLesson = gameObject.AddComponent<Lesson>();    
+            currentLesson = gameObject.AddComponent<Lesson>();
             currentLesson.Initialise(_player, _targetSpawner.Target, _effectors, CurrentLessonNr, _currentRepetition);
-            
+
             _text = FindObjectOfType<Text>();
             _text = FindObjectOfType<Text>();
             _facingChecker = new FacingChecker(camera, GameObject.FindWithTag("Start"));
             Scale = 1;
-            _gradientDescent = new GradientDescent(1, BatchSize);      
+            _gradientDescent = new GradientDescent(1, BatchSize);
         }
 
         private void Update()
@@ -102,14 +102,18 @@ namespace Assessment
                 }
                 else
                     _text.text = "" + _countdown;
-                if(_countdown == 0)
+
+                if (_countdown == 0)
                 {
                     StartNewRepetition();
                     _startedCounting = false;
                     _text.text = "";
                 }
             }
-            
+            else if (currentLesson.IsRunning && _stopwatch.ElapsedMilliseconds > 1000)
+            {
+                EmergencyStop();
+            }
         }
 
         public void AddEffector(EndEffector effector)
@@ -117,8 +121,8 @@ namespace Assessment
             _effectors.Add(effector);
             effector.Initialise(this);
         }
-        
-        
+
+
         public void SaveBaselineRecord(string record)
         {
             baselineSW.WriteLine($"{_playerName},{record}");
@@ -135,12 +139,13 @@ namespace Assessment
         {
             _alreadyStopped = false;
             _targetSpawner.GetNewPosition();
-           _targetSpawner.GetNewScale();
-           _currTarget = _targetSpawner.CurrentTarget;
-           _currentRepetition++;
-           
-            currentLesson.StartNewTry(_playerName, CurrentLessonNr, _currentRepetition, _currTarget.Position, _currTarget.Scale);
-            _stopwatch.Start();    
+            _targetSpawner.GetNewScale();
+            _currTarget = _targetSpawner.CurrentTarget;
+            _currentRepetition++;
+
+            currentLesson.StartNewTry(_playerName, CurrentLessonNr, _currentRepetition, _currTarget.Position,
+                _currTarget.Scale);
+            _stopwatch.Start();
         }
 
         public void StopRepetition()
@@ -173,25 +178,58 @@ namespace Assessment
                     _previousBatchResults = _currentResults;
                     _currentResults = new List<RepetitionResult>();
                 }
+
                 _countdown = 3;
                 _stopwatch.Reset();
             }
         }
-        
+
+        private void EmergencyStop()
+        {
+            currentLesson.StopTry();
+            _alreadyStopped = true;
+            _stopwatch.Stop();
+
+            while (_currentRepetition < BatchSize)
+            {
+                var result = new RepetitionResult(_playerName, CurrentLessonNr, _currentRepetition,
+                    _targetSpawner.CurrentTarget.ID,
+                    _targetSpawner.CurrentTarget.Scale, _targetSpawner.CurrentTarget.Position,
+                    _player.PreviousPosition.position, _targetSpawner.CurrentTarget.Angle,
+                    10000, EffortResult.GetNewBadResult());
+
+                _tapSW.WriteLine(result + "," + Scale + "," + _gradientDescent.Gain);
+                _tapSW.Flush();
+
+                _currentResults.Add(result);
+                _currentRepetition++;
+            }
+
+            _currentRepetition = -1;
+            CurrentLessonNr++;
+            Scale = _gradientDescent.GetNextScale(_currentResults);
+
+
+            _previousBatchResults = _currentResults;
+            _currentResults = new List<RepetitionResult>();
+            _countdown = 3;
+            _stopwatch.Reset();
+        }
+
+
         IEnumerator LoseTime()
         {
-            while (_countdown >= 0) {
-                yield return new WaitForSeconds (1);
-                _countdown--; 
+            while (_countdown >= 0)
+            {
+                yield return new WaitForSeconds(1);
+                _countdown--;
             }
         }
-        
+
         private void OnApplicationQuit()
         {
-            Debug.Log("Application ending  " );
+            Debug.Log("Application ending  ");
             _tapSW.Close();
         }
     }
-    
-
 }
