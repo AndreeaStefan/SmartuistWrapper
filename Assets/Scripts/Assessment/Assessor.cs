@@ -46,7 +46,7 @@ namespace Assessment
         private GradientDescent _gradientDescent;
 
         [FormerlySerializedAs("currentTry")] public Lesson currentLesson;
-        [Range(1, 15)] public int BatchSize = 5;
+        [Range(1, 15)] public int BatchSize = 2;
         public int CurrentLessonNr;
         public Camera camera;
         public float ParticipantWeight;
@@ -163,9 +163,9 @@ namespace Assessment
 
                 _currentResults.Add(result);
 
-                if (BatchSize == _currentRepetition)
+                if ((BatchSize - 1) == _currentRepetition)
                 {
-                    _currentRepetition = 0;
+                    _currentRepetition = -1;
                     CurrentLessonNr++;
                     Scale = _gradientDescent.GetNextScale(_currentResults);
 

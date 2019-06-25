@@ -54,6 +54,7 @@ namespace Assets.Scripts.Assessment
 
             effort._effortPerBodyPart = effort._distancePerBodyPart
                 .Select((d, i) => d * _weightPercentage[i] * _participantWeight).ToArray();
+
             return effort;
         }
 

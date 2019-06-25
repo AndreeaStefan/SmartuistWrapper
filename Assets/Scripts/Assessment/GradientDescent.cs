@@ -48,7 +48,7 @@ namespace Assets.Scripts.Assessment
             else
             {
                 Loss = GetLoss(currentResults);
-                nextScale = _currentScale + _learningRate * Loss;
+                nextScale = _currentScale + _learningRate * Normalize(Loss,0, 50, 1, 3);
                 UnityEngine.Debug.Log("Loss " + Loss + " _previousResult:  " + _previousLoss);
                 _previousLoss = Loss;
                 _currentScale = nextScale;
@@ -107,14 +107,16 @@ namespace Assets.Scripts.Assessment
             var sumTh = 0f;
             var count = 0;
             float[] sum = new float[_trackedBodyParts + 1];
+            
 
             for (int i = 0; i <= _trackedBodyParts; i++)
             {
-                sum[i] += 0;
+                sum[i] = 0;
             }
 
             foreach (var res in results)
             {
+                var effortPerBodyPart = res.EffortResult.GetEffortPerBodyPart();
                 if (res.MovementTime != 0)
                 {
                     sumTh += (1000 * res.DifficultyIndex) / res.MovementTime;
@@ -123,7 +125,7 @@ namespace Assets.Scripts.Assessment
 
                 for (int i = 0; i < _trackedBodyParts; i++)
                 {
-                    sum[i] += res.EffortPerBodyPart[i] / res.DifficultyIndex;
+                    sum[i] += effortPerBodyPart[i] / res.DifficultyIndex;
                 }
 
                 sum[_trackedBodyParts] += sumTh;
