@@ -20,6 +20,7 @@ namespace Assets.Scripts.Assessment
         private float _signOscillations;
         private int _trackedBodyParts = 7;
         private float[] _previousResults;
+        private int direction;
 
         public float Gain;
         public float Delta;
@@ -30,9 +31,10 @@ namespace Assets.Scripts.Assessment
             _firstBatch = true;
             _noSignChanges = 0;
             _signOscillations = 0;
-            _learningRate = 0.5f;
+            _learningRate = 0.3f;
             _batchSize = batchSize;
             Gain = -1f;
+            direction = 1;
         }
 
         // get the next scale based on some computational magic
@@ -50,8 +52,11 @@ namespace Assets.Scripts.Assessment
             else
             {
                 Gain = GetGain(currentResults);
+
                 Delta = Gain - _previousGain;
-                nextScale = _currentScale + _learningRate * Gain  * Math.Sign(Delta);
+                var normDelta = Normalize(Delta, 0, 10, 0, 3);
+                direction = Delta < 0 ? -1 : 1;
+                nextScale = _currentScale + Math.Abs(_learningRate * normDelta) * direction;
                 UnityEngine.Debug.Log("Gain " + Gain + " _previousGain:  " + _previousGain);
                 _previousGain = Gain;
                 _currentScale = nextScale;
