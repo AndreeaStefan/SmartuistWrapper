@@ -80,7 +80,7 @@ namespace Assets.Scripts.Assessment
 
         private void AdaptLearingRate(float delta)
         {
-            if (Math.Sign(_previousDelta) == delta)
+            if (Math.Sign(_previousDelta) == Math.Sign(delta))
             {
                 _noSignChanges++;
             }
@@ -106,14 +106,12 @@ namespace Assets.Scripts.Assessment
             _previousGain = delta;
         }
 
-        // TODO: a better way of combining the results 
+        // Average across all the repetitions in the lesson - for each part of the result (throughput and effort per body part) 
         private float[] GetCombinedResult(List<RepetitionResult> results)
         {
-
             var sumTh = 0f;
             var count = 0;
-            float[] sum = new float[_trackedBodyParts + 1];
-            
+            float[] sum = new float[_trackedBodyParts + 1];           
 
             for (int i = 0; i <= _trackedBodyParts; i++)
             {
@@ -122,19 +120,15 @@ namespace Assets.Scripts.Assessment
 
             foreach (var res in results)
             {
-                var effortPerBodyPart = res.EffortResult.GetEffortPerBodyPart();
-                if (res.MovementTime != 0)
-                {
-                    sumTh += (1000 * res.DifficultyIndex) / res.MovementTime;
-                    count++;
-                }
-
+                var effortPerBodyPart = res.EffortResult.GetEffortPerBodyPart();                   
                 for (int i = 0; i < _trackedBodyParts; i++)
                 {
-                    sum[i] += effortPerBodyPart[i] / res.DifficultyIndex;
+                    sum[i] += res.DifficultyIndex / effortPerBodyPart[i] ;
                 }
 
+                sumTh += (1000 * res.DifficultyIndex) / res.MovementTime;
                 sum[_trackedBodyParts] += sumTh;
+                count++;
 
             }
 
