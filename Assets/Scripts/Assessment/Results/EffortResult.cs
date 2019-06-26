@@ -13,9 +13,11 @@ namespace Assets.Scripts.Assessment
         private static readonly int _trackedBodyParts = 7;
         private static float _participantWeight;
         private static bool _isMale;
+        private static int _countBadResults = 0;
 
         private float[] _distancePerBodyPart;
         private float[] _effortPerBodyPart;
+
 
         // body, leftUpperArm, RightUpperArm, RightFoot, LeftFoot, LeftHand, RightHand
         public static float[] _weightPercentage;
@@ -60,10 +62,12 @@ namespace Assets.Scripts.Assessment
 
         public static EffortResult GetNewBadResult()
         {
+
+            _countBadResults++;
             var effort = new EffortResult();
             FrameResultDb.NewRep();
             var distances = new float[_trackedBodyParts];
-            effort._distancePerBodyPart = distances.Select(d => 10f).ToArray();
+            effort._distancePerBodyPart = distances.Select(d => 10f * _countBadResults).ToArray();
             effort._effortPerBodyPart =
                 effort._distancePerBodyPart.Select((d, i) => d * _weightPercentage[i] * 100).ToArray();
 

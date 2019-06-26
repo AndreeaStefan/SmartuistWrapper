@@ -28,7 +28,6 @@ namespace Assets.Scripts.Mapping.Types
             {
                 var newScale = b.transform.localScale;
                 newScale.y = newYScale;
-                if (newScale.y <= 1) return;
                 b.transform.localScale = newScale;
             } );
             _bonesChildren.ForEach(b =>

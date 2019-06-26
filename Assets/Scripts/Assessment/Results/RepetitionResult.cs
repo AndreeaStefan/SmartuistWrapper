@@ -19,6 +19,7 @@ namespace Assessment
         public Vector3 ActorPosition;
         public long MovementTime;
         public float DifficultyIndex;
+        public float DifficultyIndexNorm;
         public float TargetAngle;
         public float Throughput;
         public EffortResult EffortResult;
@@ -36,15 +37,15 @@ namespace Assessment
             MovementTime = time;
             ActorPosition = actorPosition;
             DifficultyIndex = ComputeDifficultyIndex();
-            if(MovementTime != 0)
-                Throughput = 1000 * DifficultyIndex / MovementTime;
+            DifficultyIndexNorm = Helper.Normalize(DifficultyIndex, 1.2f, 3.8f, 1, 8);
+            Throughput = 1000 * DifficultyIndexNorm / MovementTime;
             TargetAngle = angle;
             EffortResult = effortResult;
         }
 
         public override string ToString()
         {
-            return $"{Player},{Lesson},{Repetition},{TargetIndex},{TargetSize},{TargetPosition},{MovementTime},{DifficultyIndex},{Throughput},{EffortResult}";
+            return $"{Player},{Lesson},{Repetition},{TargetIndex},{TargetSize},{TargetPosition},{MovementTime},{DifficultyIndex},{DifficultyIndexNorm}, {Throughput},{EffortResult}";
         }
 
         private float ComputeDifficultyIndex()

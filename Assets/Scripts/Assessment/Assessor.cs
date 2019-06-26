@@ -110,7 +110,7 @@ namespace Assessment
                     _text.text = "";
                 }
             }
-            else if (currentLesson.IsRunning && _stopwatch.ElapsedMilliseconds > 1000)
+            else if (currentLesson.IsRunning && _stopwatch.ElapsedMilliseconds > 10000)
             {
                 EmergencyStop();
             }
@@ -138,8 +138,7 @@ namespace Assessment
         public void StartNewRepetition()
         {
             _alreadyStopped = false;
-            _targetSpawner.GetNewPosition();
-            _targetSpawner.GetNewScale();
+            _targetSpawner.GetNewTarget();
             _currTarget = _targetSpawner.CurrentTarget;
             _currentRepetition++;
 
@@ -163,7 +162,8 @@ namespace Assessment
                     _player.PreviousPosition.position, _targetSpawner.CurrentTarget.Angle,
                     _stopwatch.ElapsedMilliseconds, EffortResult.GetNewResult());
 
-                _tapSW.WriteLine(result.ToString() + "," + Scale + "," + _gradientDescent.Gain);
+                // current Scale - prev Gain (what gave the curr Scale)  - Delta - between this Gain and prev One (the delta that gave the Scale) 
+                _tapSW.WriteLine(result.ToString() + "," + Scale + "," + _gradientDescent.Gain + "," + _gradientDescent.Delta) ;
                 _tapSW.Flush();
 
                 _currentResults.Add(result);

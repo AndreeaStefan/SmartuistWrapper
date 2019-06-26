@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Serialization;
 using Assets.Scripts;
 using Assessment;
 using Assets.Scripts.Assessment;
+using System.Collections.Generic;
+using System.Linq;
 
 public class TargetSpawner : MonoBehaviour
 {
@@ -10,12 +13,13 @@ public class TargetSpawner : MonoBehaviour
     public GameObject Player;
     public Transform TargetContainer;
     public GameObject TargetPrefab;
+   
     public bool Spiral;
 
     [Range(1f, 2f)] public float Height = 1.7f;
 
     private float _radius = 0.8f;
-    private float[] _depths =  { 1, 1.8f, 2.6f };
+    private float[] _depths =  { 0.5f, 1.8f, 2.6f };
     private float[] _scales =  { 0.2f, 0.3f, 0.4f };
     [FormerlySerializedAs("_target")] public GameObject Target;
     [FormerlySerializedAs("CurrentTarget")] [HideInInspector] public int CurrentTargetID;
@@ -24,11 +28,16 @@ public class TargetSpawner : MonoBehaviour
     public Target CurrentTarget;
 
     private System.Random _randomGenerator;
-
+    private int _batchSize;
+    private List<int> _currentLesson;
+    private int _currentRep;
+    public readonly int targetsPerCircle = 6;
+    private int targetsPerCirclePerLesson;
 
     void Start()
     {
         _randomGenerator = new System.Random(5);
+        _batchSize = FindObjectOfType<Assessor>().BatchSize;
 
         if (Spiral)
             GenerateTargetsSpiral();
@@ -39,22 +48,44 @@ public class TargetSpawner : MonoBehaviour
         Target = Instantiate(TargetPrefab);
         Target.transform.parent = TargetContainer;
         Target.GetComponent<MeshRenderer>().enabled = false;
+        targetsPerCirclePerLesson = (int)Math.Ceiling((double)_batchSize / (_depths.Length));// how many targets we take from each circle
+        _currentLesson = Enumerable.Range(0, (int)targetsPerCirclePerLesson * _depths.Length).Select(i => -1).ToList();
 
     }
 
-    public Vector3 GetNewPosition()
+    public void GetNewTarget()
     {
-        var index = _randomGenerator.Next(0, Targets.Length);
-        CurrentTarget = Targets[index];
-        return CurrentTarget.Position;
+        if (_batchSize == _currentRep)
+        {
+            _currentLesson = Enumerable.Range(0, targetsPerCirclePerLesson * _depths.Length).Select(i => -1).ToList();
+            _currentRep = 0;
+        }
+        while (true)
+        {
+            var tmpIndex = _randomGenerator.Next(0, Targets.Length);
+            var circle = (int)Math.Floor(tmpIndex / (decimal)targetsPerCircle);
+            var position = tmpIndex % targetsPerCirclePerLesson;
+            var index = targetsPerCirclePerLesson * circle + position;
+            if (_currentLesson[index] == -1)
+            {
+                var scaleIndex = GetNewScale(index); 
+                _currentLesson[index] = scaleIndex;
+                CurrentTarget = Targets[tmpIndex];
+                CurrentTarget.Scale = new Vector3(_scales[scaleIndex], _scales[scaleIndex], _scales[scaleIndex]);
+                _currentRep++;
+                return;
+            }
+        }
     }
 
-    public Vector3 GetNewScale()
+    private int GetNewScale(int index)
     {
-        var index = _randomGenerator.Next(0, _scales.Length);
-        var scale = new  Vector3(_scales[index], _scales[index], _scales[index]);
-        CurrentTarget.Scale = scale;
-        return scale;
+        var otherOne = index % 2 == 0 ? 1 : -1;
+        while (true)
+        {
+            var scaleIndex = _randomGenerator.Next(0, _scales.Length);
+            if (scaleIndex != _currentLesson[index + otherOne]) return scaleIndex;
+        }
     }
 
     /// <summary>
@@ -62,7 +93,6 @@ public class TargetSpawner : MonoBehaviour
     /// </summary>
     private void GenerateTargetsDifferentDepths()
     {
-        var targetsPerCircle = 6;
         var angle = 360 / targetsPerCircle;
         Targets = new Target[_depths.Length * targetsPerCircle];
       
@@ -94,6 +124,7 @@ public class TargetSpawner : MonoBehaviour
     private void GenerateTargetsSpiral()
     {
         var nrTargets = 18;
+        Targets = new Target[18];
         _radius = 0.3f; // radius of the initial circle - increases after a full circle is done 
         var angle = 360 / 6; //targets are placed at angles: 0, 60, 120....
         var count = 0;

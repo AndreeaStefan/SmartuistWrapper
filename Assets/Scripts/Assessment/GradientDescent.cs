@@ -24,6 +24,7 @@ namespace Assets.Scripts.Assessment
 
         public float Gain;
         public float Delta;
+        private List<RepetitionResult> repResults;
 
         public GradientDescent(float scale, int batchSize)
         {
@@ -40,7 +41,8 @@ namespace Assets.Scripts.Assessment
         // get the next scale based on some computational magic
         public float GetNextScale(List<RepetitionResult> results)
         {
-            var nextScale = _currentScale;        
+            var nextScale = _currentScale;
+            repResults = results;
             var currentResults = GetCombinedResult(results);
 
             if (_firstBatch) // 
@@ -55,9 +57,10 @@ namespace Assets.Scripts.Assessment
 
                 Delta = Gain - _previousGain;
                 var normDelta = Normalize(Delta, 0, 10, 0, 3);
-                direction = Delta < 0 ? -1 : 1;
-                nextScale = _currentScale + Math.Abs(_learningRate * normDelta) * direction;
-                UnityEngine.Debug.Log("Gain " + Gain + " _previousGain:  " + _previousGain);
+
+                direction = Delta < 0 ? -1 * direction : direction;
+                nextScale = _currentScale + Math.Abs(_learningRate * Delta) * direction;
+                UnityEngine.Debug.Log("Gain " + Gain + " delta:  " + Delta + " normDelta:  " + normDelta);
                 _previousGain = Gain;
                 _currentScale = nextScale;
 
@@ -72,21 +75,23 @@ namespace Assets.Scripts.Assessment
         private float GetGain(float[] results)
         {
             var gainEffort = 0f;
-            var gainThroughput = (float) Math.Pow((_previousResults[_trackedBodyParts] - results[_trackedBodyParts]), 2);
+            var gainThroughput = (float) Math.Abs(_previousResults[_trackedBodyParts] - results[_trackedBodyParts]);
 
             for (int i = 0; i < _trackedBodyParts; i++)
             {
-                gainEffort += (float) Math.Pow((_previousResults[i] - results[i]), 2); // based on sum of squard error
+                gainEffort += (float) Math.Abs(_previousResults[i] - results[i]); // based on sum of squard error
             }
 
             gainEffort =  gainEffort / (_trackedBodyParts) ;
-            return (gainEffort + gainThroughput) / 2;
+            UnityEngine.Debug.Log(repResults[0].Lesson + " gainEffort " + gainEffort + " gainThroughput " + gainThroughput);
+            return (gainEffort + 5 * gainThroughput) / 6;
         }
 
         private void AdaptLearingRate(float delta)
         {
-            if (Math.Sign(_previousDelta) == Math.Sign(delta))
-            {
+            var newDir = Delta < 0 ? -1 * direction : direction;
+            if (direction == newDir)
+            {          
                 _noSignChanges++;
             }
             else
@@ -94,21 +99,25 @@ namespace Assets.Scripts.Assessment
                 _signOscillations++;
             }
 
-            if (_noSignChanges >= 3) // increase learing rate 
+            if (_noSignChanges > 1) // increase learing rate 
             {
-                _learningRate += 0.1f;
+                _learningRate *= 1.1f;
                 UnityEngine.Debug.Log("Learning rate increased to: " + _learningRate);
                 _noSignChanges = 0;
             }
 
-            if (_signOscillations >= 3) // decrease learing rate 
+            if (_signOscillations > 1) // decrease learing rate 
             {
-                _learningRate -= 0.01f;
+                _learningRate *= 0.8f;
                 UnityEngine.Debug.Log("Learning rate decreased to: " + _learningRate);
                 _signOscillations = 0;
             }
 
-            _previousGain = delta;
+        }
+
+        private void DecreaseLearingRate(float delta)
+        {
+
         }
 
         // Average across all the repetitions in the lesson - for each part of the result (throughput and effort per body part) 
@@ -128,10 +137,10 @@ namespace Assets.Scripts.Assessment
                 var effortPerBodyPart = res.EffortResult.GetEffortPerBodyPart();                   
                 for (int i = 0; i < _trackedBodyParts; i++)
                 {
-                    sum[i] += res.DifficultyIndex / effortPerBodyPart[i] ;
+                    sum[i] += res.DifficultyIndexNorm / effortPerBodyPart[i] ;
                 }
 
-                sumTh += (1000 * res.DifficultyIndex) / res.MovementTime;
+                sumTh += (1000 * res.DifficultyIndexNorm) / res.MovementTime;
                 sum[_trackedBodyParts] += sumTh;
                 count++;
 

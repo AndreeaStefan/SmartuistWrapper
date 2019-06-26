@@ -8,6 +8,12 @@ using UnityEngine;
 
 public class Helper
 {
+
+    public static float Normalize(float val, float valmin, float valmax, float min, float max)
+    {
+        return (((val - valmin) / (valmax - valmin)) * (max - min)) + min;
+    }
+
     public static Transform ChildWithTag(Transform parent, string tag)
     {
 
