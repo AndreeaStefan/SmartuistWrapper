@@ -10,6 +10,7 @@ TagManager:
   - Mapper
   - Start
   - ForeArm
+  - Evaluation
   layers:
   - Default
   - TransparentFX

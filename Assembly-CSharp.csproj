@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\Assessment\FacingChecker.cs" />
     <Compile Include="Assets\Scripts\Assessment\GradientDescent.cs" />
     <Compile Include="Assets\Scripts\Assessment\Lesson.cs" />
+    <Compile Include="Assets\Scripts\Assessment\Questionnaire.cs" />
     <Compile Include="Assets\Scripts\Assessment\Results\EffortResult.cs" />
     <Compile Include="Assets\Scripts\Assessment\Results\FrameResult.cs" />
     <Compile Include="Assets\Scripts\Assessment\Results\FrameResultDb.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Assets\Scripts\Utils\MappingsEnum.cs" />
     <Compile Include="Assets\Scripts\Utils\PoseOffsets.cs" />
     <Compile Include="Assets\Scripts\Utils\TargetSpawner.cs" />
+    <Compile Include="Assets\Scripts\Utils\UIHandler.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/huber/OneDrive/Dokumenty/thesis-hubert/unity/SmartuistWrapper/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

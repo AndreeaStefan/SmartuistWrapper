@@ -20,6 +20,8 @@ namespace Assessment
         private readonly List<EndEffector> _effectors = new List<EndEffector>();
         private string effortBaselinePath = "effortBaselineResult.csv";
         private StreamWriter baselineSW;
+        private string _perceivedEffortPath = "perceivedEffort.csv";
+        private StreamWriter _perceivedEffortSW;
         private string _resultPath = "tapResult.csv";
         private StreamWriter _tapSW;
 
@@ -28,6 +30,7 @@ namespace Assessment
         private TargetSpawner _targetSpawner;
         private Text _text;
         private FacingChecker _facingChecker;
+        private Questionnaire _questionnaire;
 
         private string _playerName;
 
@@ -35,7 +38,6 @@ namespace Assessment
         private Stopwatch _stopwatch;
 
         private int _currentRepetition;
-        private List<RepetitionResult> _previousBatchResults;
         private List<RepetitionResult> _currentResults;
         private bool _startedCounting;
         private bool _gotNeutral;
@@ -46,36 +48,36 @@ namespace Assessment
         private GradientDescent _gradientDescent;
 
         [FormerlySerializedAs("currentTry")] public Lesson currentLesson;
-        [Range(1, 15)] public int BatchSize = 2;
+        [Range(1, 15)] public int BatchSize = 5;
         public int CurrentLessonNr;
         public Camera camera;
         public float ParticipantWeight;
         public bool Male;
 
         public float Scale;
+        private bool _finishedQuestion = true;
 
         private void Start()
         {
             EffortResult.SetStats(ParticipantWeight, Male);
             _stopwatch = new Stopwatch();
             _academy = FindObjectOfType<Academy>();
+            _questionnaire = FindObjectOfType<Questionnaire>();
             _playerName = _academy.PlayerIndex;
             _targetSpawner = FindObjectOfType<TargetSpawner>();
             _player = FindObjectsOfType<AnhaActor>().First(a => a.name == "CURRENT");
             _tapSW = new StreamWriter(_resultPath, true);
+            _perceivedEffortSW = new StreamWriter(_perceivedEffortPath, true);
 
             // todo kill it when we won't need the neutral position
             _gotNeutral = true;
 //            actor.GetNeutralPosition();
             CurrentLessonNr = 0;
             _currentRepetition = -1;
-            _previousBatchResults = new List<RepetitionResult>();
             _currentResults = new List<RepetitionResult>();
             currentLesson = gameObject.AddComponent<Lesson>();
             currentLesson.Initialise(_player, _targetSpawner.Target, _effectors, CurrentLessonNr, _currentRepetition);
 
-            _text = FindObjectOfType<Text>();
-            _text = FindObjectOfType<Text>();
             _facingChecker = new FacingChecker(camera, GameObject.FindWithTag("Start"));
             Scale = 1;
             _gradientDescent = new GradientDescent(1, BatchSize);
@@ -83,15 +85,15 @@ namespace Assessment
 
         private void Update()
         {
-            if (!currentLesson.IsRunning && _gotNeutral)
+            if (!currentLesson.IsRunning && _gotNeutral && _finishedQuestion)
             {
                 if (!_startedCounting)
                 {
                     if (!_facingChecker.InTheArea())
-                        _text.text = "Please go to the start area";
+                        UIHandler.startDisplay("Please go to the start area");
                     else if (!_facingChecker.FacingForward())
                     {
-                        _text.text = "Please turn to the playing area";
+                        UIHandler.startDisplay("Please turn to the playing area");
                         _countdown = 3;
                     }
                     else
@@ -101,13 +103,13 @@ namespace Assessment
                     }
                 }
                 else
-                    _text.text = "" + _countdown;
+                    UIHandler.startDisplay("" + _countdown);
 
                 if (_countdown == 0)
                 {
                     StartNewRepetition();
                     _startedCounting = false;
-                    _text.text = "";
+                    UIHandler.stopDisplaying();
                 }
             }
             else if (currentLesson.IsRunning && _stopwatch.ElapsedMilliseconds > 10000)
@@ -163,7 +165,7 @@ namespace Assessment
                     _stopwatch.ElapsedMilliseconds, EffortResult.GetNewResult());
 
                 // current Scale - prev Gain (what gave the curr Scale)  - Delta - between this Gain and prev One (the delta that gave the Scale) 
-                _tapSW.WriteLine(result.ToString() + "," + Scale + "," + _gradientDescent.Gain + "," + _gradientDescent.Delta) ;
+                _tapSW.WriteLine(result + "," + Scale + "," + _gradientDescent.Gain + "," + _gradientDescent.Delta) ;
                 _tapSW.Flush();
 
                 _currentResults.Add(result);
@@ -174,9 +176,9 @@ namespace Assessment
                     CurrentLessonNr++;
                     Scale = _gradientDescent.GetNextScale(_currentResults);
 
-
-                    _previousBatchResults = _currentResults;
                     _currentResults = new List<RepetitionResult>();
+                    _questionnaire.StartQuestionnaire();
+                    _finishedQuestion = false;
                 }
 
                 _countdown = 3;
@@ -208,9 +210,10 @@ namespace Assessment
             _currentRepetition = -1;
             CurrentLessonNr++;
             Scale = _gradientDescent.GetNextScale(_currentResults);
+            
+            _questionnaire.StartQuestionnaire();
+            _finishedQuestion = false;
 
-
-            _previousBatchResults = _currentResults;
             _currentResults = new List<RepetitionResult>();
             _countdown = 3;
             _stopwatch.Reset();
@@ -230,6 +233,14 @@ namespace Assessment
         {
             Debug.Log("Application ending  ");
             _tapSW.Close();
+            _perceivedEffortSW.Close();
+        }
+
+        public void DoneQuestionnaire(string result)
+        {
+            _perceivedEffortSW.Write($"{_playerName},{CurrentLessonNr-1},{result}\n");
+            _perceivedEffortSW.Flush();
+            _finishedQuestion = true;
         }
     }
 }

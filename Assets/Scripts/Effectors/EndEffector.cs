@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Runtime.InteropServices.ComTypes;
 using Assessment;
@@ -9,9 +10,14 @@ namespace Effectors
 {
     public class EndEffector : MonoBehaviour
     {
+        
+        
 
         public AnhaActor actor;
         private Assessor _assessor;
+        private Questionnaire _questionnaire;
+
+
         // Start is called before the first frame update
         void Start()
         {
@@ -20,6 +26,8 @@ namespace Effectors
 
             _assessor = FindObjectsOfType<Assessor>()[0];
             _assessor.AddEffector(this);
+
+            _questionnaire = FindObjectOfType<Questionnaire>();
         }
 
         public void Initialise(Assessor assessor)
@@ -36,7 +44,14 @@ namespace Effectors
                actor.PreviousPosition = actor.GetRoot();
             }
 
+            if (other.transform.gameObject.CompareTag("Evaluation"))
+            {
+                _questionnaire.HitTarget(other.gameObject);
+            }
 
         }
+        
+        
+
     }
 }
