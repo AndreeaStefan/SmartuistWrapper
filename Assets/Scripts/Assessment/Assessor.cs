@@ -53,6 +53,7 @@ namespace Assessment
         public Camera camera;
         public float ParticipantWeight;
         public bool Male;
+        public int MaximumLessons = 30;
 
         public float Scale;
         private bool _finishedQuestion = true;
@@ -85,36 +86,43 @@ namespace Assessment
 
         private void Update()
         {
-            if (!currentLesson.IsRunning && _gotNeutral && _finishedQuestion)
+            if (CurrentLessonNr <= MaximumLessons)
             {
-                if (!_startedCounting)
+                if (!currentLesson.IsRunning && _gotNeutral && _finishedQuestion)
                 {
-                    if (!_facingChecker.InTheArea())
-                        UIHandler.startDisplay("Please go to the start area");
-                    else if (!_facingChecker.FacingForward())
+                    if (!_startedCounting)
                     {
-                        UIHandler.startDisplay("Please turn to the playing area");
-                        _countdown = 3;
+                        if (!_facingChecker.InTheArea())
+                            UIHandler.startDisplay("Please go to the start area" + " Lesson: " + CurrentLessonNr);
+                        else if (!_facingChecker.FacingForward())
+                        {
+                            UIHandler.startDisplay("Please turn to the playing area");
+                            _countdown = 3;
+                        }
+                        else
+                        {
+                            StartCoroutine(nameof(LoseTime));
+                            _startedCounting = true;
+                        }
                     }
                     else
+                        UIHandler.startDisplay("" + _countdown);
+
+                    if (_countdown <= 0)
                     {
-                        StartCoroutine(nameof(LoseTime));
-                        _startedCounting = true;
+                        StartNewRepetition();
+                        _startedCounting = false;
+                        UIHandler.stopDisplaying();
                     }
                 }
-                else
-                    UIHandler.startDisplay("" + _countdown);
-
-                if (_countdown == 0)
+                else if (currentLesson.IsRunning && _stopwatch.ElapsedMilliseconds > 10000)
                 {
-                    StartNewRepetition();
-                    _startedCounting = false;
-                    UIHandler.stopDisplaying();
+                    EmergencyStop();
                 }
             }
-            else if (currentLesson.IsRunning && _stopwatch.ElapsedMilliseconds > 10000)
+            else
             {
-                EmergencyStop();
+                // stop 
             }
         }
 
@@ -161,7 +169,7 @@ namespace Assessment
                 var result = new RepetitionResult(_playerName, CurrentLessonNr, _currentRepetition,
                     _targetSpawner.CurrentTarget.ID,
                     _targetSpawner.CurrentTarget.Scale, _targetSpawner.CurrentTarget.Position,
-                    _player.PreviousPosition.position, _targetSpawner.CurrentTarget.Angle,
+                    _player.PreviousPosition, _targetSpawner.CurrentTarget.Angle,
                     _stopwatch.ElapsedMilliseconds, EffortResult.GetNewResult());
 
                 // current Scale - prev Gain (what gave the curr Scale)  - Delta - between this Gain and prev One (the delta that gave the Scale) 
@@ -177,8 +185,8 @@ namespace Assessment
                     Scale = _gradientDescent.GetNextScale(_currentResults);
 
                     _currentResults = new List<RepetitionResult>();
-                    _questionnaire.StartQuestionnaire();
                     _finishedQuestion = false;
+                    _questionnaire.StartQuestionnaire();
                 }
 
                 _countdown = 3;
@@ -197,7 +205,7 @@ namespace Assessment
                 var result = new RepetitionResult(_playerName, CurrentLessonNr, _currentRepetition,
                     _targetSpawner.CurrentTarget.ID,
                     _targetSpawner.CurrentTarget.Scale, _targetSpawner.CurrentTarget.Position,
-                    _player.PreviousPosition.position, _targetSpawner.CurrentTarget.Angle,
+                    _player.PreviousPosition, _targetSpawner.CurrentTarget.Angle,
                     10000, EffortResult.GetNewBadResult());
 
                 _tapSW.WriteLine(result + "," + Scale + "," + _gradientDescent.Gain);
@@ -210,9 +218,8 @@ namespace Assessment
             _currentRepetition = -1;
             CurrentLessonNr++;
             Scale = _gradientDescent.GetNextScale(_currentResults);
-            
-            _questionnaire.StartQuestionnaire();
             _finishedQuestion = false;
+            _questionnaire.StartQuestionnaire();
 
             _currentResults = new List<RepetitionResult>();
             _countdown = 3;

@@ -19,8 +19,8 @@ public class TargetSpawner : MonoBehaviour
     [Range(1f, 2f)] public float Height = 1.7f;
 
     private float _radius = 0.8f;
-    private float[] _depths =  { 0.5f, 1.8f, 2.6f };
-    private float[] _scales =  { 0.2f, 0.3f, 0.4f };
+    private float[] _depths =  { 0.6f, 1.6f, 2.6f };
+    private float[] _scales =  { 0.1f, 0.2f, 0.3f };
     [FormerlySerializedAs("_target")] public GameObject Target;
     [FormerlySerializedAs("CurrentTarget")] [HideInInspector] public int CurrentTargetID;
 

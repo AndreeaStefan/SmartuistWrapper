@@ -41,17 +41,13 @@ namespace Effectors
             if (other.transform.gameObject.CompareTag("Target"))
             {
                 _assessor.StopRepetition();
-               actor.PreviousPosition = actor.GetRoot();
             }
 
             if (other.transform.gameObject.CompareTag("Evaluation"))
             {
                 _questionnaire.HitTarget(other.gameObject);
             }
-
         }
-        
-        
 
     }
 }

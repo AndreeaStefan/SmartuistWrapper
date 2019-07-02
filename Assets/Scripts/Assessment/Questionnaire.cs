@@ -39,7 +39,11 @@ namespace Assessment
         public void StartQuestionnaire()
         {
             _results = new List<string>(_questions.Count);
-            if(!Enabled) _assessor.DoneQuestionnaire(string.Join(",", _results));
+            if (!Enabled)
+            {
+                _assessor.DoneQuestionnaire(string.Join(",", _results));
+                return;
+            }
             
             _currentQuestion = 0;
             _textMesh.text = _questions[_currentQuestion];

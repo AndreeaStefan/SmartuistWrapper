@@ -1,6 +1,7 @@
 ﻿using Assessment;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,8 @@ namespace Assets.Scripts.Assessment
         private int _trackedBodyParts = 7;
         private float[] _previousResults;
         private int direction;
+        private readonly string deltasFileName = "GradientStats.csv";
+        private StreamWriter statsSW;
 
         public float Gain;
         public float Delta;
@@ -32,10 +35,12 @@ namespace Assets.Scripts.Assessment
             _firstBatch = true;
             _noSignChanges = 0;
             _signOscillations = 0;
-            _learningRate = 0.3f;
+            _learningRate = 0.2f;
             _batchSize = batchSize;
             Gain = -1f;
             direction = 1;
+
+            statsSW = new StreamWriter(deltasFileName, true);
         }
 
         // get the next scale based on some computational magic
@@ -59,12 +64,12 @@ namespace Assets.Scripts.Assessment
                 var normDelta = Normalize(Delta, 0, 10, 0, 3);
 
                 direction = Delta < 0 ? -1 * direction : direction;
-                nextScale = _currentScale + Math.Abs(_learningRate * Delta) * direction;
+                nextScale = _currentScale + _learningRate * Delta ;
                 UnityEngine.Debug.Log("Gain " + Gain + " delta:  " + Delta + " normDelta:  " + normDelta);
                 _previousGain = Gain;
                 _currentScale = nextScale;
 
-                AdaptLearingRate(Delta);
+                AdaptLearingRateWithGain();
             }
 
            
@@ -83,11 +88,14 @@ namespace Assets.Scripts.Assessment
             }
 
             gainEffort =  gainEffort / (_trackedBodyParts) ;
+            var gain = (gainEffort + 5 * gainThroughput) / 6;
+            statsSW.WriteLine($"{repResults[0].Player}, {repResults[0].Lesson},{gainEffort },{gainThroughput},{_previousGain},{gain}, {_learningRate}");
+            statsSW.Flush();
             UnityEngine.Debug.Log(repResults[0].Lesson + " gainEffort " + gainEffort + " gainThroughput " + gainThroughput);
-            return (gainEffort + 5 * gainThroughput) / 6;
+            return gain;
         }
 
-        private void AdaptLearingRate(float delta)
+        private void AdaptLearingRate()
         {
             var newDir = Delta < 0 ? -1 * direction : direction;
             if (direction == newDir)
@@ -115,9 +123,21 @@ namespace Assets.Scripts.Assessment
 
         }
 
-        private void DecreaseLearingRate(float delta)
-        {
 
+        private void AdaptLearingRateWithGain()
+        {
+           
+            if (Delta > 0) // increase learing rate 
+            {
+                _learningRate *= 1.1f  ;
+                UnityEngine.Debug.Log("Learning rate increased to: " + _learningRate);
+            }
+            else
+            {
+                _learningRate *= 0.85f;
+                UnityEngine.Debug.Log("Learning rate decreased to: " + _learningRate);
+            }
+            
         }
 
         // Average across all the repetitions in the lesson - for each part of the result (throughput and effort per body part) 

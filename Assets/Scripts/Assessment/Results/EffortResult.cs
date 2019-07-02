@@ -26,8 +26,8 @@ namespace Assets.Scripts.Assessment
         {
             _participantWeight = weight;
             _weightPercentage = isMale
-                ? new[] {0.551f, 0.0325f, 0.0325f, 0.1668f, 0.1668f, 0.057f, 0.057f}
-                : new[] {0.532f, 0.029f, 0.029f, 0.1843f, 0.1843f, 0.0497f, 0.0497f};
+                ? new[] {0.551f, 0.0325f, 0.0325f, 0.1668f, 0.1668f, 0.0252f, 0.0252f}
+                : new[] {0.532f, 0.029f, 0.029f, 0.1843f, 0.1843f, 0.0207f, 0.0207f};
         }
 
         public static EffortResult GetNewResult()

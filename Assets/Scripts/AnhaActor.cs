@@ -32,7 +32,7 @@ public class AnhaActor : MonoBehaviour
 
     private bool savePosition;
     
-    [HideInInspector]  public Transform PreviousPosition;
+    [HideInInspector]  public Vector3 PreviousPosition;
 
     private void Start()
     {
@@ -44,7 +44,10 @@ public class AnhaActor : MonoBehaviour
         InitialisePose();
         transform.position = actor.transform.position;
 
-        PreviousPosition = Bones[bonesType.RootBone()].transform;
+        var startPos = GameObject.FindWithTag("Start").transform.position;
+        startPos.y = 1.5f;
+        PreviousPosition = startPos; //Bones[bonesType.RootBone()].transform;  
+
     }
 
     private void InitialisePose()
