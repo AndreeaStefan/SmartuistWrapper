@@ -6,14 +6,16 @@ namespace Assessment
 {
     public class Questionnaire : MonoBehaviour
     {
+        public bool Enabled;
+        
         private static GameObject _container;
         private static GameObject _points;
         private static Assessor _assessor;
         private static readonly List<string> _questions = new List<string>
         {
-            "Please, assess your effort",
-            "Please, assess your physical demand",
-            "Please, rate your frustration"
+            "How physically demanding was the task?",
+            "How ddi you feel with this arm's length (comfortable, annoyed)?",
+            "How hard did you have to work to accomplish your level of performance?"
         };
         private static List<string> _results = new List<string>();
 
@@ -36,8 +38,10 @@ namespace Assessment
 
         public void StartQuestionnaire()
         {
-            _currentQuestion = 0;
             _results = new List<string>(_questions.Count);
+            if(!Enabled) _assessor.DoneQuestionnaire(string.Join(",", _results));
+            
+            _currentQuestion = 0;
             _textMesh.text = _questions[_currentQuestion];
             _container.SetActive(true);
             
