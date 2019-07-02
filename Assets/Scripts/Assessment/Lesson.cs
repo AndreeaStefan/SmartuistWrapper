@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -73,6 +74,8 @@ namespace Assessment
             _target.transform.position = _position;
             _target.transform.localScale = _scale;
             _target.GetComponent<MeshRenderer>().enabled = true;
+            _target.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
+            StartCoroutine(nameof(TurnOffTheLight));
         }
 
         public void StopTry()
@@ -85,6 +88,12 @@ namespace Assessment
         {
             Debug.Log("Application ending  " );
             _effortSW.Close();
+        }
+
+        private IEnumerator TurnOffTheLight()
+        {
+            yield return new WaitForSeconds(0.2f);
+            _target.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
         }
     }
 }

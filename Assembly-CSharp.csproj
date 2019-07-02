@@ -97,6 +97,31 @@
     <Compile Include="Assets\Scripts\Utils\PoseOffsets.cs" />
     <Compile Include="Assets\Scripts\Utils\TargetSpawner.cs" />
     <Compile Include="Assets\Scripts\Utils\UIHandler.cs" />
+    <Compile Include="Assets\VLights\Scripts\Demo\MouseOrbitDemo.cs" />
+    <Compile Include="Assets\VLights\Scripts\PostProcess\VLightInterleavedSampling.cs" />
+    <Compile Include="Assets\VLights\Scripts\Util\GenerateNoiseTexture.cs" />
+    <Compile Include="Assets\VLights\Scripts\Util\ShaderLibrary.cs" />
+    <Compile Include="Assets\VLights\Scripts\Util\VLightGeometryUtil.cs" />
+    <Compile Include="Assets\VLights\Scripts\Util\VLightShaderUtil.cs" />
+    <Compile Include="Assets\VLights\Scripts\VLight\VLight.cs" />
+    <Compile Include="Assets\VLights\Scripts\VLight\VLightHelper.cs" />
+    <Compile Include="Assets\VLights\Scripts\VLight\VLightManager.cs" />
+    <None Include="Assets\VLights\Shaders\Common\Camera-DepthNormalTexture.shader" />
+    <None Include="Assets\VLights\Shaders\Common\DownscaleDepth.shader" />
+    <None Include="Assets\VLights\Shaders\Light\Legacy\VolumeLightArea.shader" />
+    <None Include="Assets\VLights\Shaders\Light\Legacy\VolumeLightOrthographic.shader" />
+    <None Include="Assets\VLights\Shaders\Light\Legacy\VolumeLight.shader" />
+    <None Include="Assets\VLights\Shaders\Light\VLightHelperPoint.cginc" />
+    <None Include="Assets\VLights\Shaders\Light\VLightHelperOrthographic.cginc" />
+    <None Include="Assets\VLights\Shaders\PostProcess\VolumeLightInterleavedComposite.shader" />
+    <None Include="Assets\VLights\Shaders\Common\RenderDepth.shader" />
+    <None Include="Assets\VLights\Shaders\Light\VolumeLightDepth.shader" />
+    <None Include="Assets\VLights\Shaders\PostProcess\Blur.shader" />
+    <None Include="Assets\VLights\Shaders\Light\VLightHelperArea.cginc" />
+    <None Include="Assets\VLights\Readme.txt" />
+    <None Include="Assets\VLights\Shaders\PostProcess\SimpleComposite.shader" />
+    <None Include="Assets\VLights\Shaders\Light\Legacy\VolumeLightPoint.shader" />
+    <None Include="Assets\VLights\Shaders\Light\VLightHelper.cginc" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/huber/OneDrive/Dokumenty/thesis-hubert/unity/SmartuistWrapper/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

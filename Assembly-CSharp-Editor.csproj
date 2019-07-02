@@ -64,6 +64,10 @@
     <Compile Include="Assets\Rokoko\Smartsuit\Editor\SmartsuitAbstractEditor.cs" />
     <Compile Include="Assets\Rokoko\Smartsuit\Editor\SmartsuitActorEditor.cs" />
     <Compile Include="Assets\Rokoko\Smartsuit\Editor\SmartsuitReceiverEditor.cs" />
+    <Compile Include="Assets\VLights\Editor\VolumeLightAbout.cs" />
+    <Compile Include="Assets\VLights\Editor\VolumeLightCreator.cs" />
+    <Compile Include="Assets\VLights\Editor\VolumeLightManagerEditor.cs" />
+    <Compile Include="Assets\VLights\Editor\VolumeLightSlicedBasedEditor.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/huber/OneDrive/Dokumenty/thesis-hubert/unity/SmartuistWrapper/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

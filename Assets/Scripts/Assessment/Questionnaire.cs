@@ -14,8 +14,8 @@ namespace Assessment
         private static readonly List<string> _questions = new List<string>
         {
             "How physically demanding was the task?",
-            "How ddi you feel with this arm's length (comfortable, annoyed)?",
-            "How hard did you have to work to accomplish your level of performance?"
+            "How did you feel with this arm's length (comfortable, annoyed)?",
+            "How successful do you think you were?"
         };
         private static List<string> _results = new List<string>();
 
