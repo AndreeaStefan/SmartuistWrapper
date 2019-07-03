@@ -18,6 +18,7 @@ public class AnhaActor : MonoBehaviour
     public SmartsuitActor actor;
     public BasicBoneMapping bonesType;
     public Academy academy;
+    public Camera camera;
 
     [HideInInspector] public List<GameObject> Bones;
     private Quaternion[] _poseOffsets;
@@ -26,7 +27,7 @@ public class AnhaActor : MonoBehaviour
 
     private Dictionary<GameObject, Quaternion> _initialRot;
     private int count;
-    [FormerlySerializedAs("_assessor")] public Assessor assessor;
+    [FormerlySerializedAs("_assessor")][HideInInspector] public Assessor assessor;
     public List<Mapper> mappers;
     private Text _text;
 
