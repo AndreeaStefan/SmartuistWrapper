@@ -61,7 +61,6 @@ namespace Assets.Scripts.Assessment
                 Gain = GetGain(currentResults);
 
                 Delta = Gain - _previousGain;
-                Delta = Delta > -0.3 ? Math.Abs(Delta) : Delta;
                 direction = Delta < 0 ? -1 * direction : direction;
                 nextScale = _currentScale + _learningRate *  Gain * Math.Sign(Delta);
                 UnityEngine.Debug.Log("Gain " + Gain + " delta:  " + Delta);
@@ -133,7 +132,7 @@ namespace Assets.Scripts.Assessment
             else
             {
                 _noSignChanges = 0;
-                _learningRate *= 0.85f;
+                _learningRate *= 0.875f;
                 UnityEngine.Debug.Log("Learning rate decreased to: " + _learningRate);
             }
 
