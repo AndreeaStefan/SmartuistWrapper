@@ -35,7 +35,7 @@ namespace Assets.Scripts.Assessment
             _firstBatch = true;
             _noSignChanges = 0;
             _signOscillations = 0;
-            _learningRate = 0.3f;
+            _learningRate = 0.2f;
             _batchSize = batchSize;
             Gain = -1f;
             direction = 1;
@@ -63,7 +63,7 @@ namespace Assets.Scripts.Assessment
                 Delta = Gain - _previousGain;
                 Delta = Delta > -1.6 ? Math.Abs(Delta) : Delta;
                 direction = Delta < 0 ? -1 * direction : direction;
-                nextScale = _currentScale + _learningRate * Delta / Gain;
+                nextScale = _currentScale + _learningRate *  Gain * Math.Sign(Delta);
                 UnityEngine.Debug.Log("Gain " + Gain + " delta:  " + Delta);
                 _previousGain = Gain;
                 _currentScale = nextScale;
@@ -79,14 +79,15 @@ namespace Assets.Scripts.Assessment
         private float GetGain(float[] results)
         {
             var gainEffort = 0f;
-            var gainThroughput =  results[_trackedBodyParts]; 
+            var gainThroughput = (float)Math.Sqrt(results[_trackedBodyParts]); 
             for (int i = 0; i < _trackedBodyParts; i++)
             {
-                gainEffort += results[i];
+                gainEffort += (float )Math.Sqrt( results[i]);
             }
 
             gainEffort =  gainEffort / (_trackedBodyParts) ;
-            var gain = (gainEffort + 5 * gainThroughput) / 6;
+
+            var gain = (gainEffort + 2 * gainThroughput) / 3;
             statsSW.WriteLine($"{repResults[0].Player}, {repResults[0].Lesson},{gainEffort },{gainThroughput},{_previousGain},{gain}, {_learningRate}, {results[_trackedBodyParts]}");
             statsSW.Flush();
             UnityEngine.Debug.Log(repResults[0].Lesson + " gainEffort " + gainEffort + " gainThroughput " + gainThroughput);
