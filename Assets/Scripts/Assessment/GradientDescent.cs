@@ -61,7 +61,7 @@ namespace Assets.Scripts.Assessment
                 Gain = GetGain(currentResults);
 
                 Delta = Gain - _previousGain;
-                Delta = Delta > -1.6 ? Math.Abs(Delta) : Delta;
+                Delta = Delta > -0.3 ? Math.Abs(Delta) : Delta;
                 direction = Delta < 0 ? -1 * direction : direction;
                 nextScale = _currentScale + _learningRate *  Gain * Math.Sign(Delta);
                 UnityEngine.Debug.Log("Gain " + Gain + " delta:  " + Delta);
