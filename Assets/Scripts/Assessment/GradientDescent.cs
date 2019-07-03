@@ -128,13 +128,20 @@ namespace Assets.Scripts.Assessment
            
             if (Delta > 0) // increase learing rate 
             {
-                _learningRate *= 1.1f  ;
-                UnityEngine.Debug.Log("Learning rate increased to: " + _learningRate);
+                _noSignChanges++;
             }
             else
             {
+                _noSignChanges = 0;
                 _learningRate *= 0.85f;
                 UnityEngine.Debug.Log("Learning rate decreased to: " + _learningRate);
+            }
+
+            if (_noSignChanges > 3)
+            {
+                _learningRate *= 1.1f;
+                _noSignChanges = 0;
+                UnityEngine.Debug.Log("Learning rate increased to: " + _learningRate);
             }
             
         }
