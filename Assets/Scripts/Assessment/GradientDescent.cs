@@ -35,7 +35,7 @@ namespace Assets.Scripts.Assessment
             _firstBatch = true;
             _noSignChanges = 0;
             _signOscillations = 0;
-            _learningRate = 0.2f;
+            _learningRate = 0.3f;
             _batchSize = batchSize;
             Gain = -1f;
             direction = 1;
