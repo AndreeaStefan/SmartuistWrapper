@@ -162,7 +162,7 @@ namespace Assets.Scripts.Assessment
                 var effortPerBodyPart = res.EffortResult.GetEffortPerBodyPart();                   
                 for (int i = 0; i < _trackedBodyParts; i++)
                 {
-                    sum[i] += res.DifficultyIndexNorm / effortPerBodyPart[i] ;
+                    sum[i] += 1 / effortPerBodyPart[i] ;
                 }
 
                 sumTh += (1000 * res.DifficultyIndexNorm) / res.MovementTime;
