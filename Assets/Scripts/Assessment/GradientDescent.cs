@@ -137,7 +137,7 @@ namespace Assets.Scripts.Assessment
                 UnityEngine.Debug.Log("Learning rate decreased to: " + _learningRate);
             }
 
-            if (_noSignChanges > 3)
+            if (_noSignChanges > 1)
             {
                 _learningRate *= 1.1f;
                 _noSignChanges = 0;
