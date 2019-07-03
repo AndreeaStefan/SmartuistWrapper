@@ -79,16 +79,15 @@ namespace Assets.Scripts.Assessment
         private float GetGain(float[] results)
         {
             var gainEffort = 0f;
-            var gainThroughput = (float) Math.Abs(_previousResults[_trackedBodyParts] - results[_trackedBodyParts]);
-
+            var gainThroughput =  results[_trackedBodyParts]; 
             for (int i = 0; i < _trackedBodyParts; i++)
             {
-                gainEffort += (float) Math.Abs(_previousResults[i] - results[i]); // based on sum of squard error
+                gainEffort += results[i];
             }
 
             gainEffort =  gainEffort / (_trackedBodyParts) ;
             var gain = (gainEffort + 5 * gainThroughput) / 6;
-            statsSW.WriteLine($"{repResults[0].Player}, {repResults[0].Lesson},{gainEffort },{gainThroughput},{_previousGain},{gain}, {_learningRate}");
+            statsSW.WriteLine($"{repResults[0].Player}, {repResults[0].Lesson},{gainEffort },{gainThroughput},{_previousGain},{gain}, {_learningRate}, {results[_trackedBodyParts]}");
             statsSW.Flush();
             UnityEngine.Debug.Log(repResults[0].Lesson + " gainEffort " + gainEffort + " gainThroughput " + gainThroughput);
             return gain;
