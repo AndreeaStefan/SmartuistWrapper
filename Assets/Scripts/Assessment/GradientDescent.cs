@@ -17,8 +17,8 @@ namespace Assets.Scripts.Assessment
         private bool _firstBatch;
         private float _previousGain;
         private float _previousDelta;
-        private float _noSignChanges;
-        private float _signOscillations;
+        private float _positiveDelta;
+        private float _negativeDelta;
         private int _trackedBodyParts = 7;
         private float[] _previousResults;
         private int direction;
@@ -33,8 +33,8 @@ namespace Assets.Scripts.Assessment
         {
             _currentScale = scale;
             _firstBatch = true;
-            _noSignChanges = 0;
-            _signOscillations = 0;
+            _positiveDelta = 0;
+            _negativeDelta = 0;
             _learningRate = 0.2f;
             _batchSize = batchSize;
             Gain = -1f;
@@ -61,8 +61,8 @@ namespace Assets.Scripts.Assessment
                 Gain = GetGain(currentResults);
 
                 Delta = Gain - _previousGain;
-                direction = Delta < 0 ? -1 * direction : direction;
-                nextScale = _currentScale + _learningRate *  Gain * Math.Sign(Delta);
+                direction = _negativeDelta > 3 ? -1 : 1;
+                nextScale = _currentScale + _learningRate *  Gain * Math.Sign(Delta) * direction;
                 UnityEngine.Debug.Log("Gain " + Gain + " delta:  " + Delta);
                 _previousGain = Gain;
                 _currentScale = nextScale;
@@ -98,25 +98,25 @@ namespace Assets.Scripts.Assessment
             var newDir = Delta < 0 ? -1 * direction : direction;
             if (direction == newDir)
             {          
-                _noSignChanges++;
+                _positiveDelta++;
             }
             else
             {
-                _signOscillations++;
+                _negativeDelta++;
             }
 
-            if (_noSignChanges > 1) // increase learing rate 
+            if (_positiveDelta > 1) // increase learing rate 
             {
                 _learningRate *= 1.1f;
                 UnityEngine.Debug.Log("Learning rate increased to: " + _learningRate);
-                _noSignChanges = 0;
+                _positiveDelta = 0;
             }
 
-            if (_signOscillations > 1) // decrease learing rate 
+            if (_negativeDelta > 1) // decrease learing rate 
             {
                 _learningRate *= 0.8f;
                 UnityEngine.Debug.Log("Learning rate decreased to: " + _learningRate);
-                _signOscillations = 0;
+                _negativeDelta = 0;
             }
 
         }
@@ -127,19 +127,22 @@ namespace Assets.Scripts.Assessment
            
             if (Delta > 0) // increase learing rate 
             {
-                _noSignChanges++;
+                _positiveDelta++;
+                _negativeDelta = 0;
             }
             else
             {
-                _noSignChanges = 0;
+                _negativeDelta++;
+                _positiveDelta = 0;
                 _learningRate *= 0.875f;
                 UnityEngine.Debug.Log("Learning rate decreased to: " + _learningRate);
             }
 
-            if (_noSignChanges > 1)
+            if (_positiveDelta > 1)
             {
+
                 _learningRate *= 1.1f;
-                _noSignChanges = 0;
+                _positiveDelta = 0;
                 UnityEngine.Debug.Log("Learning rate increased to: " + _learningRate);
             }
             
