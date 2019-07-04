@@ -14,7 +14,7 @@ namespace Assessment
 {
     public class Lesson : MonoBehaviour
     {
-        private int _everyFrame = 10;
+        private int _everyFrame = 3;
         [FormerlySerializedAs("_enabled")][HideInInspector] public bool IsRunning;
         private string _playerName;
         private Vector3 _position;
@@ -49,7 +49,7 @@ namespace Assessment
         {
             if(IsRunning && _everyFrame == 0)
             {
-                _everyFrame = 10;
+                _everyFrame = 3;
                 var result = FrameResult.GetNewFrame(_suit, _position, _effectorLeft, _effectorRight, _playerName,
                     _lesson, _repetition);
                 FrameResultDb.AddResult(result);
