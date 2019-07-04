@@ -61,11 +61,11 @@ namespace Assets.Scripts.Assessment
                 Gain = GetGain(currentResults);
 
                 Delta = Gain - _previousGain;
-                direction = _negativeDelta > 1 ? -1 : 1;
-                Delta = _currentScale > 5.5f
+                Delta = _currentScale > 5f
                     ? Delta < 0.1 ? -Math.Abs(Delta) : Delta
                     : Delta > -0.1 ? Math.Abs(Delta) : Delta;
-                nextScale = _currentScale + _learningRate *  Gain * Math.Sign(Delta) * direction;
+                Delta = _negativeDelta > 1 ? Math.Abs(Delta) : Delta;
+                nextScale = _currentScale + _learningRate *  Gain * Math.Sign(Delta);
                 UnityEngine.Debug.Log("Gain " + Gain + " delta:  " + Delta);
                 _previousGain = Gain;
                 _currentScale = nextScale;
@@ -96,7 +96,6 @@ namespace Assets.Scripts.Assessment
             return gain;
         }
 
- 
 
         private void AdaptLearingRateWithGain()
         {
