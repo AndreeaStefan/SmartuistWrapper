@@ -62,7 +62,9 @@ namespace Assets.Scripts.Assessment
 
                 Delta = Gain - _previousGain;
                 direction = _negativeDelta > 1 ? -1 : 1;
-                Delta = Delta > -0.1 ? Math.Abs(Delta) : Delta;
+                Delta = _currentScale > 5.5f
+                    ? Delta < 0.1 ? -Math.Abs(Delta) : Delta
+                    : Delta > -0.1 ? Math.Abs(Delta) : Delta;
                 nextScale = _currentScale + _learningRate *  Gain * Math.Sign(Delta) * direction;
                 UnityEngine.Debug.Log("Gain " + Gain + " delta:  " + Delta);
                 _previousGain = Gain;
@@ -87,41 +89,14 @@ namespace Assets.Scripts.Assessment
 
             gainEffort =  gainEffort / (_trackedBodyParts) ;
 
-            var gain = (gainEffort + 2 * gainThroughput) / 3;
+            var gain = (gainEffort + gainThroughput) / 2;
             statsSW.WriteLine($"{repResults[0].Player}, {repResults[0].Lesson},{gainEffort },{gainThroughput},{_previousGain},{gain}, {_learningRate}, {results[_trackedBodyParts]}");
             statsSW.Flush();
             UnityEngine.Debug.Log(repResults[0].Lesson + " gainEffort " + gainEffort + " gainThroughput " + gainThroughput);
             return gain;
         }
 
-        private void AdaptLearingRate()
-        {
-            var newDir = Delta < 0 ? -1 * direction : direction;
-            if (direction == newDir)
-            {          
-                _positiveDelta++;
-            }
-            else
-            {
-                _negativeDelta++;
-            }
-
-            if (_positiveDelta > 1) // increase learing rate 
-            {
-                _learningRate *= 1.1f;
-                UnityEngine.Debug.Log("Learning rate increased to: " + _learningRate);
-                _positiveDelta = 0;
-            }
-
-            if (_negativeDelta > 1) // decrease learing rate 
-            {
-                _learningRate *= 0.8f;
-                UnityEngine.Debug.Log("Learning rate decreased to: " + _learningRate);
-                _negativeDelta = 0;
-            }
-
-        }
-
+ 
 
         private void AdaptLearingRateWithGain()
         {
