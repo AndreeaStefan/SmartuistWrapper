@@ -59,7 +59,7 @@ namespace Assessment
 
         private string V3ToS(Vector3 v)
         {
-            return $"{v.x:F1},{v.y:F1},{v.z:F1}";
+            return $"{v.x:F3},{v.y:F3},{v.z:F3}";
         }
     }
 }

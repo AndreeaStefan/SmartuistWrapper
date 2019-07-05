@@ -35,7 +35,7 @@ namespace Assets.Scripts.Assessment
             _firstBatch = true;
             _positiveDelta = 0;
             _negativeDelta = 0;
-            _learningRate = 0.2f;
+            _learningRate = 0.05f;
             _batchSize = batchSize;
             Gain = -1f;
             direction = 1;
@@ -81,10 +81,10 @@ namespace Assets.Scripts.Assessment
         private float GetGain(float[] results)
         {
             var gainEffort = 0f;
-            var gainThroughput = (float)Math.Sqrt(results[_trackedBodyParts]); 
+            var gainThroughput = (float)Math.Abs(results[_trackedBodyParts]); 
             for (int i = 0; i < _trackedBodyParts; i++)
             {
-                gainEffort += (float )Math.Sqrt( results[i]);
+                gainEffort += (float )Math.Abs( results[i]);
             }
 
             gainEffort =  gainEffort / (_trackedBodyParts) ;
