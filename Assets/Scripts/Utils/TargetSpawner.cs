@@ -31,8 +31,12 @@ public class TargetSpawner : MonoBehaviour
     private int _batchSize;
     private List<int> _currentLesson;
     private int _currentRep;
-    public readonly int targetsPerCircle = 6;
+    public int targetsPerCircle;
+    public readonly int targersPerSpiralCircle = 3;
+    public readonly int spiralDepths = 6;
     private int targetsPerCirclePerLesson;
+    private int _currenDepths;
+
 
     void Start()
     {
@@ -48,8 +52,10 @@ public class TargetSpawner : MonoBehaviour
         Target = Instantiate(TargetPrefab);
         Target.transform.parent = TargetContainer;
         Target.GetComponent<MeshRenderer>().enabled = false;
-        targetsPerCirclePerLesson = (int)Math.Ceiling((double)_batchSize / (_depths.Length));// how many targets we take from each circle
-        _currentLesson = Enumerable.Range(0, (int)targetsPerCirclePerLesson * _depths.Length).Select(i => -1).ToList();
+        _currenDepths = Spiral ? spiralDepths : _depths.Length;
+        targetsPerCircle = Spiral ? 3 : 6;
+        targetsPerCirclePerLesson = (int)Math.Ceiling((double)_batchSize / _currenDepths);// how many targets we take from each circle
+        _currentLesson = Enumerable.Range(0, (int)targetsPerCirclePerLesson * _currenDepths).Select(i => -1).ToList();
 
     }
 
@@ -57,7 +63,7 @@ public class TargetSpawner : MonoBehaviour
     {
         if (_batchSize == _currentRep)
         {
-            _currentLesson = Enumerable.Range(0, targetsPerCirclePerLesson * _depths.Length).Select(i => -1).ToList();
+            _currentLesson = Enumerable.Range(0, targetsPerCirclePerLesson * _currenDepths).Select(i => -1).ToList();
             _currentRep = 0;
         }
         while (true)
