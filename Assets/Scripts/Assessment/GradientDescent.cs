@@ -35,7 +35,7 @@ namespace Assets.Scripts.Assessment
             _firstBatch = true;
             _positiveDelta = 0;
             _negativeDelta = 0;
-            _learningRate = 0.11f;
+            _learningRate = 0.13f;
             _batchSize = batchSize;
             Gain = -1f;
             direction = 1;
@@ -62,8 +62,8 @@ namespace Assets.Scripts.Assessment
 
                 Delta = Gain - _previousGain;
                 Delta = _currentScale > 5f
-                    ? Delta < 0.1 ? -Math.Abs(Delta) : Delta
-                    : Delta > -0.1 ? Math.Abs(Delta) : Delta;
+                    ? Delta < 0.15 ? -Math.Abs(Delta) : Delta
+                    : Delta > -0.15 ? Math.Abs(Delta) : Delta;
                 Delta = _negativeDelta > 1 ? Math.Abs(Delta) : Delta;
                 nextScale = _currentScale + _learningRate *  Gain * Math.Sign(Delta);
                 UnityEngine.Debug.Log("Gain " + Gain + " delta:  " + Delta);
