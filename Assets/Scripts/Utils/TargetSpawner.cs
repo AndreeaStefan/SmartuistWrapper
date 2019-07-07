@@ -40,7 +40,7 @@ public class TargetSpawner : MonoBehaviour
 
     void Start()
     {
-        _randomGenerator = new System.Random(5);
+        _randomGenerator = new System.Random(6);
         _batchSize = FindObjectOfType<Assessor>().BatchSize;
 
         if (Spiral)
