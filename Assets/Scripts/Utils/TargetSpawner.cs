@@ -32,8 +32,7 @@ public class TargetSpawner : MonoBehaviour
     private List<int> _currentLesson;
     private int _currentRep;
     public int targetsPerCircle;
-    public readonly int targersPerSpiralCircle = 3;
-    public readonly int spiralDepths = 6;
+    public readonly int spiralDepths = 5;
     private int targetsPerCirclePerLesson;
     private int _currenDepths;
 
@@ -53,7 +52,7 @@ public class TargetSpawner : MonoBehaviour
         Target.transform.parent = TargetContainer;
         Target.GetComponent<MeshRenderer>().enabled = false;
         _currenDepths = Spiral ? spiralDepths : _depths.Length;
-        targetsPerCircle = Spiral ? 3 : 6;
+        targetsPerCircle = Spiral ? 4 : 6;
         targetsPerCirclePerLesson = (int)Math.Ceiling((double)_batchSize / _currenDepths);// how many targets we take from each circle
         _currentLesson = Enumerable.Range(0, (int)targetsPerCirclePerLesson * _currenDepths).Select(i => -1).ToList();
 
@@ -129,8 +128,8 @@ public class TargetSpawner : MonoBehaviour
     /// </summary>
     private void GenerateTargetsSpiral()
     {
-        var nrTargets = 18;
-        Targets = new Target[18];
+        var nrTargets = 20;
+        Targets = new Target[nrTargets];
         _radius = 0.3f; // radius of the initial circle - increases after a full circle is done 
         var angle = 360 / 6; //targets are placed at angles: 0, 60, 120....
         var count = 0;
