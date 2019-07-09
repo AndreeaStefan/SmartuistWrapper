@@ -34,13 +34,10 @@ namespace Assessment
 
         private string _playerName;
 
-        private int _countdown = 3;
         private Stopwatch _stopwatch;
 
         private int _currentRepetition;
         private List<RepetitionResult> _currentResults;
-        private bool _startedCounting;
-        private bool _gotNeutral;
         private bool _alreadyStopped;
 
 
@@ -70,59 +67,28 @@ namespace Assessment
             _tapSW = new StreamWriter(_resultPath, true);
             _perceivedEffortSW = new StreamWriter(_perceivedEffortPath, true);
 
-            // todo kill it when we won't need the neutral position
-            _gotNeutral = true;
-//            actor.GetNeutralPosition();
             CurrentLessonNr = 0;
             _currentRepetition = -1;
             _currentResults = new List<RepetitionResult>();
             currentLesson = gameObject.AddComponent<Lesson>();
             currentLesson.Initialise(_player, _targetSpawner.Target, _effectors, CurrentLessonNr, _currentRepetition);
 
-            _facingChecker = new FacingChecker(camera, GameObject.FindWithTag("Start"));
+            _facingChecker = FindObjectOfType<FacingChecker>();
             Scale = 1;
             _gradientDescent = new GradientDescent(1, BatchSize);
+            StartCoroutine(nameof(StartFacingChecker));
         }
 
         private void Update()
         {
             if (CurrentLessonNr <= MaximumLessons)
             {
-                if (!currentLesson.IsRunning && _gotNeutral && _finishedQuestion)
-                {
-                    if (!_startedCounting)
-                    {
-                        if (!_facingChecker.InTheArea())
-                            UIHandler.startDisplay("Please go to the start area" + " Lesson: " + CurrentLessonNr);
-                        else if (!_facingChecker.FacingForward())
-                        {
-                            UIHandler.startDisplay("Please turn to the playing area");
-                            _countdown = 3;
-                        }
-                        else
-                        {
-                            StartCoroutine(nameof(LoseTime));
-                            _startedCounting = true;
-                        }
-                    }
-                    else
-                        UIHandler.startDisplay("" + _countdown);
-
-                    if (_countdown <= 0)
-                    {
-                        StartNewRepetition();
-                        _startedCounting = false;
-                        UIHandler.stopDisplaying();
-                    }
-                }
-                else if (currentLesson.IsRunning && _stopwatch.ElapsedMilliseconds > 10000)
-                {
+                if (currentLesson.IsRunning && _stopwatch.ElapsedMilliseconds > 10000)
                     EmergencyStop();
-                }
             }
             else
             {
-                // stop 
+                UIHandler.startDisplay("Done!\nThank you for participation!");
             }
         }
 
@@ -130,19 +96,6 @@ namespace Assessment
         {
             _effectors.Add(effector);
             effector.Initialise(this);
-        }
-
-
-        public void SaveBaselineRecord(string record)
-        {
-            baselineSW.WriteLine($"{_playerName},{record}");
-        }
-
-        public IEnumerator FinaliseSavingPosition(float time)
-        {
-            yield return new WaitForSeconds(time);
-            baselineSW.Close();
-            _gotNeutral = true;
         }
 
         public void StartNewRepetition()
@@ -188,8 +141,8 @@ namespace Assessment
                     _finishedQuestion = false;
                     _questionnaire.StartQuestionnaire();
                 }
-
-                _countdown = 3;
+                else
+                    _facingChecker.ActivateCountdown(StartNewRepetition,3);
                 _stopwatch.Reset();
             }
         }
@@ -222,18 +175,7 @@ namespace Assessment
             _questionnaire.StartQuestionnaire();
 
             _currentResults = new List<RepetitionResult>();
-            _countdown = 3;
             _stopwatch.Reset();
-        }
-
-
-        IEnumerator LoseTime()
-        {
-            while (_countdown >= 0)
-            {
-                yield return new WaitForSeconds(1);
-                _countdown--;
-            }
         }
 
         private void OnApplicationQuit()
@@ -247,7 +189,13 @@ namespace Assessment
         {
             _perceivedEffortSW.Write($"{_playerName},{CurrentLessonNr-1},{result}\n");
             _perceivedEffortSW.Flush();
-            _finishedQuestion = true;
+            _facingChecker.ActivateCountdown(StartNewRepetition,3);
+        }
+
+        IEnumerator StartFacingChecker()
+        {
+                yield return new WaitForSeconds(1.5f);
+                _facingChecker.ActivateCountdown(StartNewRepetition,3);
         }
     }
 }

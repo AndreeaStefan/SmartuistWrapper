@@ -170,25 +170,4 @@ public class AnhaActor : MonoBehaviour
                 break;
         }
     }
-
-    public void GetNeutralPosition()
-    {
-        _text.text = "Keep neutral position after the countdown\n6";
-        var countdown = 6;
-        for (var i = countdown; i >= 0; i--)
-        {
-            StartCoroutine(DisplayTextFor($"Keep neutral position after the countdown\n{i}", (countdown - i), i == 0));
-        }
-        StartCoroutine(DisplayTextFor("Done!", 7.0f, false));
-        StartCoroutine(DisplayTextFor("", 9.0f, false));        
-        StartCoroutine(assessor.FinaliseSavingPosition(10f));        
-    }
-
-    IEnumerator DisplayTextFor(string text, float time, bool measure)
-    {
-        yield return new WaitForSeconds(time);
-        _text.text = text;
-        savePosition = measure;
-    }
-
 }

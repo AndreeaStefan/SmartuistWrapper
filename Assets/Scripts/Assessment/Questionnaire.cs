@@ -11,11 +11,12 @@ namespace Assessment
         private static GameObject _container;
         private static GameObject _points;
         private static Assessor _assessor;
+        private FacingChecker _facignChecker;
         private static readonly List<string> _questions = new List<string>
         {
-            "How physically demanding was the task?",
-            "How did you feel with this arm's length (comfortable, annoyed)?",
-            "How successful do you think you were?"
+            "How physically demanding was the task?\n1(not at all) ... 7(very demanding)",
+            "How did you feel with this arm's length?\n1(better than normal) ... 7(very annoying)",
+            "How successful do you think you were\n1(fast tap of all targets) .. 7(couldn't tap all targets)?"
         };
         private static List<string> _results = new List<string>();
 
@@ -30,6 +31,7 @@ namespace Assessment
         private void Start()
         {
             _assessor = FindObjectOfType<Assessor>();
+            _facignChecker = FindObjectOfType<FacingChecker>();
             _container = gameObject.transform.GetChild(0).gameObject;
             _points = _container.transform.GetChild(1).gameObject;
             _container.SetActive(false);
@@ -38,17 +40,21 @@ namespace Assessment
 
         public void StartQuestionnaire()
         {
+            _facignChecker.ActivateCountdown(ReadyForQuestions,0);
+        }
+
+        public void ReadyForQuestions()
+        {
             _results = new List<string>(_questions.Count);
             if (!Enabled)
             {
                 _assessor.DoneQuestionnaire(string.Join(",", _results));
                 return;
             }
-            
+
             _currentQuestion = 0;
             _textMesh.text = _questions[_currentQuestion];
             _container.SetActive(true);
-            
         }
 
         public void HitTarget(GameObject result)

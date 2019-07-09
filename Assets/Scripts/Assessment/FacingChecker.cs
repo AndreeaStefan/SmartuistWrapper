@@ -1,30 +1,103 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections;
+using System.Globalization;
 using Rokoko.Smartsuit;
 using UnityEngine;
 
 namespace Assessment
 {
-    public class FacingChecker
+
+    public class FacingChecker : MonoBehaviour
     {
-        private Camera _suit;
-        private GameObject _startArea;
         private Vector3 _forward;
+        public Camera Camera;
+        public GameObject StartArea;
 
-        public FacingChecker(Camera suit, GameObject startArea)
+        private bool _startedCounting = false;
+        private bool _active = false;
+        private int _countdown;
+        private int _countdownStart = 3;
+        private Action _callback;
+        private bool _inPosition = false;
+
+
+
+        private void Start()
         {
-            _suit = suit;
-            _startArea = startArea;
-            _forward = _startArea.transform.transform.forward;
+            _forward = StartArea.transform.transform.forward;
+            _countdown = _countdownStart;
         }
 
-        public bool InTheArea()
+        private void Update()
         {
-            return _startArea.GetComponent<Collider>().bounds.Contains(_suit.gameObject.transform.position);
+            if (_active)
+            {
+                    if (!InTheArea())
+                    {
+                        UIHandler.startDisplay("Please go to the start area");
+                        _countdown = _countdownStart;
+                    }
+                    else
+                    {
+                        if (!FacingForward())
+                        {
+                            UIHandler.startDisplay("Please turn to the playing area");
+                            _countdown = _countdownStart;
+                        }
+                        else
+                        {
+                            if (!_startedCounting)
+                            {
+                                StartCoroutine(nameof(LoseTime));
+                                _startedCounting = true;
+                                _inPosition = true;
+                            }
+                            UIHandler.startDisplay("" + _countdown);
+                        }
+                    }
+                if (_inPosition && _countdown <= 0)
+                    StopCountdown();
+            }
         }
 
-        public bool FacingForward()
+        public void ActivateCountdown(Action callback, int countdownStart)
         {
-            return Vector3.Angle(_forward, _suit.gameObject.transform.forward) < 20;
+            _countdownStart = countdownStart;
+            _countdown = countdownStart;
+            _callback = callback;
+            _active = true;
+            _startedCounting = false;
+            _inPosition = false;
         }
+
+        public void StopCountdown()
+        {
+            _callback();
+            _active = false;
+            _startedCounting = false;
+            UIHandler.stopDisplaying();
+        }
+
+
+        private bool InTheArea()
+        {
+            return StartArea.GetComponent<Collider>().bounds.Contains(Camera.transform.position);
+        }
+
+        private bool FacingForward()
+        {
+            return Vector3.Angle(_forward, Camera.transform.forward) < 20;
+        }
+
+
+        IEnumerator LoseTime()
+        {
+            while (_countdown >= 0)
+            {
+                yield return new WaitForSeconds(1);
+                _countdown--;
+            }
+        }
+
     }
 }
