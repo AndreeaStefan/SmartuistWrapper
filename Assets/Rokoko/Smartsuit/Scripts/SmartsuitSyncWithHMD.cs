@@ -126,7 +126,9 @@ public class SmartsuitSyncWithHMD : MonoBehaviour {
 
         characterRoot.rotation = Quaternion.Lerp(characterRoot.rotation, rotationError*characterRoot.rotation, rotationWeight);
 
-        Vector3 positionError = HMD.position - characterEyes.position;
+        var shift = headfw * 0.05f;
+
+        Vector3 positionError = HMD.position - characterEyes.position - shift;
         Vector3 cp = characterRoot.position;
 
         characterRoot.position += positionError * Mathf.Clamp01(positionWeight);
