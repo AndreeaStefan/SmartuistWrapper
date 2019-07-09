@@ -24,6 +24,7 @@ namespace Assets.Scripts.Assessment
         private int direction;
         private readonly string deltasFileName = "GradientStats.csv";
         private StreamWriter statsSW;
+        private int _direction = 1;
 
         public float Gain;
         public float Delta;
@@ -38,7 +39,6 @@ namespace Assets.Scripts.Assessment
             _learningRate = 0.13f;
             _batchSize = batchSize;
             Gain = -1f;
-            direction = 1;
 
             statsSW = new StreamWriter(deltasFileName, true);
         }
@@ -65,7 +65,8 @@ namespace Assets.Scripts.Assessment
                     ? Delta < 0.15 ? -Math.Abs(Delta) : Delta
                     : Delta > -0.15 ? Math.Abs(Delta) : Delta;
                 Delta = _negativeDelta > 1 ? Math.Abs(Delta) : Delta;
-                nextScale = _currentScale + _learningRate *  Gain * Math.Sign(Delta);
+                direction = Delta < 0 ? direction * -1 : direction;
+                nextScale = _currentScale + _learningRate *  Gain * direction;
                 UnityEngine.Debug.Log("Gain " + Gain + " delta:  " + Delta);
                 _previousGain = Gain;
                 _currentScale = nextScale;
