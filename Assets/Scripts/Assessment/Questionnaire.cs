@@ -14,9 +14,9 @@ namespace Assessment
         private FacingChecker _facignChecker;
         private static readonly List<string> _questions = new List<string>
         {
-            "How physically demanding was the task?\n1(not at all) ... 7(very demanding)",
-            "How did you feel with this arm's length?\n1(better than normal) ... 7(very annoying)",
-            "How successful do you think you were\n1(fast tap of all targets) .. 7(couldn't tap all targets)?"
+            "How physically demanding was the task?\n1(very low) ... 7(very high)",
+            "How did you feel with this arm's length?\n1(better than normal) ... 7(very annoying)", // the scale should increase the same way
+            "How successful do you think you were\n1(perfect) .. 7(failure)?"
         };
         private static List<string> _results = new List<string>();
 

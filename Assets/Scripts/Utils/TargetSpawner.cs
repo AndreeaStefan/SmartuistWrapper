@@ -73,23 +73,13 @@ public class TargetSpawner : MonoBehaviour
             var index = targetsPerCirclePerLesson * circle + position;
             if (_currentLesson[index] == -1)
             {
-                var scaleIndex = GetNewScale(index); 
+                var scaleIndex = _randomGenerator.Next(0, _scales.Length); 
                 _currentLesson[index] = scaleIndex;
                 CurrentTarget = Targets[tmpIndex];
                 CurrentTarget.Scale = new Vector3(_scales[scaleIndex], _scales[scaleIndex], _scales[scaleIndex]);
                 _currentRep++;
                 return;
             }
-        }
-    }
-
-    private int GetNewScale(int index)
-    {
-        var otherOne = index % 2 == 0 ? 1 : -1;
-        while (true)
-        {
-            var scaleIndex = _randomGenerator.Next(0, _scales.Length);
-            if (scaleIndex != _currentLesson[index + otherOne]) return scaleIndex;
         }
     }
 
