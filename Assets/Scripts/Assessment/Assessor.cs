@@ -53,7 +53,6 @@ namespace Assessment
         public int MaximumLessons = 30;
 
         public float Scale;
-        private bool _finishedQuestion = true;
 
         private void Start()
         {
@@ -68,7 +67,7 @@ namespace Assessment
             _perceivedEffortSW = new StreamWriter(_perceivedEffortPath, true);
 
             CurrentLessonNr = 0;
-            _currentRepetition = -1;
+            _currentRepetition = 0;
             _currentResults = new List<RepetitionResult>();
             currentLesson = gameObject.AddComponent<Lesson>();
             currentLesson.Initialise(_player, _targetSpawner.Target, _effectors, CurrentLessonNr, _currentRepetition);
@@ -101,12 +100,20 @@ namespace Assessment
         public void StartNewRepetition()
         {
             _alreadyStopped = false;
+            if (BatchSize == _currentRepetition)
+            {
+                _currentRepetition = 0;
+                CurrentLessonNr++;
+                Scale = _gradientDescent.GetNextScale(_currentResults);
+                _currentResults = new List<RepetitionResult>();
+            }
+
             _targetSpawner.GetNewTarget();
             _currTarget = _targetSpawner.CurrentTarget;
-            _currentRepetition++;
 
             currentLesson.StartNewTry(_playerName, CurrentLessonNr, _currentRepetition, _currTarget.Position,
                 _currTarget.Scale);
+
             _stopwatch.Start();
         }
 
@@ -128,21 +135,15 @@ namespace Assessment
                 // current Scale - prev Gain (what gave the curr Scale)  - Delta - between this Gain and prev One (the delta that gave the Scale) 
                 _tapSW.WriteLine(result + "," + Scale + "," + _gradientDescent.Gain + "," + _gradientDescent.Delta) ;
                 _tapSW.Flush();
-
                 _currentResults.Add(result);
 
-                if ((BatchSize - 1) == _currentRepetition)
-                {
-                    _currentRepetition = -1;
-                    CurrentLessonNr++;
-                    Scale = _gradientDescent.GetNextScale(_currentResults);
+                _currentRepetition++;
 
-                    _currentResults = new List<RepetitionResult>();
-                    _finishedQuestion = false;
+                if (BatchSize == _currentRepetition)
                     _questionnaire.StartQuestionnaire();
-                }
                 else
-                    _facingChecker.ActivateCountdown(StartNewRepetition,3);
+                    _facingChecker.ActivateCountdown(StartNewRepetition, 3);
+
                 _stopwatch.Reset();
             }
         }
@@ -167,14 +168,8 @@ namespace Assessment
                 _currentResults.Add(result);
                 _currentRepetition++;
             }
+            _facingChecker.ActivateCountdown(StartNewRepetition, 3);
 
-            _currentRepetition = -1;
-            CurrentLessonNr++;
-            Scale = _gradientDescent.GetNextScale(_currentResults);
-            _finishedQuestion = false;
-            _questionnaire.StartQuestionnaire();
-
-            _currentResults = new List<RepetitionResult>();
             _stopwatch.Reset();
         }
 

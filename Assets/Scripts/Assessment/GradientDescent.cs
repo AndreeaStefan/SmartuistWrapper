@@ -21,7 +21,6 @@ namespace Assets.Scripts.Assessment
         private float _negativeDelta;
         private int _trackedBodyParts = 7;
         private float[] _previousResults;
-        private int direction;
         private readonly string deltasFileName = "GradientStats.csv";
         private StreamWriter statsSW;
         private int _direction = 1;
@@ -65,8 +64,8 @@ namespace Assets.Scripts.Assessment
                     ? Delta < 0.15 ? -Math.Abs(Delta) : Delta
                     : Delta > -0.15 ? Math.Abs(Delta) : Delta;
                 Delta = _negativeDelta > 1 ? Math.Abs(Delta) : Delta;
-                direction = Delta < 0 ? direction * -1 : direction;
-                nextScale = _currentScale + _learningRate *  Gain * direction;
+                _direction = Delta < 0 ? _direction * -1 : _direction;
+                nextScale = _currentScale + _learningRate *  Gain * _direction;
                 UnityEngine.Debug.Log("Gain " + Gain + " delta:  " + Delta);
                 _previousGain = Gain;
                 _currentScale = nextScale;

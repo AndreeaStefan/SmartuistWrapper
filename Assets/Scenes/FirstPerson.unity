@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18388402, g: 0.22896501, b: 0.30273595, a: 1}
+  m_IndirectSpecularColor: {r: 0.17276844, g: 0.21589246, b: 0.2978263, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -832,7 +832,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Room: {fileID: 391296708111283721}
   Mapping: 2
-  PlayerIndex: 53
+  PlayerIndex: 55
   newTarget: 1
 --- !u!1 &391562815 stripped
 GameObject:
@@ -1113,7 +1113,7 @@ MonoBehaviour:
   CurrentLessonNr: 0
   camera: {fileID: 1374782373}
   ParticipantWeight: 50
-  Male: 0
+  Male: 1
   MaximumLessons: 30
   Scale: 0
 --- !u!4 &773698623
@@ -1882,13 +1882,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2123193018}
-  m_LocalRotation: {x: 0.2842404, y: 0.6289384, z: -0.0658705, w: 0.7206282}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -4.59, y: 4.33, z: -0.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 29.506, y: 86.885, z: 17.562}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &391296706864554492 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7147691465198144965, guid: d2d2a88523a876241b233bece594d75b,
@@ -1923,6 +1923,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 2763021122645473703, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: m_Color.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 2593147648874296085, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.301
       objectReference: {fileID: 0}
     - target: {fileID: 7147691463357995567, guid: d2d2a88523a876241b233bece594d75b,
         type: 3}
@@ -2034,5 +2044,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -1.802
       objectReference: {fileID: 0}
+    - target: {fileID: 7376783817448724941, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 07bcd4e0597eb0648b7a45624f2e0594, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2d2a88523a876241b233bece594d75b, type: 3}

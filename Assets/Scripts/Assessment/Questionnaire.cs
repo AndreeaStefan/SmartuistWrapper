@@ -27,6 +27,7 @@ namespace Assessment
         private Color _initialColour;
 
         private bool _hitsCount = true;
+        private float _previousScale;
         
         private void Start()
         {
@@ -41,6 +42,8 @@ namespace Assessment
         public void StartQuestionnaire()
         {
             _facignChecker.ActivateCountdown(ReadyForQuestions,0);
+            _previousScale = _assessor.Scale;
+            _assessor.Scale = 1;
         }
 
         public void ReadyForQuestions()
@@ -97,6 +100,7 @@ namespace Assessment
         {
             yield return new WaitForSeconds(1f);
             _container.SetActive(false);
+            _assessor.Scale = _previousScale;
             _assessor.DoneQuestionnaire(string.Join(",", _results));
         }
         
