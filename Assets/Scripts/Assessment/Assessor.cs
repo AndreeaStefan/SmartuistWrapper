@@ -168,7 +168,10 @@ namespace Assessment
                 _currentResults.Add(result);
                 _currentRepetition++;
             }
-            _facingChecker.ActivateCountdown(StartNewRepetition, 3);
+            if (BatchSize == _currentRepetition)
+                _questionnaire.StartQuestionnaire();
+            else
+                _facingChecker.ActivateCountdown(StartNewRepetition, 3);
 
             _stopwatch.Reset();
         }

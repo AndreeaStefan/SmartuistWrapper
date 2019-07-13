@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Assessment;
 using UnityEngine;
 
 namespace Assessment
@@ -27,8 +28,8 @@ namespace Assessment
         private Color _initialColour;
 
         private bool _hitsCount = true;
-        private float _previousScale;
-        
+        private PointerFromCamera _pointer;
+
         private void Start()
         {
             _assessor = FindObjectOfType<Assessor>();
@@ -37,13 +38,14 @@ namespace Assessment
             _points = _container.transform.GetChild(1).gameObject;
             _container.SetActive(false);
             _textMesh = transform.GetChild(0).Find("Question").GetComponent<TextMesh>();
+            if ((_pointer = FindObjectOfType<PointerFromCamera>()) == null)
+                 _pointer = gameObject.AddComponent(typeof(PointerFromCamera)) as PointerFromCamera;
+            _pointer.camera = _assessor.camera;
         }
 
         public void StartQuestionnaire()
         {
             _facignChecker.ActivateCountdown(ReadyForQuestions,0);
-            _previousScale = _assessor.Scale;
-            _assessor.Scale = 1;
         }
 
         public void ReadyForQuestions()
@@ -58,6 +60,9 @@ namespace Assessment
             _currentQuestion = 0;
             _textMesh.text = _questions[_currentQuestion];
             _container.SetActive(true);
+
+
+            _pointer.enabled = true;
         }
 
         public void HitTarget(GameObject result)
@@ -100,8 +105,8 @@ namespace Assessment
         {
             yield return new WaitForSeconds(1f);
             _container.SetActive(false);
-            _assessor.Scale = _previousScale;
             _assessor.DoneQuestionnaire(string.Join(",", _results));
+            _pointer.enabled = false;
         }
         
     }

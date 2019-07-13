@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\Assessment\FacingChecker.cs" />
     <Compile Include="Assets\Scripts\Assessment\GradientDescent.cs" />
     <Compile Include="Assets\Scripts\Assessment\Lesson.cs" />
+    <Compile Include="Assets\Scripts\Assessment\PointerFromCamera.cs" />
     <Compile Include="Assets\Scripts\Assessment\Questionnaire.cs" />
     <Compile Include="Assets\Scripts\Assessment\Results\EffortResult.cs" />
     <Compile Include="Assets\Scripts\Assessment\Results\FrameResult.cs" />

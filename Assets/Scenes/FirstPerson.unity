@@ -1109,12 +1109,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLesson: {fileID: 0}
-  BatchSize: 10
+  BatchSize: 1
   CurrentLessonNr: 0
   camera: {fileID: 1374782373}
   ParticipantWeight: 50
   Male: 0
   MaximumLessons: 30
+  UseHeadPointer: 1
   Scale: 0
 --- !u!4 &773698623
 Transform:
@@ -1210,6 +1211,29 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 90074296}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1357954186 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6045555697887725145, guid: d2d2a88523a876241b233bece594d75b,
+    type: 3}
+  m_PrefabInstance: {fileID: 7376783817807965241}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1357954189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357954186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1b9ba5e5e82a234b8548053aa4cc2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camera: {fileID: 0}
+  Enabled: 0
+  cursorPrefab: {fileID: 5696946432611503628, guid: e7ce49e3bfdc375469d367cfc2c54f62,
+    type: 3}
+  maxCursorDistance: 30
 --- !u!1001 &1374782372
 PrefabInstance:
   m_ObjectHideFlags: 0
