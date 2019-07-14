@@ -23,12 +23,15 @@ namespace Assessment
         private bool _inPosition = false;
         private Vector3 _forward;
         private Vector3 _up;
+        private GameObject _vlight;
         
         private void Start()
         {
             _forward = StartArea.transform.transform.forward;
             _up = StartArea.transform.transform.up;
             _countdown = _countdownStart;
+            _vlight = StartArea.transform.GetChild(0).gameObject;
+            _vlight.SetActive(false); 
         }
 
         private void Update()
@@ -38,11 +41,13 @@ namespace Assessment
                     if (!InTheArea())
                     {
                         UIHandler.startDisplay("Please go to the start area");
-                        _countdown = _countdownStart;
+                    _vlight.SetActive(true);
+                    _countdown = _countdownStart;
                     }
                     else
                     {
-                        if (!FacingForward())
+                    _vlight.SetActive(false);
+                    if (!FacingForward())
                         {
                             UIHandler.startDisplay("Please turn to the playing area");
                             _countdown = _countdownStart;
@@ -66,6 +71,10 @@ namespace Assessment
                         }
                 if (_inPosition && _countdown <= 0)
                     StopCountdown();
+            }
+            else
+            {
+                _vlight.SetActive(false);
             }
         }
 
