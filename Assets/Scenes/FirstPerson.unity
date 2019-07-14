@@ -832,7 +832,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Room: {fileID: 391296708111283721}
   Mapping: 2
-  PlayerIndex: 56
+  PlayerIndex: 58
   newTarget: 1
 --- !u!1 &391562815 stripped
 GameObject:
@@ -1109,7 +1109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLesson: {fileID: 0}
-  BatchSize: 1
+  BatchSize: 10
   CurrentLessonNr: 0
   camera: {fileID: 1374782373}
   ParticipantWeight: 50
@@ -2119,6 +2119,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 07bcd4e0597eb0648b7a45624f2e0594, type: 2}
+    - target: {fileID: 5749257775176232402, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 802513676716597004, guid: d2d2a88523a876241b233bece594d75b,
         type: 3}
       propertyPath: m_Mesh
@@ -2368,6 +2373,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511911061688020600, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: useCurves
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511911061688020600, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: _fallOffTexture
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4322679990672900756, guid: d2d2a88523a876241b233bece594d75b, type: 3}
