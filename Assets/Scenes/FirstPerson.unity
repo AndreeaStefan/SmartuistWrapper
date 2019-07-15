@@ -832,7 +832,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Room: {fileID: 391296708111283721}
   Mapping: 2
-  PlayerIndex: 62
+  PlayerIndex: 63
   newTarget: 1
 --- !u!1 &391562815 stripped
 GameObject:
@@ -1113,7 +1113,7 @@ MonoBehaviour:
   CurrentLessonNr: 0
   camera: {fileID: 1374782373}
   ParticipantWeight: 50
-  Male: 0
+  Male: 1
   MaximumLessons: 30
   Scale: 0
 --- !u!4 &773698623
