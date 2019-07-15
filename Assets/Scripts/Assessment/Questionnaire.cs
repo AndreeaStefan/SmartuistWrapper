@@ -53,7 +53,7 @@ namespace Assessment
             _results = new List<string>(_questions.Count);
             if (!Enabled)
             {
-                _assessor.DoneQuestionnaire(string.Join(",", _results));
+                StartCoroutine(nameof(FinishQuestionnaire));
                 return;
             }
 
