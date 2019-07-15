@@ -1109,7 +1109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLesson: {fileID: 0}
-  BatchSize: 10
+  BatchSize: 1
   CurrentLessonNr: 0
   camera: {fileID: 1374782373}
   ParticipantWeight: 50
@@ -2334,6 +2334,46 @@ PrefabInstance:
       propertyPath: far clip plane
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5511911061688020605, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: orthographic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511911061688020605, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: near clip plane
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511911061688020605, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511911061688020605, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511911061688020605, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511911061688020605, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511911061688020605, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511911061688020605, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 4294965999
+      objectReference: {fileID: 0}
     - target: {fileID: 5511911061688020602, guid: d2d2a88523a876241b233bece594d75b,
         type: 3}
       propertyPath: m_Mesh
@@ -2362,7 +2402,7 @@ PrefabInstance:
     - target: {fileID: 5511911061688020600, guid: d2d2a88523a876241b233bece594d75b,
         type: 3}
       propertyPath: ditherAmount
-      value: 200
+      value: -69
       objectReference: {fileID: 0}
     - target: {fileID: 5511911061688020600, guid: d2d2a88523a876241b233bece594d75b,
         type: 3}
@@ -2398,6 +2438,21 @@ PrefabInstance:
         type: 3}
       propertyPath: colorTint.b
       value: 0.09944055
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511911061688020600, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: lightType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511911061688020600, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: shadowMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511911061688020600, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: lightMultiplier
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4322679990672900756, guid: d2d2a88523a876241b233bece594d75b, type: 3}

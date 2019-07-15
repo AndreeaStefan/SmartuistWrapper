@@ -1098,26 +1098,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4837749860624478919, guid: 1abc2ee2898188b45a2735f7c775b7c4,
         type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.44901463
-      objectReference: {fileID: 0}
-    - target: {fileID: 4837749860624478919, guid: 1abc2ee2898188b45a2735f7c775b7c4,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.47859365
-      objectReference: {fileID: 0}
-    - target: {fileID: 4837749860624478919, guid: 1abc2ee2898188b45a2735f7c775b7c4,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.31300405
-      objectReference: {fileID: 0}
-    - target: {fileID: 4837749860624478919, guid: 1abc2ee2898188b45a2735f7c775b7c4,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.6865584
-      objectReference: {fileID: 0}
-    - target: {fileID: 4837749860624478919, guid: 1abc2ee2898188b45a2735f7c775b7c4,
-        type: 3}
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
@@ -1136,10 +1116,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4837749860624478918, guid: 1abc2ee2898188b45a2735f7c775b7c4,
+    - target: {fileID: 4837749860624478915, guid: 1abc2ee2898188b45a2735f7c775b7c4,
         type: 3}
-      propertyPath: m_projectionMatrixMode
-      value: 0
+      propertyPath: orthoMaterial
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837749860624478915, guid: 1abc2ee2898188b45a2735f7c775b7c4,
+        type: 3}
+      propertyPath: meshContainer
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4837749860624478913, guid: 1abc2ee2898188b45a2735f7c775b7c4,
         type: 3}
@@ -1151,15 +1136,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 4837749860624478915, guid: 1abc2ee2898188b45a2735f7c775b7c4,
+    - target: {fileID: 4837749860624478918, guid: 1abc2ee2898188b45a2735f7c775b7c4,
         type: 3}
-      propertyPath: orthoMaterial
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4837749860624478915, guid: 1abc2ee2898188b45a2735f7c775b7c4,
-        type: 3}
-      propertyPath: meshContainer
-      value: 
+      propertyPath: m_projectionMatrixMode
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1abc2ee2898188b45a2735f7c775b7c4, type: 3}
