@@ -100,7 +100,7 @@ namespace Assets.Scripts.Assessment
         private void AdaptLearingRateWithGain()
         {
            
-            if (Delta > 0) // increase learing rate 
+            if (Delta > 0) 
             {
                 _positiveDelta++;
                 _negativeDelta = 0;
@@ -113,7 +113,7 @@ namespace Assets.Scripts.Assessment
                 UnityEngine.Debug.Log("Learning rate decreased to: " + _learningRate);
             }
 
-            if (_positiveDelta > 1)
+            if (_positiveDelta > 1) // increase learing rate 
             {
 
                 _learningRate *= 1.1f;
