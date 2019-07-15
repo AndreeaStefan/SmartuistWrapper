@@ -145,7 +145,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1550009550988932807}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.522, y: 0, z: 0}
+  m_LocalPosition: {x: 0.522, y: 0.083, z: 0}
   m_LocalScale: {x: 0.54521, y: 0.54521, z: 0.54521}
   m_Children:
   - {fileID: 5207413190417524689}
@@ -2613,36 +2613,6 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 4837749860624478918, guid: 1abc2ee2898188b45a2735f7c775b7c4,
-        type: 3}
-      propertyPath: m_projectionMatrixMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4837749860624478913, guid: 1abc2ee2898188b45a2735f7c775b7c4,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4837749860624478912, guid: 1abc2ee2898188b45a2735f7c775b7c4,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4837749860624478912, guid: 1abc2ee2898188b45a2735f7c775b7c4,
-        type: 3}
-      propertyPath: m_ReceiveShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4837749860624478912, guid: 1abc2ee2898188b45a2735f7c775b7c4,
-        type: 3}
-      propertyPath: m_DynamicOccludee
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4837749860624478912, guid: 1abc2ee2898188b45a2735f7c775b7c4,
-        type: 3}
-      propertyPath: m_SelectedEditorRenderState
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4837749860624478915, guid: 1abc2ee2898188b45a2735f7c775b7c4,
         type: 3}
       propertyPath: meshContainer
@@ -2682,6 +2652,56 @@ PrefabInstance:
         type: 3}
       propertyPath: _fallOffTexture
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837749860624478915, guid: 1abc2ee2898188b45a2735f7c775b7c4,
+        type: 3}
+      propertyPath: colorTint.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837749860624478915, guid: 1abc2ee2898188b45a2735f7c775b7c4,
+        type: 3}
+      propertyPath: colorTint.g
+      value: 0.16981131
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837749860624478915, guid: 1abc2ee2898188b45a2735f7c775b7c4,
+        type: 3}
+      propertyPath: colorTint.b
+      value: 0.007075485
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837749860624478915, guid: 1abc2ee2898188b45a2735f7c775b7c4,
+        type: 3}
+      propertyPath: orthoMaterial
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837749860624478913, guid: 1abc2ee2898188b45a2735f7c775b7c4,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837749860624478912, guid: 1abc2ee2898188b45a2735f7c775b7c4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837749860624478912, guid: 1abc2ee2898188b45a2735f7c775b7c4,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837749860624478912, guid: 1abc2ee2898188b45a2735f7c775b7c4,
+        type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837749860624478912, guid: 1abc2ee2898188b45a2735f7c775b7c4,
+        type: 3}
+      propertyPath: m_SelectedEditorRenderState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837749860624478918, guid: 1abc2ee2898188b45a2735f7c775b7c4,
+        type: 3}
+      propertyPath: m_projectionMatrixMode
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1abc2ee2898188b45a2735f7c775b7c4, type: 3}

@@ -19,7 +19,7 @@ public class TargetSpawner : MonoBehaviour
     [Range(1f, 2f)] public float Height = 1.7f;
 
     private float _radius = 0.8f;
-    private float[] _depths =  { 0.6f, 1.6f, 2.6f };
+    private float[] _depths =  { 0.6f, 1, 1.6f, 2, 2.6f };
     private float[] _scales =  { 0.1f, 0.2f, 0.3f };
     [FormerlySerializedAs("_target")] public GameObject Target;
     [FormerlySerializedAs("CurrentTarget")] [HideInInspector] public int CurrentTargetID;
@@ -31,7 +31,7 @@ public class TargetSpawner : MonoBehaviour
     private int _batchSize;
     private List<int> _currentLesson;
     private int _currentRep;
-    public int targetsPerCircle;
+    public int targetsPerCircle = 6;
     public readonly int spiralDepths = 5;
     private int targetsPerCirclePerLesson;
     private int _currenDepths;
@@ -56,6 +56,15 @@ public class TargetSpawner : MonoBehaviour
         targetsPerCirclePerLesson = (int)Math.Ceiling((double)_batchSize / _currenDepths);// how many targets we take from each circle
         _currentLesson = Enumerable.Range(0, (int)targetsPerCirclePerLesson * _currenDepths).Select(i => -1).ToList();
 
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown("space"))
+        {
+            GetNewTarget();
+            Debug.Log("Target: " + CurrentTarget.Depth);
+        }
     }
 
     public void GetNewTarget()
@@ -88,6 +97,7 @@ public class TargetSpawner : MonoBehaviour
     /// </summary>
     private void GenerateTargetsDifferentDepths()
     {
+        targetsPerCircle = 6;
         var angle = 360 / targetsPerCircle;
         Targets = new Target[_depths.Length * targetsPerCircle];
       
