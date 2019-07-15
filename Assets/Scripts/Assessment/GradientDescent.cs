@@ -58,14 +58,15 @@ namespace Assets.Scripts.Assessment
             else
             {
                 Gain = GetGain(currentResults);
-                
+                var reversGain = Math.Abs(20 - Gain);
+
                 Delta = Gain - _previousGain;
                 Delta = _currentScale > 5f
                     ? Delta < 0.15 ? -Math.Abs(Delta) : Delta
                     : Delta > -0.15 ? Math.Abs(Delta) : Delta;
                 Delta = _negativeDelta > 1 ? Math.Abs(Delta) : Delta;
                 _direction = Delta < 0 ? _direction * -1 : _direction;
-                nextScale = _currentScale + _learningRate *  Gain * _direction;
+                nextScale = _currentScale + _learningRate * reversGain * _direction;
                 UnityEngine.Debug.Log("Gain " + Gain + " delta:  " + Delta);
                 _previousGain = Gain;
                 _currentScale = nextScale;

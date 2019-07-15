@@ -832,7 +832,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Room: {fileID: 391296708111283721}
   Mapping: 2
-  PlayerIndex: 61
+  PlayerIndex: 62
   newTarget: 1
 --- !u!1 &391562815 stripped
 GameObject:

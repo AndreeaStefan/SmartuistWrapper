@@ -13,16 +13,18 @@ public class TargetSpawner : MonoBehaviour
     public GameObject Player;
     public Transform TargetContainer;
     public GameObject TargetPrefab;
-   
+
     public bool Spiral;
 
     [Range(1f, 2f)] public float Height = 1.7f;
 
     private float _radius = 0.8f;
-    private float[] _depths =  { 0.6f, 1, 1.6f, 2, 2.6f };
-    private float[] _scales =  { 0.1f, 0.2f, 0.3f };
+    private float[] _depths = {0.6f, 1.6f,  2.6f};
+    private float[] _scales = {0.1f, 0.2f, 0.3f};
     [FormerlySerializedAs("_target")] public GameObject Target;
-    [FormerlySerializedAs("CurrentTarget")] [HideInInspector] public int CurrentTargetID;
+
+    [FormerlySerializedAs("CurrentTarget")] [HideInInspector]
+    public int CurrentTargetID;
 
     public Target[] Targets;
     public Target CurrentTarget;
@@ -53,10 +55,11 @@ public class TargetSpawner : MonoBehaviour
         Target.GetComponent<MeshRenderer>().enabled = false;
         _currenDepths = Spiral ? spiralDepths : _depths.Length;
         targetsPerCircle = Spiral ? 4 : 6;
-        targetsPerCirclePerLesson = (int)Math.Ceiling((double)_batchSize / _currenDepths);// how many targets we take from each circle
-        _currentLesson = Enumerable.Range(0, (int)targetsPerCirclePerLesson * _currenDepths).Select(i => -1).ToList();
+        targetsPerCirclePerLesson = (int) Math.Ceiling((double) _batchSize / _currenDepths); // how many targets we take from each circle
+        _currentLesson = Enumerable.Range(0, (int) targetsPerCirclePerLesson * _currenDepths).Select(i => -1).ToList();
 
     }
+
 
     public void Update()
     {
@@ -64,6 +67,23 @@ public class TargetSpawner : MonoBehaviour
         {
             GetNewTarget();
             Debug.Log("Target: " + CurrentTarget.Depth);
+        }
+
+        if (Input.GetKeyDown("s"))
+        {
+            GenerateAllTargets(Targets);
+        }
+    }
+
+    private void GenerateAllTargets(Target[] targets)
+    {
+        foreach (var target in targets)
+        {
+            var t = Instantiate(TargetPrefab);
+            t.transform.parent = TargetContainer;
+            t.transform.position = target.Position;
+            t.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+
         }
     }
 
