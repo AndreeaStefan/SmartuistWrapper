@@ -74,7 +74,7 @@ namespace Assessment
             _target.transform.position = _position;
             _target.transform.localScale = _scale;
             _target.GetComponent<MeshRenderer>().enabled = true;
-            _target.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
+            _target.transform.GetChild(0).gameObject.SetActive(true);
             StartCoroutine(nameof(TurnOffTheLight));
         }
 
@@ -93,7 +93,7 @@ namespace Assessment
         private IEnumerator TurnOffTheLight()
         {
             yield return new WaitForSeconds(0.2f);
-            _target.transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
+            _target.transform.GetChild(0).gameObject.SetActive(false);
         }
     }
 }
