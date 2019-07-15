@@ -58,7 +58,7 @@ namespace Assets.Scripts.Assessment
             else
             {
                 Gain = GetGain(currentResults);
-
+                
                 Delta = Gain - _previousGain;
                 Delta = _currentScale > 5f
                     ? Delta < 0.15 ? -Math.Abs(Delta) : Delta
