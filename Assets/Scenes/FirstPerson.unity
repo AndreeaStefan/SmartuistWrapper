@@ -2460,6 +2460,16 @@ PrefabInstance:
       propertyPath: shadowMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7592680335115733197, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 2522346083723561888, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.085
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4322679990672900756, guid: d2d2a88523a876241b233bece594d75b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d2d2a88523a876241b233bece594d75b, type: 3}
