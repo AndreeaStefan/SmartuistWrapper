@@ -15,9 +15,9 @@ namespace Assessment
         private FacingChecker _facignChecker;
         private static readonly List<string> _questions = new List<string>
         {
-            "How physically demanding was the task?\n1(very low) ... 7(very high)",
-            "How did you feel with this arm's length?\n1(better than normal) ... 7(very annoying)", // the scale should increase the same way
-            "How successful do you think you were\n1(perfect) .. 7(failure)?"
+            "How physically demanding was the task? \n1(very low) ... 7(very high)",
+            "How successful were you in tapping targets \n1(perfect) .. 7(failure)?",
+            "How discuraged, stressed, annoyed were you with this arm's length? \n1(very low) ... 7(very high)" // the scale should increase the same way
         };
         private static List<string> _results = new List<string>();
 
@@ -41,6 +41,10 @@ namespace Assessment
             if ((_pointer = FindObjectOfType<PointerFromCamera>()) == null)
                  _pointer = gameObject.AddComponent(typeof(PointerFromCamera)) as PointerFromCamera;
             _pointer.camera = _assessor.camera;
+
+            var pos = transform.position;
+            pos.y = _assessor.ParticipantHeight;
+            transform.position = pos;
         }
 
         public void StartQuestionnaire()

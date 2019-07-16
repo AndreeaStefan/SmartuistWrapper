@@ -49,6 +49,7 @@ namespace Assessment
         public int CurrentLessonNr;
         public Camera camera;
         public float ParticipantWeight;
+        public float ParticipantHeight = 1.7f;
         public bool Male;
         public int MaximumLessons = 30;
 

@@ -11,6 +11,8 @@ TagManager:
   - Start
   - ForeArm
   - Evaluation
+  - StartLight
+  - StartRef
   layers:
   - Default
   - TransparentFX

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4837749860624478915}
   m_Layer: 10
   m_Name: V-Light AreaCube
-  m_TagString: Untagged
+  m_TagString: StartLight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

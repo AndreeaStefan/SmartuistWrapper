@@ -1113,6 +1113,7 @@ MonoBehaviour:
   CurrentLessonNr: 0
   camera: {fileID: 1374782373}
   ParticipantWeight: 50
+  ParticipantHeight: 1.6
   Male: 1
   MaximumLessons: 30
   Scale: 0
@@ -1992,7 +1993,12 @@ PrefabInstance:
     - target: {fileID: 6545949325314960446, guid: d2d2a88523a876241b233bece594d75b,
         type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: StartRef
+      objectReference: {fileID: 0}
+    - target: {fileID: 5069039880700020233, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2763021122645473703, guid: d2d2a88523a876241b233bece594d75b,
         type: 3}
@@ -2122,7 +2128,7 @@ PrefabInstance:
     - target: {fileID: 5749257775176232402, guid: d2d2a88523a876241b233bece594d75b,
         type: 3}
       propertyPath: Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 802513676716597004, guid: d2d2a88523a876241b233bece594d75b,
         type: 3}
@@ -2323,6 +2329,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511911061688020598, guid: d2d2a88523a876241b233bece594d75b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5511911061688020605, guid: d2d2a88523a876241b233bece594d75b,
         type: 3}
