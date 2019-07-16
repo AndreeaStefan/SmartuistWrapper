@@ -142,7 +142,7 @@ namespace Assessment
                 if (BatchSize == _currentRepetition)
                     _questionnaire.StartQuestionnaire();
                 else
-                    _facingChecker.ActivateCountdown(StartNewRepetition, 3);
+                    _facingChecker.ActivateCountdown(StartNewRepetition, 2);
 
                 _stopwatch.Reset();
             }
@@ -171,7 +171,7 @@ namespace Assessment
             if (BatchSize == _currentRepetition)
                 _questionnaire.StartQuestionnaire();
             else
-                _facingChecker.ActivateCountdown(StartNewRepetition, 3);
+                _facingChecker.ActivateCountdown(StartNewRepetition, 2);
 
             _stopwatch.Reset();
         }
@@ -187,13 +187,13 @@ namespace Assessment
         {
             _perceivedEffortSW.Write($"{_playerName},{CurrentLessonNr-1},{result}\n");
             _perceivedEffortSW.Flush();
-            _facingChecker.ActivateCountdown(StartNewRepetition,3);
+            _facingChecker.ActivateCountdown(StartNewRepetition, 2);
         }
 
         IEnumerator StartFacingChecker()
         {
                 yield return new WaitForSeconds(1.5f);
-                _facingChecker.ActivateCountdown(StartNewRepetition,3);
+                _facingChecker.ActivateCountdown(StartNewRepetition, 2);
         }
     }
 }

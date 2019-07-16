@@ -18,7 +18,7 @@ namespace Assessment
         private bool _startedCounting = false;
         private bool _active = false;
         private int _countdown;
-        private int _countdownStart = 3;
+        private int _countdownStart = 2;
         private Action _callback;
         private bool _inPosition = false;
         private Vector3 _forward;
