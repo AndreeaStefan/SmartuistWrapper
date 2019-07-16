@@ -1115,7 +1115,7 @@ MonoBehaviour:
   ParticipantWeight: 50
   ParticipantHeight: 1.6
   Male: 1
-  MaximumLessons: 30
+  MaximumLessons: 1
   Scale: 0
 --- !u!4 &773698623
 Transform:

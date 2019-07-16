@@ -100,22 +100,26 @@ namespace Assessment
 
         public void StartNewRepetition()
         {
-            _alreadyStopped = false;
-            if (BatchSize == _currentRepetition)
-            {
-                _currentRepetition = 0;
-                CurrentLessonNr++;
-                Scale = _gradientDescent.GetNextScale(_currentResults);
-                _currentResults = new List<RepetitionResult>();
-            }
+           
+                _alreadyStopped = false;
+                if (BatchSize == _currentRepetition)
+                {
+                    _currentRepetition = 0;
+                    CurrentLessonNr++;
+                    Scale = _gradientDescent.GetNextScale(_currentResults);
+                    _currentResults = new List<RepetitionResult>();
+                }
 
-            _targetSpawner.GetNewTarget();
-            _currTarget = _targetSpawner.CurrentTarget;
+                if (CurrentLessonNr <= MaximumLessons)
+                {
+                    _targetSpawner.GetNewTarget();
+                    _currTarget = _targetSpawner.CurrentTarget;
 
-            currentLesson.StartNewTry(_playerName, CurrentLessonNr, _currentRepetition, _currTarget.Position,
-                _currTarget.Scale);
+                    currentLesson.StartNewTry(_playerName, CurrentLessonNr, _currentRepetition, _currTarget.Position,
+                        _currTarget.Scale);
 
-            _stopwatch.Start();
+                    _stopwatch.Start();
+                }
         }
 
         public void StopRepetition()
