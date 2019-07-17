@@ -53,8 +53,9 @@ namespace Assessment
         public bool Male;
         public int MaximumLessons = 30;
 
-        public float Scale;
-
+        public float Scale = 1;
+        public bool FixScale;
+        
         private void Start()
         {
             EffortResult.SetStats(ParticipantWeight, Male);
@@ -74,7 +75,6 @@ namespace Assessment
             currentLesson.Initialise(_player, _targetSpawner.Target, _effectors, CurrentLessonNr, _currentRepetition);
 
             _facingChecker = FindObjectOfType<FacingChecker>();
-            Scale = 1;
             _gradientDescent = new GradientDescent(1, BatchSize);
             StartCoroutine(nameof(StartFacingChecker));
         }
@@ -106,7 +106,7 @@ namespace Assessment
                 {
                     _currentRepetition = 0;
                     CurrentLessonNr++;
-                    Scale = _gradientDescent.GetNextScale(_currentResults);
+                    Scale = FixScale? Scale :_gradientDescent.GetNextScale(_currentResults);
                     _currentResults = new List<RepetitionResult>();
                 }
 

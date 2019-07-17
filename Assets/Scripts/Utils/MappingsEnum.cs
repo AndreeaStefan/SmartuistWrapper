@@ -6,5 +6,6 @@
         SteadyPointing = 0,
         WristMove,
         LearnStaticMapping,
+        FixLenght,
     }
 }
