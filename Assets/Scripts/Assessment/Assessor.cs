@@ -83,7 +83,7 @@ namespace Assessment
         {
             if (CurrentLessonNr <= MaximumLessons)
             {
-                if (currentLesson.IsRunning && _stopwatch.ElapsedMilliseconds > 10000)
+                if (currentLesson.IsRunning && _stopwatch.ElapsedMilliseconds > 20000)
                     EmergencyStop();
             }
             else
@@ -147,8 +147,11 @@ namespace Assessment
                 if (BatchSize == _currentRepetition)
                     _questionnaire.StartQuestionnaire();
                 else
-                    _facingChecker.ActivateCountdown(StartNewRepetition, 2);
-
+                {   if(CurrentLessonNr <= 5)
+                        _facingChecker.ActivateCountdown(StartNewRepetition, 2);
+                    else
+                        _facingChecker.ActivateCountdown(StartNewRepetition, 1);
+                }
                 _stopwatch.Reset();
             }
         }
@@ -175,8 +178,13 @@ namespace Assessment
             }
             if (BatchSize == _currentRepetition)
                 _questionnaire.StartQuestionnaire();
-            else
-                _facingChecker.ActivateCountdown(StartNewRepetition, 2);
+                else
+            {
+                if (CurrentLessonNr <= 5)
+                    _facingChecker.ActivateCountdown(StartNewRepetition, 2);
+                else
+                    _facingChecker.ActivateCountdown(StartNewRepetition, 1);
+            }
 
             _stopwatch.Reset();
         }
@@ -192,13 +200,23 @@ namespace Assessment
         {
             _perceivedEffortSW.Write($"{_playerName},{CurrentLessonNr-1},{result}\n");
             _perceivedEffortSW.Flush();
-            _facingChecker.ActivateCountdown(StartNewRepetition, 2);
+      
+            if (CurrentLessonNr <= 5)
+                _facingChecker.ActivateCountdown(StartNewRepetition, 2);
+            else
+                _facingChecker.ActivateCountdown(StartNewRepetition, 1);
+
         }
 
         IEnumerator StartFacingChecker()
         {
                 yield return new WaitForSeconds(1.5f);
-                _facingChecker.ActivateCountdown(StartNewRepetition, 2);
+
+                if (CurrentLessonNr <= 5)
+                    _facingChecker.ActivateCountdown(StartNewRepetition, 2);
+                else
+                    _facingChecker.ActivateCountdown(StartNewRepetition, 1);
+
         }
     }
 }

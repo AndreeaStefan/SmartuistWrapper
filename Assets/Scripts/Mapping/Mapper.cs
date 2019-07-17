@@ -57,7 +57,16 @@ namespace Mapping
                        mapping.SetBone(m.gameObject);
                        mapping.SetChangeDetector(changeDetector2); 
                     }
-                    
+
+                    break;
+
+                case Mappings.FixLength:
+                    var mappers2 = FindObjectsOfType<Mapper>();
+                    foreach (var m in mappers2)
+                    {
+                        mapping.SetBone(m.gameObject);
+                    }
+
                     break;
             }
         }

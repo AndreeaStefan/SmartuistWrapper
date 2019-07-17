@@ -169,7 +169,7 @@ public class AnhaActor : MonoBehaviour
                 mapper.SetMapping(new LearnStaticMapping());
                 break;
            
-            case Mappings.FixLenght:
+            case Mappings.FixLength:
                 mapper.SetMapping(new FixLength(assessor.Scale));
                 break;
         }
