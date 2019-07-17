@@ -832,7 +832,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Room: {fileID: 391296708111283721}
   Mapping: 2
-  PlayerIndex: 63
+  PlayerIndex: 66
   newTarget: 1
 --- !u!1 &391562815 stripped
 GameObject:
@@ -1113,9 +1113,9 @@ MonoBehaviour:
   CurrentLessonNr: 0
   camera: {fileID: 1374782373}
   ParticipantWeight: 50
-  ParticipantHeight: 1.6
+  ParticipantHeight: 2
   Male: 1
-  MaximumLessons: 1
+  MaximumLessons: 30
   Scale: 0
 --- !u!4 &773698623
 Transform:
@@ -2128,7 +2128,7 @@ PrefabInstance:
     - target: {fileID: 5749257775176232402, guid: d2d2a88523a876241b233bece594d75b,
         type: 3}
       propertyPath: Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 802513676716597004, guid: d2d2a88523a876241b233bece594d75b,
         type: 3}

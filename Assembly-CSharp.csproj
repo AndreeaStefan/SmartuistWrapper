@@ -91,6 +91,7 @@
     <Compile Include="Assets\Scripts\Mapping\Types\ChangeDetectors\LearnStaticChange.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\ChangeDetectors\SteadyPointing.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\ChangeDetectors\WristMove.cs" />
+    <Compile Include="Assets\Scripts\Mapping\Types\FixLength.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\LearnStaticMapping.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\MappingType.cs" />
     <Compile Include="Assets\Scripts\Mapping\Types\Pointing.cs" />
