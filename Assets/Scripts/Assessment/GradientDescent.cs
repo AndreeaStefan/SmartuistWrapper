@@ -21,7 +21,7 @@ namespace Assets.Scripts.Assessment
         private float _negativeDelta;
         private int _trackedBodyParts = 7;
         private float[] _previousResults;
-        private readonly string deltasFileName = "GradientStats.csv";
+        private readonly string deltasFileName = "GradientStatsParticipants.csv";
         private StreamWriter statsSW;
         private int _direction = 1;
 

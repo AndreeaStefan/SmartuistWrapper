@@ -20,9 +20,9 @@ namespace Assessment
         private readonly List<EndEffector> _effectors = new List<EndEffector>();
         private string effortBaselinePath = "effortBaselineResult.csv";
         private StreamWriter baselineSW;
-        private string _perceivedEffortPath = "perceivedEffort.csv";
+        private string _perceivedEffortPath = "perceivedEffortParticipants.csv";
         private StreamWriter _perceivedEffortSW;
-        private string _resultPath = "tapResult.csv";
+        private string _resultPath = "tapResultParticipants.csv";
         private StreamWriter _tapSW;
 
         private AnhaActor _player;

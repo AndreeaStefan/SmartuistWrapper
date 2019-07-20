@@ -26,7 +26,7 @@ namespace Assessment
         private EndEffector _effectorRight;
         
 
-        private string _effortPath = "effortResult.csv";
+        private string _effortPath = "effortResultParticipants.csv";
         private StreamWriter _effortSW;
         private int _repetition;
         private int _lesson;
