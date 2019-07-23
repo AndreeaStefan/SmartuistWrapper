@@ -17,7 +17,7 @@ namespace Assessment
         {
             "How physically demanding was the task? \n1(very low) ... 7(very high)",
             "How successful were you in tapping targets \n1(perfect) .. 7(failure)?",
-            "How discuraged, stressed, annoyed were you with this arm's length? \n1(very low) ... 7(very high)" // the scale should increase the same way
+            "How discouraged, stressed, annoyed were you with this arm's length? \n1(very low) ... 7(very high)" // the scale should increase the same way
         };
         private static List<string> _results = new List<string>();
 
