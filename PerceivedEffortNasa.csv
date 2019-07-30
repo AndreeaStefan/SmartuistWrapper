@@ -1,8 +1,8 @@
 ﻿Participant,ParticipantNR,Task,Q1,Q2,Q3,Q4,Q5,Q6,First
 Julian,4,1,14,3,10,2,2,4,FALSE
 Julian,3,2,14,2,10,2,2,2,TRUE
-Carla,12,1,1,1,2,1,1,1,FALSE
-Carla,11,2,1,2,3,2,2,1,TRUE
+Carla,13,1,1,1,2,1,1,1,FALSE
+Carla,12,2,1,2,3,2,2,1,TRUE
 Laia,9,1,2,3,12,3,3,1,FALSE
 Laia,8,2,2,3,13,4,4,5,TRUE
 Marta,16,1,1,3,1,6,1,3,FALSE
