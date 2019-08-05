@@ -10,3 +10,9 @@ linux
 .meta
 Library
 *.csv
+evaluation/AllLengthsPhase1.png
+evaluation/AllGainsPhase1.png
+evaluation/TotalGain.png
+evaluation/MovementTime.png
+evaluation/DistancePerBodyPart.png
+evaluation/EffortPerBodyPart.png
