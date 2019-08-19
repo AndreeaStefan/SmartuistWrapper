@@ -72,6 +72,18 @@ public class TargetSpawner : MonoBehaviour
         if (Input.GetKeyDown("s"))
         {
             GenerateAllTargets(Targets);
+            var max = 0.0;
+            var min = 100000.0;
+            foreach (var target in Targets)
+            {
+                Debug.Log("Target: " + target.Depth);
+                if (target.Depth > max)
+                    max = target.Depth;
+                if (target.Depth < min)
+                    min = target.Depth;
+            }
+            Debug.Log("Target min depth: " + min);
+            Debug.Log("Target max depth: " + max);
         }
     }
 
